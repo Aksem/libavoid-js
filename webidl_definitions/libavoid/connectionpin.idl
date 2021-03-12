@@ -1,0 +1,29 @@
+
+// typedef unsigned long[] ConnectionPinIds;
+
+[Prefix="Avoid::"]
+interface ShapeConnectionPin {
+  void ShapeConnectionPin(ShapeRef shape, unsigned long classId,
+      double xOffset, double yOffset,
+      boolean proportional, double insideOffset,
+      ConnDirFlags visDirs);
+  
+  void ShapeConnectionPin(ShapeRef shape, unsigned long classId,
+      double xOffset, double yOffset,
+      double insideOffset, ConnDirFlags visDirs);
+
+  void ShapeConnectionPin(JunctionRef junction, unsigned long classId,
+      optional ConnDirFlags visDirs);
+  
+  void setConnectionCost(double cost);
+  [Const, Value] Point position([Ref] optional Polygon newPoly);
+
+  ConnDirFlags directions();
+  void setExclusive(boolean exclusive);
+  boolean isExclusive();
+
+  // TODO: fix
+  // ConnectionPinIds ids();
+
+  // TODO: operators
+};

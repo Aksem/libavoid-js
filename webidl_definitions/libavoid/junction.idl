@@ -1,0 +1,8 @@
+typedef sequence<JunctionRef> JunctionRefList;
+
+[Prefix="Avoid::"]
+interface JunctionRef : Obstacle {
+  void JunctionRef(Router router, [Ref] Point position, optional unsigned long id = 0);
+
+  [Value] Point position();
+};

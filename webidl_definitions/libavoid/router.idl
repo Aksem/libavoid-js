@@ -1,0 +1,31 @@
+[Prefix = "Avoid::"]
+interface LineRep {
+  [Value] attribute Point begin;
+  [Value] attribute Point end;
+};
+
+typedef sequence<LineRep> LineReps;
+typedef unsigned long IntList;
+
+// TODO: return when ClusterRef will be defined
+// typedef sequence<ClusterRef> ClusterRefList;
+
+enum Avoid_RouterFlag {
+  "Avoid::PolyLineRouting",
+  "Avoid::OrthogonalRouting"
+};
+
+// TODO: ...
+
+[Prefix = "Avoid::"]
+interface Router {
+  void Router(unsigned long flags);
+  // attribute ObstacleList m_obstacles;
+
+  boolean processTransaction();
+  void printInfo();
+
+  // void moveShape(ShapeRef shape, [Ref] Polygon newPoly,
+  //               optional boolean first_move = false);
+  void moveShape(ShapeRef shape, double xDiff, double yDiff);
+};

@@ -1,0 +1,6 @@
+[Prefix="Avoid::"]
+interface AStarPath {
+  void AStarPath();
+
+  void search(ConnRef lineRef, VertInf src, VertInf tar, VertInf start);
+};

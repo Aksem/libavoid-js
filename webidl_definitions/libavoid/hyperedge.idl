@@ -1,0 +1,21 @@
+typedef sequence<VertInf> VertexList;
+typedef sequence<ConnRef> ConnRefSet;
+typedef sequence<VertInf> VertexSet;
+
+[Prefix="Avoid::"]
+interface HyperedgeNewAndDeletedObjectLists {
+  // attribute JunctionRefList  newJunctionList;
+  // attribute ConnRefList      newConnectorList;
+  // attribute JunctionRefList  deletedJunctionList;
+  // attribute ConnRefList      deletedConnectorList;
+  // attribute ConnRefList      changedConnectorList;
+};
+
+[Prefix="Avoid::"]
+interface HyperedgeRerouter {
+  void HyperedgeRerouter();
+
+  // TODO: fix, cannot be overloaded
+  // unsigned long registerHyperedgeForRerouting(ConnEndList terminals);
+  unsigned long registerHyperedgeForRerouting(JunctionRef junction);
+};

@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "*.idl": "idl"
+  },
+  "python.formatting.provider": "black"
+}

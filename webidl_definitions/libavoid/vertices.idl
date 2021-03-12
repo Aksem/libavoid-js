@@ -1,0 +1,28 @@
+[Prefix = "Avoid::"]
+interface VertInf {};
+
+typedef sequence<EdgeInf> EdgeInfList;
+// TODO: VertexPair
+
+typedef unsigned short VertIDProps;
+
+[Prefix = "Avoid::"]
+interface VertID {
+  attribute unsigned long objID;
+  attribute unsigned short vn;
+  // Properties:
+  attribute VertIDProps props;
+
+  static readonly attribute unsigned short src;
+  static readonly attribute unsigned short tar;
+  
+  static readonly attribute VertIDProps PROP_ConnPoint;
+  static readonly attribute VertIDProps PROP_OrthShapeEdge;
+  static readonly attribute VertIDProps PROP_ConnectionPin;
+  static readonly attribute VertIDProps PROP_ConnCheckpoint;
+  static readonly attribute VertIDProps PROP_DummyPinHelper;
+  
+  void VertID();
+  void VertID(unsigned long id, unsigned short n, optional VertIDProps p = 0);
+
+};

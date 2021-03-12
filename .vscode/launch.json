@@ -1,0 +1,23 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: generate",
+      "type": "python",
+      "request": "launch",
+      "program": "generate.py",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Python: webidl_binder",
+      "type": "python",
+      "request": "launch",
+      "program": "emscripten/tools/webidl_binder.py",
+      "args": ["result.idl", "libavoid_js/generated/glue"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    }
+  ]
+}

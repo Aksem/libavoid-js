@@ -1,0 +1,7 @@
+// TODO: typedefs
+
+[Prefix="Avoid::"]
+interface MinimumTerminalSpanningTree {
+  // void MinimumTerminalSpanningTree(Router router,
+  //     );
+};

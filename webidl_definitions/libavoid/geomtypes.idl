@@ -1,0 +1,49 @@
+[Prefix="Avoid::"]
+interface Box {
+  void Box();
+
+  [Value] attribute Point min;
+  [Value] attribute Point max;
+
+  double length(unsigned long dimension);
+  double width();
+  double height();
+};
+
+[Prefix="Avoid::"]
+interface PolygonInterface {
+  void clear();
+  boolean empty();
+  unsigned long size();
+  long id();
+  [Const, Ref] Point at(unsigned long index);
+  [Value] Polygon boundingRectPolygon();
+  [Value] Box offsetBoundingBox(double offset);
+  [Value] Polygon offsetPolygon(double offset);
+};
+
+[Prefix="Avoid::"]
+interface Polygon : PolygonInterface {
+  void Polygon();
+  void Polygon(long n);
+
+  [Value] attribute Point[] ps;
+
+  void setPoint(unsigned long index, [Ref] Point point);
+  [Const] unsigned long size();
+};
+
+typedef Polygon PolyLine;
+
+[Prefix="Avoid::"]
+interface Point {
+  void Point();
+  void Point(double xv, double yv);
+
+  [Operator="=="] boolean equal([Ref] Point rhs);
+
+  attribute double x;
+  attribute double y;
+  attribute unsigned long id;
+  attribute unsigned short vn;
+};

@@ -1,0 +1,17 @@
+typedef sequence<ShapeRef> ShapeRefList;
+
+enum Avoid_ShapeTransformationType {
+  "Avoid::TransformationType_CW90",
+  "Avoid::TransformationType_CW180",
+  "Avoid::TransformationType_CW270",
+  "Avoid::TransformationType_FlipX",
+  "Avoid::TransformationType_FlipY"
+};
+
+[Prefix="Avoid::"]
+interface ShapeRef : Obstacle {
+  void ShapeRef(Router router, [Ref] Polygon poly, optional long id = 0);
+
+  [Value] Polygon polygon();
+  [Value] Point position();
+};

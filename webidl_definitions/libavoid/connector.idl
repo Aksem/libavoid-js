@@ -1,0 +1,27 @@
+typedef sequence<ConnRef> ConnRefList;
+
+enum Avoid_ConnType {
+  "Avoid::ConnType_None",
+  "Avoid::ConnType_PolyLine",
+  "Avoid::ConnType_Orthogonal"
+};
+
+[Prefix="Avoid::"]
+interface Checkpoint {
+  void Checkpoint([Ref] Point p);
+};
+
+// callback for setCallback method
+callback ConnRefCallback = void (VoidPtr ptr);
+
+[Prefix="Avoid::"]
+interface ConnRef {
+  void ConnRef(Router router, [Ref] ConnEnd src, [Ref] ConnEnd dst, optional unsigned long id = 0);
+
+  [Const] unsigned long id();
+
+  void setCallback(ConnRefCallback cb, VoidPtr ptr);
+
+  void setDestEndpoint([Ref] ConnEnd dstPoint);
+  [Ref] PolyLine displayRoute();
+};

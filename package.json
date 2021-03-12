@@ -1,0 +1,24 @@
+{
+  "name": "libavoid-js",
+  "version": "0.1.0",
+  "description": "JS port of libavoid library",
+  "main": "dist/libavoid.js",
+  "scripts": {
+    "api-docs": "jsdoc -c jsdoc.conf.js -d ./api_docs_build/ build/generated_debug/glue.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/../.git"
+  },
+  "author": "Vladyslav Hnatiuk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/.../issues"
+  },
+  "homepage": "https://github.com/...#readme",
+  "devDependencies": {
+    "docdash": "^1.2.0",
+    "jsdoc": "^3.6.6"
+  }
+}

@@ -1,0 +1,28 @@
+enum Avoid_ConnDirFlag {
+  "Avoid::ConnDirNone",
+  "Avoid::ConnDirUp",
+  "Avoid::ConnDirDown",
+  "Avoid::ConnDirLeft",
+  "Avoid::ConnDirRight",
+  "Avoid::ConnDirAll"
+};
+
+typedef unsigned long ConnDirFlags;
+typedef sequence<ConnEnd> ConnEndList;
+
+enum Avoid_ConnEndType {
+  "Avoid::ConnEndPoint",
+  "Avoid::ConnEndShapePin",
+  "Avoid::ConnEndJunction",
+  "Avoid::ConnEndEmpty",
+};
+
+[Prefix="Avoid::"]
+interface ConnEnd {
+  void ConnEnd([Ref] Point point);
+  void ConnEnd([Ref] Point point, ConnDirFlags visDirs);
+  // TODO: find solution
+  // in webidl bindings overloading works only if number of arguments differs
+  // only different types doesn't work
+  // void ConnEnd(ShapeRef shapeRef, unsigned long connectionPinClassID);
+};

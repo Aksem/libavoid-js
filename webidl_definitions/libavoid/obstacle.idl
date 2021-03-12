@@ -1,0 +1,12 @@
+typedef sequence<Obstacle> ObstacleList;
+
+[Prefix="Avoid::"]
+interface Obstacle {
+  // Obstacle is an abstract class, it cannot have a constructor(only reference constructor?)
+  // void Obstacle(Router router, Polygon polygon, optional unsigned long id = 0);
+
+  unsigned long id();
+  [Value] Polygon polygon();
+  Router router();
+  [Value] Point position();
+};
