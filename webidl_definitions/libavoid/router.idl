@@ -24,6 +24,7 @@ interface Router {
 
   boolean processTransaction();
   void printInfo();
+  void deleteConnector(ConnRef connector);
 
   // void moveShape(ShapeRef shape, [Ref] Polygon newPoly,
   //               optional boolean first_move = false);

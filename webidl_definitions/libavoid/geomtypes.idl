@@ -47,3 +47,8 @@ interface Point {
   attribute unsigned long id;
   attribute unsigned short vn;
 };
+
+[Prefix="Avoid::"]
+interface Rectangle : Polygon {
+  void Rectangle([Ref] Point centre, double width, double height);
+};

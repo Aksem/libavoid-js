@@ -115,7 +115,7 @@ def compile(debug=False):
   -v {str(pwd)}:/src -w /src/ \
   -u {os.getuid()}:{os.getgid()} \
   emscripten/emsdk \
-  emcc {args} --closure 1 -s LLD_REPORT_UNDEFINED -s MODULARIZE=1 -s EXPORT_ES6=1 -s EXPORT_NAME="'initAvoidModule'" -s ALLOW_TABLE_GROWTH=1 --no-entry -Iadaptagrams/cola/ -I{generated_sources_dir}/ {compiler_sources} {post_js_args} -o {dist_dir_name}/libavoid.js
+  emcc {args} --closure 1 -s LLD_REPORT_UNDEFINED -s FILESYSTEM=0 -s MODULARIZE=1 -s EXPORT_ES6=1 -s USE_ES6_IMPORT_META=0 -s EXPORT_NAME="'initAvoidModule'" -s ALLOW_TABLE_GROWTH=1 --no-entry -Iadaptagrams/cola/ -I{generated_sources_dir}/ {compiler_sources} {post_js_args} -o {dist_dir_name}/libavoid.js
   """, logger)
   # -s CLOSURE_WARNINGS=error .. will show all warnings and errors, but also of emcc
   # -g .. for debug, -g4 is max level with source maps for browser
@@ -199,7 +199,7 @@ def main():
   logger.info('Build production version')
   generate_bindings(debug=False)
   compile(debug=False)
-  copytree('dist', '../dist/', dirs_exist_ok=True)
+  copytree('dist', '../src/generated/', dirs_exist_ok=True)
 
 
 if __name__ == '__main__':

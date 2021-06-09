@@ -1,7 +1,7 @@
 
 var initAvoidModule = (function() {
-  var _scriptDir = import.meta.url;
-  
+  var _scriptDir = typeof document !== 'undefined' && document.currentScript ? document.currentScript.src : undefined;
+  if (typeof __filename !== 'undefined') _scriptDir = _scriptDir || __filename;
   return (
 function(initAvoidModule) {
   initAvoidModule = initAvoidModule || {};
@@ -69,12 +69,6 @@ Module['ready'] = new Promise(function(resolve, reject) {
       if (!Object.getOwnPropertyDescriptor(Module['ready'], '___wasm_call_ctors')) {
         Object.defineProperty(Module['ready'], '___wasm_call_ctors', { configurable: true, get: function() { abort('You are getting ___wasm_call_ctors on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
         Object.defineProperty(Module['ready'], '___wasm_call_ctors', { configurable: true, set: function() { abort('You are setting ___wasm_call_ctors on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
-      }
-    
-
-      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_fflush')) {
-        Object.defineProperty(Module['ready'], '_fflush', { configurable: true, get: function() { abort('You are getting _fflush on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
-        Object.defineProperty(Module['ready'], '_fflush', { configurable: true, set: function() { abort('You are setting _fflush on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
       }
     
 
@@ -2513,9 +2507,6 @@ var _malloc = Module["_malloc"] = createExportWrapper("malloc");
 var _free = Module["_free"] = createExportWrapper("free");
 
 /** @type {function(...*):?} */
-var _fflush = Module["_fflush"] = createExportWrapper("fflush");
-
-/** @type {function(...*):?} */
 var _emscripten_bind_VoidPtr___destroy___0 = Module["_emscripten_bind_VoidPtr___destroy___0"] = createExportWrapper("emscripten_bind_VoidPtr___destroy___0");
 
 /** @type {function(...*):?} */
@@ -2640,6 +2631,12 @@ var _emscripten_bind_Point_set_vn_1 = Module["_emscripten_bind_Point_set_vn_1"] 
 
 /** @type {function(...*):?} */
 var _emscripten_bind_Point___destroy___0 = Module["_emscripten_bind_Point___destroy___0"] = createExportWrapper("emscripten_bind_Point___destroy___0");
+
+/** @type {function(...*):?} */
+var _emscripten_bind_Rectangle_Rectangle_3 = Module["_emscripten_bind_Rectangle_Rectangle_3"] = createExportWrapper("emscripten_bind_Rectangle_Rectangle_3");
+
+/** @type {function(...*):?} */
+var _emscripten_bind_Rectangle___destroy___0 = Module["_emscripten_bind_Rectangle___destroy___0"] = createExportWrapper("emscripten_bind_Rectangle___destroy___0");
 
 /** @type {function(...*):?} */
 var _emscripten_bind_HyperedgeTreeNode_HyperedgeTreeNode_0 = Module["_emscripten_bind_HyperedgeTreeNode_HyperedgeTreeNode_0"] = createExportWrapper("emscripten_bind_HyperedgeTreeNode_HyperedgeTreeNode_0");
@@ -2894,7 +2891,16 @@ var _emscripten_bind_ConnRef_id_0 = Module["_emscripten_bind_ConnRef_id_0"] = cr
 var _emscripten_bind_ConnRef_setCallback_2 = Module["_emscripten_bind_ConnRef_setCallback_2"] = createExportWrapper("emscripten_bind_ConnRef_setCallback_2");
 
 /** @type {function(...*):?} */
+var _emscripten_bind_ConnRef_setSourceEndpoint_1 = Module["_emscripten_bind_ConnRef_setSourceEndpoint_1"] = createExportWrapper("emscripten_bind_ConnRef_setSourceEndpoint_1");
+
+/** @type {function(...*):?} */
 var _emscripten_bind_ConnRef_setDestEndpoint_1 = Module["_emscripten_bind_ConnRef_setDestEndpoint_1"] = createExportWrapper("emscripten_bind_ConnRef_setDestEndpoint_1");
+
+/** @type {function(...*):?} */
+var _emscripten_bind_ConnRef_routingType_0 = Module["_emscripten_bind_ConnRef_routingType_0"] = createExportWrapper("emscripten_bind_ConnRef_routingType_0");
+
+/** @type {function(...*):?} */
+var _emscripten_bind_ConnRef_setRoutingType_1 = Module["_emscripten_bind_ConnRef_setRoutingType_1"] = createExportWrapper("emscripten_bind_ConnRef_setRoutingType_1");
 
 /** @type {function(...*):?} */
 var _emscripten_bind_ConnRef_displayRoute_0 = Module["_emscripten_bind_ConnRef_displayRoute_0"] = createExportWrapper("emscripten_bind_ConnRef_displayRoute_0");
@@ -2934,6 +2940,9 @@ var _emscripten_bind_Router_processTransaction_0 = Module["_emscripten_bind_Rout
 
 /** @type {function(...*):?} */
 var _emscripten_bind_Router_printInfo_0 = Module["_emscripten_bind_Router_printInfo_0"] = createExportWrapper("emscripten_bind_Router_printInfo_0");
+
+/** @type {function(...*):?} */
+var _emscripten_bind_Router_deleteConnector_1 = Module["_emscripten_bind_Router_deleteConnector_1"] = createExportWrapper("emscripten_bind_Router_deleteConnector_1");
 
 /** @type {function(...*):?} */
 var _emscripten_bind_Router_moveShape_3 = Module["_emscripten_bind_Router_moveShape_3"] = createExportWrapper("emscripten_bind_Router_moveShape_3");
@@ -3240,13 +3249,6 @@ if (!Object.getOwnPropertyDescriptor(Module, "Browser")) Module["Browser"] = fun
 if (!Object.getOwnPropertyDescriptor(Module, "funcWrappers")) Module["funcWrappers"] = function() { abort("'funcWrappers' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "getFuncWrapper")) Module["getFuncWrapper"] = function() { abort("'getFuncWrapper' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "setMainLoop")) Module["setMainLoop"] = function() { abort("'setMainLoop' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
-if (!Object.getOwnPropertyDescriptor(Module, "FS")) Module["FS"] = function() { abort("'FS' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
-if (!Object.getOwnPropertyDescriptor(Module, "mmapAlloc")) Module["mmapAlloc"] = function() { abort("'mmapAlloc' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
-if (!Object.getOwnPropertyDescriptor(Module, "MEMFS")) Module["MEMFS"] = function() { abort("'MEMFS' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
-if (!Object.getOwnPropertyDescriptor(Module, "TTY")) Module["TTY"] = function() { abort("'TTY' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
-if (!Object.getOwnPropertyDescriptor(Module, "PIPEFS")) Module["PIPEFS"] = function() { abort("'PIPEFS' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
-if (!Object.getOwnPropertyDescriptor(Module, "SOCKFS")) Module["SOCKFS"] = function() { abort("'SOCKFS' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
-if (!Object.getOwnPropertyDescriptor(Module, "_setNetworkCallback")) Module["_setNetworkCallback"] = function() { abort("'_setNetworkCallback' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "tempFixedLengthArray")) Module["tempFixedLengthArray"] = function() { abort("'tempFixedLengthArray' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "miniTempWebGLFloatBuffers")) Module["miniTempWebGLFloatBuffers"] = function() { abort("'miniTempWebGLFloatBuffers' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "heapObjectForWebGLType")) Module["heapObjectForWebGLType"] = function() { abort("'heapObjectForWebGLType' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
@@ -4004,6 +4006,28 @@ Point.prototype['equal'] = Point.prototype.equal = function(rhs) {
   var self = this.ptr;
   _emscripten_bind_Point___destroy___0(self);
 };
+// Rectangle
+
+/**
+ * @class
+ */
+function Rectangle(centre, width, height) {
+  if (centre && typeof centre === 'object') centre = centre.ptr;
+  if (width && typeof width === 'object') width = width.ptr;
+  if (height && typeof height === 'object') height = height.ptr;
+  this.ptr = _emscripten_bind_Rectangle_Rectangle_3(centre, width, height);
+  getCache(Rectangle)[this.ptr] = this;
+};;
+Rectangle.prototype = Object.create(WrapperObject.prototype);
+Rectangle.prototype.constructor = Rectangle;
+Rectangle.prototype.__class__ = Rectangle;
+Rectangle.__cache__ = {};
+Module['Rectangle'] = Rectangle;
+
+  Rectangle.prototype['__destroy__'] = Rectangle.prototype.__destroy__ = function() {
+  var self = this.ptr;
+  _emscripten_bind_Rectangle___destroy___0(self);
+};
 // HyperedgeTreeNode
 
 /**
@@ -4714,12 +4738,42 @@ ConnRef.prototype['setCallback'] = ConnRef.prototype.setCallback = function(cb, 
 
 /**
  * @method
+ * @param {ConnEnd} srcPoint
+ */
+ConnRef.prototype['setSourceEndpoint'] = ConnRef.prototype.setSourceEndpoint = function(srcPoint) {
+  var self = this.ptr;
+  if (srcPoint && typeof srcPoint === 'object') srcPoint = srcPoint.ptr;
+  _emscripten_bind_ConnRef_setSourceEndpoint_1(self, srcPoint);
+};;
+
+/**
+ * @method
  * @param {ConnEnd} dstPoint
  */
 ConnRef.prototype['setDestEndpoint'] = ConnRef.prototype.setDestEndpoint = function(dstPoint) {
   var self = this.ptr;
   if (dstPoint && typeof dstPoint === 'object') dstPoint = dstPoint.ptr;
   _emscripten_bind_ConnRef_setDestEndpoint_1(self, dstPoint);
+};;
+
+/**
+ * @method
+ * 
+ * @returns {Avoid_ConnType}
+ */
+ConnRef.prototype['routingType'] = ConnRef.prototype.routingType = function() {
+  var self = this.ptr;
+  return _emscripten_bind_ConnRef_routingType_0(self);
+};;
+
+/**
+ * @method
+ * @param {Avoid_ConnType} type
+ */
+ConnRef.prototype['setRoutingType'] = ConnRef.prototype.setRoutingType = function(type) {
+  var self = this.ptr;
+  if (type && typeof type === 'object') type = type.ptr;
+  _emscripten_bind_ConnRef_setRoutingType_1(self, type);
 };;
 
 /**
@@ -4832,6 +4886,16 @@ Router.prototype['processTransaction'] = Router.prototype.processTransaction = f
 Router.prototype['printInfo'] = Router.prototype.printInfo = function() {
   var self = this.ptr;
   _emscripten_bind_Router_printInfo_0(self);
+};;
+
+/**
+ * @method
+ * @param {ConnRef} connector
+ */
+Router.prototype['deleteConnector'] = Router.prototype.deleteConnector = function(connector) {
+  var self = this.ptr;
+  if (connector && typeof connector === 'object') connector = connector.ptr;
+  _emscripten_bind_Router_deleteConnector_1(self, connector);
 };;
 
 /**

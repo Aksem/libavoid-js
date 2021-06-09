@@ -22,6 +22,11 @@ interface ConnRef {
 
   void setCallback(ConnRefCallback cb, VoidPtr ptr);
 
+  void setSourceEndpoint([Ref] ConnEnd srcPoint);
   void setDestEndpoint([Ref] ConnEnd dstPoint);
+
+  [Const] Avoid_ConnType routingType();
+  void setRoutingType(Avoid_ConnType type);
+
   [Ref] PolyLine displayRoute();
 };
