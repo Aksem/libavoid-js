@@ -1,9 +1,11 @@
 {
   "name": "libavoid-js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "JS port of libavoid library",
-  "main": "dist/libavoid.js",
+  "main": "src/index.js",
+  "types": "typings/libavoid.d.ts",
   "scripts": {
+    "build": "webpack",
     "api-docs": "jsdoc -c jsdoc.conf.js -d ./api_docs_build/ build/generated_debug/glue.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,7 +20,16 @@
   },
   "homepage": "https://github.com/...#readme",
   "devDependencies": {
+    "@babel/core": "^7.13.10",
+    "@babel/preset-env": "^7.13.10",
+    "babel-loader": "^8.2.2",
     "docdash": "^1.2.0",
-    "jsdoc": "^3.6.6"
+    "jsdoc": "^3.6.6",
+    "webpack": "^5.26.3",
+    "webpack-cli": "^4.5.0"
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "inversify": "^5.1.1"
   }
 }
