@@ -1,6 +1,6 @@
 {
   "name": "libavoid-js",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "JS port of libavoid library",
   "main": "dist/index.js",
   "types": "typings/libavoid.d.ts",
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/big-thesis/Hnatiuk.Adaptagrams",
   "devDependencies": {
     "@babel/core": "^7.13.10",
+    "@babel/plugin-transform-runtime": "^7.15.8",
     "@babel/preset-env": "^7.13.10",
     "babel-loader": "^8.2.2",
     "docdash": "^1.2.0",
@@ -28,7 +29,10 @@
     "webpack": "^5.26.3",
     "webpack-cli": "^4.5.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@babel/runtime-corejs3": "^7.15.4",
+    "core-js-pure": "^3.18.3"
+  },
   "browser": {
     "fs": false,
     "path": false,
