@@ -1,4 +1,4 @@
-import initAvoid from "./generated/libavoid.js";
+import initAvoid from "@/generated/libavoid.js";
 
 export const AvoidLib = {
   avoidLib: undefined,

@@ -1,8 +1,8 @@
 {
   "name": "libavoid-js",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "description": "JS port of libavoid library",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "types": "typings/libavoid.d.ts",
   "scripts": {
     "build": "webpack",
@@ -28,5 +28,10 @@
     "webpack": "^5.26.3",
     "webpack-cli": "^4.5.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
+  }
 }
