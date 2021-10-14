@@ -1,6 +1,6 @@
 {
   "name": "libavoid-js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "JS port of libavoid library",
   "main": "src/index.js",
   "types": "typings/libavoid.d.ts",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/../.git"
+    "url": "git+https://github.com/big-thesis/Hnatiuk.Adaptagrams.git"
   },
   "author": "Vladyslav Hnatiuk",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/.../issues"
+    "url": "https://github.com/big-thesis/Hnatiuk.Adaptagrams/issues"
   },
-  "homepage": "https://github.com/...#readme",
+  "homepage": "https://github.com/big-thesis/Hnatiuk.Adaptagrams",
   "devDependencies": {
     "@babel/core": "^7.13.10",
     "@babel/preset-env": "^7.13.10",
@@ -28,8 +28,5 @@
     "webpack": "^5.26.3",
     "webpack-cli": "^4.5.0"
   },
-  "dependencies": {
-    "fs": "^0.0.1-security",
-    "inversify": "^5.1.1"
-  }
+  "dependencies": {}
 }

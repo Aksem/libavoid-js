@@ -1,6 +1,4 @@
-import initAvoid from './generated/libavoid.js';
-// import initAvoid from '../examples/lib/libavoid.js';
-
+import initAvoid from "./generated/libavoid.js";
 
 export const AvoidLib = {
   avoidLib: undefined,
@@ -8,14 +6,14 @@ export const AvoidLib = {
     if (!this.avoidLib) {
       this.avoidLib = await initAvoid();
     } else {
-      console.log('Avoid library is already initialized');
+      console.log("Avoid library is already initialized");
     }
   },
 
   getInstance() {
     if (!this.avoidLib) {
-      throw new Error('Avoid library should be initialized before using');
+      throw new Error("Avoid library should be initialized before using");
     }
     return this.avoidLib;
-  }
+  },
 };

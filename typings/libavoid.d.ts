@@ -1,8 +1,5 @@
-import { AvoidLib } from "../src/index";
-
 declare module "libavoid-js";
 
-export { AvoidLib };
 declare class Point {
   constructor(x: number, y: number);
   x: number;
@@ -60,10 +57,9 @@ export interface Avoid {
   destroy(obj: any): void;
 }
 
-interface AvoidLibInterface {
-  avoidLib?: Avoid;
-  load(): void;
-  getInstance(): Avoid;
+export namespace AvoidLib {
+  const avoidLib: Avoid | null;
+  function load(): Promise<void>;
+  function getInstance(): Avoid;
 }
 
-export as namespace libAvoid;
