@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+    types: [opened, reopened]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  CI:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        os: [ubuntu-20.04]
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Build
+        run: |
+          npm install
+          python3 ./tools/generate.py
+
+      - name: Upload artifact(production bindings)
+        uses: actions/upload-artifact@v3
+        with:
+          name: production-bindings
+          path: |
+            src/generated/
+      
+      - name: Upload artifact(debug bindings)
+        uses: actions/upload-artifact@v3
+        with:
+          name: debug-bindings
+          path: |
+            examples/lib/

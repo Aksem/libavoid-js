@@ -107,7 +107,7 @@ def compile(debug=False):
   if debug:
     args += ' -g4 --source-map-base http://localhost:8080/lib/ -s RUNTIME_LOGGING=1'
   else:
-    args += ' -O3'
+    args += '-g2 -O3'
 
   execute_command(f"""
   docker run \
@@ -115,7 +115,7 @@ def compile(debug=False):
   -v {str(pwd)}:/src -w /src/ \
   -u {os.getuid()}:{os.getgid()} \
   emscripten/emsdk \
-  emcc {args} --closure 1 -s LLD_REPORT_UNDEFINED -s FILESYSTEM=0 -s MODULARIZE=1 -s EXPORT_ES6=1 -s USE_ES6_IMPORT_META=0 -s EXPORT_NAME="'initAvoidModule'" -s ALLOW_TABLE_GROWTH=1 --no-entry -Iadaptagrams/cola/ -I{generated_sources_dir}/ {compiler_sources} {post_js_args} -o {dist_dir_name}/libavoid.js
+  emcc {args} --closure 1 -s LLD_REPORT_UNDEFINED -flto -s FILESYSTEM=0 -s MODULARIZE=1 -s EXPORT_ES6=1 -s USE_ES6_IMPORT_META=0 -s EXPORT_NAME="'initAvoidModule'" -s ALLOW_TABLE_GROWTH=1 --no-entry -Iadaptagrams/cola/ -I{generated_sources_dir}/ {compiler_sources} {post_js_args} -o {dist_dir_name}/libavoid.js
   """, logger)
   # -s CLOSURE_WARNINGS=error .. will show all warnings and errors, but also of emcc
   # -g .. for debug, -g4 is max level with source maps for browser
@@ -139,7 +139,7 @@ def main():
   # build sources
   adaptagrams_sources_path = Path('./adaptagrams')
   if adaptagrams_sources_path.exists() != True or adaptagrams_sources_path.is_dir() != True:
-    execute_command('git clone https://github.com/mjwybrow/adaptagrams.git', logger)
+    execute_command('git clone https://github.com/Aksem/adaptagrams.git', logger)
     patch_adaptagrams_sources('./adaptagrams/')
   
   # build tools: webidl_binder
