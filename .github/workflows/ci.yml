@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+    types: [opened, reopened]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  CI:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        os: [ubuntu-20.04, macos-11, windows-2022]
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Build bindings(webassembly)
+        if: runner.os == 'Linux'
+        run: |
+          pushd cola/bindings/webassembly/libavoid-js/
+          python3 ./tools/generate.py
