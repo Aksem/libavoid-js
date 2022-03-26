@@ -27,3 +27,17 @@ jobs:
         run: |
           npm install
           python3 ./tools/generate.py
+
+      - name: Upload artifact(production bindings)
+        uses: actions/upload-artifact@v3
+        with:
+          name: production-bindings
+          path: |
+            src/generated/
+      
+      - name: Upload artifact(debug bindings)
+        uses: actions/upload-artifact@v3
+        with:
+          name: debug-bindings
+          path: |
+            examples/lib/
