@@ -114,7 +114,7 @@ def compile(debug=False):
   --rm \
   -v {str(pwd)}:/src -w /src/ \
   -u {os.getuid()}:{os.getgid()} \
-  emscripten/emsdk \
+  emscripten/emsdk:3.1.8 \
   emcc {args} --closure 1 -s LLD_REPORT_UNDEFINED -flto -s FILESYSTEM=0 -s MODULARIZE=1 -s EXPORT_ES6=1 -s USE_ES6_IMPORT_META=0 -s EXPORT_NAME="'initAvoidModule'" -s ALLOW_TABLE_GROWTH=1 --no-entry -Iadaptagrams/cola/ -I{generated_sources_dir}/ {compiler_sources} {post_js_args} -o {dist_dir_name}/libavoid.js
   """, logger)
   # -s CLOSURE_WARNINGS=error .. will show all warnings and errors, but also of emcc
