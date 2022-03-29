@@ -82,9 +82,8 @@ def compile(debug=False):
   except FileExistsError:
     ...
 
-  post_js_args = ''
+  post_js_args = f' --post-js ./{generated_sources_dir}/glue.js'
   compiler_sources = ''
-  post_js_args += f' --post-js ./{generated_sources_dir}/glue.js'
   for source_file in SOURCE_FILES:
     compiler_sources += f' ./adaptagrams/cola/libavoid/{source_file}.cpp'
   
@@ -107,7 +106,7 @@ def compile(debug=False):
   if debug:
     args += ' -g4 --source-map-base http://localhost:8080/lib/ -s RUNTIME_LOGGING=1'
   else:
-    args += '-g2 -O3'
+    args += '-O3'
 
   execute_command(f"""
   docker run \
@@ -115,12 +114,29 @@ def compile(debug=False):
   -v {str(pwd)}:/src -w /src/ \
   -u {os.getuid()}:{os.getgid()} \
   emscripten/emsdk:3.1.8 \
-  emcc {args} --closure 1 -s LLD_REPORT_UNDEFINED -flto -s FILESYSTEM=0 -s MODULARIZE=1 -s EXPORT_ES6=1 -s USE_ES6_IMPORT_META=0 -s EXPORT_NAME="'initAvoidModule'" -s ALLOW_TABLE_GROWTH=1 --no-entry -Iadaptagrams/cola/ -I{generated_sources_dir}/ {compiler_sources} {post_js_args} -o {dist_dir_name}/libavoid.js
+  emcc {args} \
+    --closure 1 \
+    -s LLD_REPORT_UNDEFINED \
+    -flto \
+    -s FILESYSTEM=0 \
+    -s MODULARIZE=1 \
+    -s EXPORT_ES6=1 \
+    -s USE_ES6_IMPORT_META=0 \
+    -s EXPORT_NAME="'initAvoidModule'" \
+    -s ALLOW_TABLE_GROWTH=1 \
+    -s ENVIRONMENT="web" \
+    --no-entry \
+    -Iadaptagrams/cola/ \
+    -I{generated_sources_dir}/ \
+    {compiler_sources} \
+    {post_js_args} \
+    -o {dist_dir_name}/libavoid.js
   """, logger)
   # -s CLOSURE_WARNINGS=error .. will show all warnings and errors, but also of emcc
   # -g .. for debug, -g4 is max level with source maps for browser
   # EXPORT_NAME ...  explanation: https://stackoverflow.com/a/30153119
   # source-map-base is required for browser recognition of source maps
+  # -s STRICT=1 \
 
 
 def main():

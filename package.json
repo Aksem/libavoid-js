@@ -1,11 +1,11 @@
 {
   "name": "libavoid-js",
-  "version": "0.1.5",
+  "version": "0.1.8",
   "description": "JS port of libavoid library",
   "main": "dist/index.js",
   "types": "typings/libavoid.d.ts",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --mode=production",
     "api-docs": "jsdoc -c jsdoc.conf.js -d ./api_docs_build/ build/generated_debug/glue.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
