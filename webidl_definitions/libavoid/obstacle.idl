@@ -9,4 +9,6 @@ interface Obstacle {
   [Value] Polygon polygon();
   Router router();
   [Value] Point position();
+
+  void setNewPoly([Ref] Polygon poly);
 };

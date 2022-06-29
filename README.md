@@ -30,10 +30,16 @@ Library API Documentation is in `api_docs_build` directory, just open `index.htm
   
   It will generate both production and debug versions of the library, also update documentation.
 
+
+### Debugging
+
+Address to source map is hardcoded in `tools/generate.py` script and is always 'http://localhost:8080' in debug build.
+
+Also, symlink to adaptagrams should be in `examples` directory to provide libavoid sources for debugger.
+
 ## TODO
 
 - idea: docs from c++
 - tests
 - extend WebIDL bindings to provide the same abilities as C++ library
 - host API Docs in platform such Github Pages
-- automated build in Github Actions or similar

@@ -29,4 +29,7 @@ interface ConnRef {
   void setRoutingType(Avoid_ConnType type);
 
   [Ref] PolyLine displayRoute();
+
+  void setHateCrossings(boolean value);
+  [Const] boolean doesHateCrossings();
 };

@@ -566,6 +566,12 @@ Module['ready'] = new Promise(function(resolve, reject) {
       }
     
 
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_bind_Obstacle_setNewPoly_1')) {
+        Object.defineProperty(Module['ready'], '_emscripten_bind_Obstacle_setNewPoly_1', { configurable: true, get: function() { abort('You are getting _emscripten_bind_Obstacle_setNewPoly_1 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_bind_Obstacle_setNewPoly_1', { configurable: true, set: function() { abort('You are setting _emscripten_bind_Obstacle_setNewPoly_1 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
       if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_bind_Obstacle___destroy___0')) {
         Object.defineProperty(Module['ready'], '_emscripten_bind_Obstacle___destroy___0', { configurable: true, get: function() { abort('You are getting _emscripten_bind_Obstacle___destroy___0 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
         Object.defineProperty(Module['ready'], '_emscripten_bind_Obstacle___destroy___0', { configurable: true, set: function() { abort('You are setting _emscripten_bind_Obstacle___destroy___0 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
@@ -617,6 +623,12 @@ Module['ready'] = new Promise(function(resolve, reject) {
       if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_bind_ShapeRef_position_0')) {
         Object.defineProperty(Module['ready'], '_emscripten_bind_ShapeRef_position_0', { configurable: true, get: function() { abort('You are getting _emscripten_bind_ShapeRef_position_0 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
         Object.defineProperty(Module['ready'], '_emscripten_bind_ShapeRef_position_0', { configurable: true, set: function() { abort('You are setting _emscripten_bind_ShapeRef_position_0 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_bind_ShapeRef_setNewPoly_1')) {
+        Object.defineProperty(Module['ready'], '_emscripten_bind_ShapeRef_setNewPoly_1', { configurable: true, get: function() { abort('You are getting _emscripten_bind_ShapeRef_setNewPoly_1 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_bind_ShapeRef_setNewPoly_1', { configurable: true, set: function() { abort('You are setting _emscripten_bind_ShapeRef_setNewPoly_1 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
       }
     
 
@@ -830,6 +842,18 @@ Module['ready'] = new Promise(function(resolve, reject) {
       }
     
 
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_bind_ConnRef_setHateCrossings_1')) {
+        Object.defineProperty(Module['ready'], '_emscripten_bind_ConnRef_setHateCrossings_1', { configurable: true, get: function() { abort('You are getting _emscripten_bind_ConnRef_setHateCrossings_1 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_bind_ConnRef_setHateCrossings_1', { configurable: true, set: function() { abort('You are setting _emscripten_bind_ConnRef_setHateCrossings_1 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_bind_ConnRef_doesHateCrossings_0')) {
+        Object.defineProperty(Module['ready'], '_emscripten_bind_ConnRef_doesHateCrossings_0', { configurable: true, get: function() { abort('You are getting _emscripten_bind_ConnRef_doesHateCrossings_0 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_bind_ConnRef_doesHateCrossings_0', { configurable: true, set: function() { abort('You are setting _emscripten_bind_ConnRef_doesHateCrossings_0 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
       if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_bind_ConnRef___destroy___0')) {
         Object.defineProperty(Module['ready'], '_emscripten_bind_ConnRef___destroy___0', { configurable: true, get: function() { abort('You are getting _emscripten_bind_ConnRef___destroy___0 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
         Object.defineProperty(Module['ready'], '_emscripten_bind_ConnRef___destroy___0', { configurable: true, set: function() { abort('You are setting _emscripten_bind_ConnRef___destroy___0 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
@@ -908,9 +932,33 @@ Module['ready'] = new Promise(function(resolve, reject) {
       }
     
 
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_bind_Router_moveShape_2')) {
+        Object.defineProperty(Module['ready'], '_emscripten_bind_Router_moveShape_2', { configurable: true, get: function() { abort('You are getting _emscripten_bind_Router_moveShape_2 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_bind_Router_moveShape_2', { configurable: true, set: function() { abort('You are setting _emscripten_bind_Router_moveShape_2 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
       if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_bind_Router_moveShape_3')) {
         Object.defineProperty(Module['ready'], '_emscripten_bind_Router_moveShape_3', { configurable: true, get: function() { abort('You are getting _emscripten_bind_Router_moveShape_3 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
         Object.defineProperty(Module['ready'], '_emscripten_bind_Router_moveShape_3', { configurable: true, set: function() { abort('You are setting _emscripten_bind_Router_moveShape_3 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_bind_Router_deleteShape_1')) {
+        Object.defineProperty(Module['ready'], '_emscripten_bind_Router_deleteShape_1', { configurable: true, get: function() { abort('You are getting _emscripten_bind_Router_deleteShape_1 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_bind_Router_deleteShape_1', { configurable: true, set: function() { abort('You are setting _emscripten_bind_Router_deleteShape_1 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_bind_Router_setRoutingParameter_2')) {
+        Object.defineProperty(Module['ready'], '_emscripten_bind_Router_setRoutingParameter_2', { configurable: true, get: function() { abort('You are getting _emscripten_bind_Router_setRoutingParameter_2 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_bind_Router_setRoutingParameter_2', { configurable: true, set: function() { abort('You are setting _emscripten_bind_Router_setRoutingParameter_2 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_bind_Router_setRoutingOption_2')) {
+        Object.defineProperty(Module['ready'], '_emscripten_bind_Router_setRoutingOption_2', { configurable: true, get: function() { abort('You are getting _emscripten_bind_Router_setRoutingOption_2 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_bind_Router_setRoutingOption_2', { configurable: true, set: function() { abort('You are setting _emscripten_bind_Router_setRoutingOption_2 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
       }
     
 
@@ -1085,6 +1133,102 @@ Module['ready'] = new Promise(function(resolve, reject) {
       if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_enum_Avoid_RouterFlag_OrthogonalRouting')) {
         Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RouterFlag_OrthogonalRouting', { configurable: true, get: function() { abort('You are getting _emscripten_enum_Avoid_RouterFlag_OrthogonalRouting on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
         Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RouterFlag_OrthogonalRouting', { configurable: true, set: function() { abort('You are setting _emscripten_enum_Avoid_RouterFlag_OrthogonalRouting on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_segmentPenalty')) {
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_segmentPenalty', { configurable: true, get: function() { abort('You are getting _emscripten_enum_Avoid_RoutingParameter_segmentPenalty on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_segmentPenalty', { configurable: true, set: function() { abort('You are setting _emscripten_enum_Avoid_RoutingParameter_segmentPenalty on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_anglePenalty')) {
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_anglePenalty', { configurable: true, get: function() { abort('You are getting _emscripten_enum_Avoid_RoutingParameter_anglePenalty on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_anglePenalty', { configurable: true, set: function() { abort('You are setting _emscripten_enum_Avoid_RoutingParameter_anglePenalty on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_crossingPenalty')) {
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_crossingPenalty', { configurable: true, get: function() { abort('You are getting _emscripten_enum_Avoid_RoutingParameter_crossingPenalty on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_crossingPenalty', { configurable: true, set: function() { abort('You are setting _emscripten_enum_Avoid_RoutingParameter_crossingPenalty on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_clusterCrossingPenalty')) {
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_clusterCrossingPenalty', { configurable: true, get: function() { abort('You are getting _emscripten_enum_Avoid_RoutingParameter_clusterCrossingPenalty on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_clusterCrossingPenalty', { configurable: true, set: function() { abort('You are setting _emscripten_enum_Avoid_RoutingParameter_clusterCrossingPenalty on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_fixedSharedPathPenalty')) {
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_fixedSharedPathPenalty', { configurable: true, get: function() { abort('You are getting _emscripten_enum_Avoid_RoutingParameter_fixedSharedPathPenalty on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_fixedSharedPathPenalty', { configurable: true, set: function() { abort('You are setting _emscripten_enum_Avoid_RoutingParameter_fixedSharedPathPenalty on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_portDirectionPenalty')) {
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_portDirectionPenalty', { configurable: true, get: function() { abort('You are getting _emscripten_enum_Avoid_RoutingParameter_portDirectionPenalty on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_portDirectionPenalty', { configurable: true, set: function() { abort('You are setting _emscripten_enum_Avoid_RoutingParameter_portDirectionPenalty on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_shapeBufferDistance')) {
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_shapeBufferDistance', { configurable: true, get: function() { abort('You are getting _emscripten_enum_Avoid_RoutingParameter_shapeBufferDistance on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_shapeBufferDistance', { configurable: true, set: function() { abort('You are setting _emscripten_enum_Avoid_RoutingParameter_shapeBufferDistance on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_idealNudgingDistance')) {
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_idealNudgingDistance', { configurable: true, get: function() { abort('You are getting _emscripten_enum_Avoid_RoutingParameter_idealNudgingDistance on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_idealNudgingDistance', { configurable: true, set: function() { abort('You are setting _emscripten_enum_Avoid_RoutingParameter_idealNudgingDistance on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_reverseDirectionPenalty')) {
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_reverseDirectionPenalty', { configurable: true, get: function() { abort('You are getting _emscripten_enum_Avoid_RoutingParameter_reverseDirectionPenalty on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingParameter_reverseDirectionPenalty', { configurable: true, set: function() { abort('You are setting _emscripten_enum_Avoid_RoutingParameter_reverseDirectionPenalty on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalSegmentsConnectedToShapes')) {
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalSegmentsConnectedToShapes', { configurable: true, get: function() { abort('You are getting _emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalSegmentsConnectedToShapes on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalSegmentsConnectedToShapes', { configurable: true, set: function() { abort('You are setting _emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalSegmentsConnectedToShapes on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingJunctions')) {
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingJunctions', { configurable: true, get: function() { abort('You are getting _emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingJunctions on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingJunctions', { configurable: true, set: function() { abort('You are setting _emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingJunctions on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_penaliseOrthogonalSharedPathsAtConnEnds')) {
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_penaliseOrthogonalSharedPathsAtConnEnds', { configurable: true, get: function() { abort('You are getting _emscripten_enum_Avoid_RoutingOption_penaliseOrthogonalSharedPathsAtConnEnds on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_penaliseOrthogonalSharedPathsAtConnEnds', { configurable: true, set: function() { abort('You are setting _emscripten_enum_Avoid_RoutingOption_penaliseOrthogonalSharedPathsAtConnEnds on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalTouchingColinearSegments')) {
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalTouchingColinearSegments', { configurable: true, get: function() { abort('You are getting _emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalTouchingColinearSegments on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalTouchingColinearSegments', { configurable: true, set: function() { abort('You are setting _emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalTouchingColinearSegments on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_performUnifyingNudgingPreprocessingStep')) {
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_performUnifyingNudgingPreprocessingStep', { configurable: true, get: function() { abort('You are getting _emscripten_enum_Avoid_RoutingOption_performUnifyingNudgingPreprocessingStep on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_performUnifyingNudgingPreprocessingStep', { configurable: true, set: function() { abort('You are setting _emscripten_enum_Avoid_RoutingOption_performUnifyingNudgingPreprocessingStep on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingAddingAndDeletingJunctions')) {
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingAddingAndDeletingJunctions', { configurable: true, get: function() { abort('You are getting _emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingAddingAndDeletingJunctions on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingAddingAndDeletingJunctions', { configurable: true, set: function() { abort('You are setting _emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingAddingAndDeletingJunctions on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_nudgeSharedPathsWithCommonEndPoint')) {
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_nudgeSharedPathsWithCommonEndPoint', { configurable: true, get: function() { abort('You are getting _emscripten_enum_Avoid_RoutingOption_nudgeSharedPathsWithCommonEndPoint on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_emscripten_enum_Avoid_RoutingOption_nudgeSharedPathsWithCommonEndPoint', { configurable: true, set: function() { abort('You are setting _emscripten_enum_Avoid_RoutingOption_nudgeSharedPathsWithCommonEndPoint on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
       }
     
 
@@ -1741,10 +1885,6 @@ function cwrap(ident, returnType, argTypes, opts) {
 
 // We used to include malloc/free by default in the past. Show a helpful error in
 // builds with assertions.
-function _free() {
-  // Show a helpful error since we used to include free by default in the past.
-  abort("free() called but not included in the build - add '_free' to EXPORTED_FUNCTIONS");
-}
 
 // include: runtime_legacy.js
 
@@ -2867,17 +3007,235 @@ function array_bounds_check_error(idx,size){ throw 'Array index ' + idx + ' out 
       };
     }
   
-  var exceptionLast = 0;
+    /**
+     * @constructor
+     * @param {number=} ptr
+     */
+  function CatchInfo(ptr) {
+  
+      this.free = function() {
+        _free(this.ptr);
+        this.ptr = 0;
+      };
+  
+      this.set_base_ptr = function(basePtr) {
+        HEAP32[((this.ptr)>>2)] = basePtr;
+      };
+  
+      this.get_base_ptr = function() {
+        return HEAP32[((this.ptr)>>2)];
+      };
+  
+      this.set_adjusted_ptr = function(adjustedPtr) {
+        HEAP32[(((this.ptr)+(4))>>2)] = adjustedPtr;
+      };
+  
+      this.get_adjusted_ptr_addr = function() {
+        return this.ptr + 4;
+      }
+  
+      this.get_adjusted_ptr = function() {
+        return HEAP32[(((this.ptr)+(4))>>2)];
+      };
+  
+      // Get pointer which is expected to be received by catch clause in C++ code. It may be adjusted
+      // when the pointer is casted to some of the exception object base classes (e.g. when virtual
+      // inheritance is used). When a pointer is thrown this method should return the thrown pointer
+      // itself.
+      this.get_exception_ptr = function() {
+        // Work around a fastcomp bug, this code is still included for some reason in a build without
+        // exceptions support.
+        var isPointer = ___cxa_is_pointer_type(
+          this.get_exception_info().get_type());
+        if (isPointer) {
+          return HEAP32[((this.get_base_ptr())>>2)];
+        }
+        var adjusted = this.get_adjusted_ptr();
+        if (adjusted !== 0) return adjusted;
+        return this.get_base_ptr();
+      };
+  
+      this.get_exception_info = function() {
+        return new ExceptionInfo(this.get_base_ptr());
+      };
+  
+      if (ptr === undefined) {
+        this.ptr = _malloc(8);
+        this.set_adjusted_ptr(0);
+      } else {
+        this.ptr = ptr;
+      }
+    }
+  
+  var exceptionCaught =  [];
+  
+  function exception_addRef(info) {
+      info.add_ref();
+    }
   
   var uncaughtExceptionCount = 0;
+  function ___cxa_begin_catch(ptr) {
+      var catchInfo = new CatchInfo(ptr);
+      var info = catchInfo.get_exception_info();
+      if (!info.get_caught()) {
+        info.set_caught(true);
+        uncaughtExceptionCount--;
+      }
+      info.set_rethrown(false);
+      exceptionCaught.push(catchInfo);
+      exception_addRef(info);
+      return catchInfo.get_exception_ptr();
+    }
+
+  var exceptionLast = 0;
+  
+  function ___cxa_free_exception(ptr) {
+      try {
+        return _free(new ExceptionInfo(ptr).ptr);
+      } catch(e) {
+        err('exception during cxa_free_exception: ' + e);
+      }
+    }
+  function exception_decRef(info) {
+      // A rethrown exception can reach refcount 0; it must not be discarded
+      // Its next handler will clear the rethrown flag and addRef it, prior to
+      // final decRef and destruction here
+      if (info.release_ref() && !info.get_rethrown()) {
+        var destructor = info.get_destructor();
+        if (destructor) {
+          // In Wasm, destructors return 'this' as in ARM
+          getWasmTableEntry(destructor)(info.excPtr);
+        }
+        ___cxa_free_exception(info.excPtr);
+      }
+    }
+  function ___cxa_end_catch() {
+      // Clear state flag.
+      _setThrew(0);
+      assert(exceptionCaught.length > 0);
+      // Call destructor if one is registered then clear it.
+      var catchInfo = exceptionCaught.pop();
+  
+      exception_decRef(catchInfo.get_exception_info());
+      catchInfo.free();
+      exceptionLast = 0; // XXX in decRef?
+    }
+
+  function ___resumeException(catchInfoPtr) {
+      var catchInfo = new CatchInfo(catchInfoPtr);
+      var ptr = catchInfo.get_base_ptr();
+      if (!exceptionLast) { exceptionLast = ptr; }
+      catchInfo.free();
+      throw ptr;
+    }
+  function ___cxa_find_matching_catch_2() {
+      var thrown = exceptionLast;
+      if (!thrown) {
+        // just pass through the null ptr
+        setTempRet0(0); return ((0)|0);
+      }
+      var info = new ExceptionInfo(thrown);
+      var thrownType = info.get_type();
+      var catchInfo = new CatchInfo();
+      catchInfo.set_base_ptr(thrown);
+      catchInfo.set_adjusted_ptr(thrown);
+      if (!thrownType) {
+        // just pass through the thrown ptr
+        setTempRet0(0); return ((catchInfo.ptr)|0);
+      }
+      var typeArray = Array.prototype.slice.call(arguments);
+  
+      // can_catch receives a **, add indirection
+      // The different catch blocks are denoted by different types.
+      // Due to inheritance, those types may not precisely match the
+      // type of the thrown object. Find one which matches, and
+      // return the type of the catch block which should be called.
+      for (var i = 0; i < typeArray.length; i++) {
+        var caughtType = typeArray[i];
+        if (caughtType === 0 || caughtType === thrownType) {
+          // Catch all clause matched or exactly the same type is caught
+          break;
+        }
+        if (___cxa_can_catch(caughtType, thrownType, catchInfo.get_adjusted_ptr_addr())) {
+          setTempRet0(caughtType); return ((catchInfo.ptr)|0);
+        }
+      }
+      setTempRet0(thrownType); return ((catchInfo.ptr)|0);
+    }
+
+  function ___cxa_find_matching_catch_3() {
+      var thrown = exceptionLast;
+      if (!thrown) {
+        // just pass through the null ptr
+        setTempRet0(0); return ((0)|0);
+      }
+      var info = new ExceptionInfo(thrown);
+      var thrownType = info.get_type();
+      var catchInfo = new CatchInfo();
+      catchInfo.set_base_ptr(thrown);
+      catchInfo.set_adjusted_ptr(thrown);
+      if (!thrownType) {
+        // just pass through the thrown ptr
+        setTempRet0(0); return ((catchInfo.ptr)|0);
+      }
+      var typeArray = Array.prototype.slice.call(arguments);
+  
+      // can_catch receives a **, add indirection
+      // The different catch blocks are denoted by different types.
+      // Due to inheritance, those types may not precisely match the
+      // type of the thrown object. Find one which matches, and
+      // return the type of the catch block which should be called.
+      for (var i = 0; i < typeArray.length; i++) {
+        var caughtType = typeArray[i];
+        if (caughtType === 0 || caughtType === thrownType) {
+          // Catch all clause matched or exactly the same type is caught
+          break;
+        }
+        if (___cxa_can_catch(caughtType, thrownType, catchInfo.get_adjusted_ptr_addr())) {
+          setTempRet0(caughtType); return ((catchInfo.ptr)|0);
+        }
+      }
+      setTempRet0(thrownType); return ((catchInfo.ptr)|0);
+    }
+
+
+  function ___cxa_get_exception_ptr(ptr) {
+      return new CatchInfo(ptr).get_exception_ptr();
+    }
+
+  function ___cxa_rethrow() {
+      var catchInfo = exceptionCaught.pop();
+      if (!catchInfo) {
+        abort('no exception to throw');
+      }
+      var info = catchInfo.get_exception_info();
+      var ptr = catchInfo.get_base_ptr();
+      if (!info.get_rethrown()) {
+        // Only pop if the corresponding push was through rethrow_primary_exception
+        exceptionCaught.push(catchInfo);
+        info.set_rethrown(true);
+        info.set_caught(false);
+        uncaughtExceptionCount++;
+      } else {
+        catchInfo.free();
+      }
+      exceptionLast = ptr;
+      throw ptr;
+    }
+
   function ___cxa_throw(ptr, type, destructor) {
       var info = new ExceptionInfo(ptr);
       // Initialize ExceptionInfo content after it was allocated in __cxa_allocate_exception.
       info.init(type, destructor);
       exceptionLast = ptr;
       uncaughtExceptionCount++;
-      throw ptr + " - Exception catching is disabled, this exception cannot be caught. Compile with -s NO_DISABLE_EXCEPTION_CATCHING or -s EXCEPTION_CATCHING_ALLOWED=[..] to catch.";
+      throw ptr;
     }
+
+  function ___cxa_uncaught_exceptions() {
+      return uncaughtExceptionCount;
+    }
+
 
   function __emscripten_date_now() {
       return Date.now();
@@ -2892,16 +3250,77 @@ function array_bounds_check_error(idx,size){ throw 'Array index ' + idx + ' out 
     }
 
   function _emscripten_get_heap_max() {
-      return HEAPU8.length;
+      // Stay one Wasm page short of 4GB: while e.g. Chrome is able to allocate
+      // full 4GB Wasm memories, the size will wrap back to 0 bytes in Wasm side
+      // for any code that deals with heap sizes, which would require special
+      // casing all heap size related code to treat 0 specially.
+      return 2147483648;
     }
   
-  function abortOnCannotGrowMemory(requestedSize) {
-      abort('Cannot enlarge memory arrays to size ' + requestedSize + ' bytes (OOM). Either (1) compile with  -s INITIAL_MEMORY=X  with X higher than the current value ' + HEAP8.length + ', (2) compile with  -s ALLOW_MEMORY_GROWTH=1  which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with  -s ABORTING_MALLOC=0 ');
+  function emscripten_realloc_buffer(size) {
+      try {
+        // round size grow request up to wasm page size (fixed 64KB per spec)
+        wasmMemory.grow((size - buffer.byteLength + 65535) >>> 16); // .grow() takes a delta compared to the previous size
+        updateGlobalBufferAndViews(wasmMemory.buffer);
+        return 1 /*success*/;
+      } catch(e) {
+        err('emscripten_realloc_buffer: Attempted to grow heap from ' + buffer.byteLength  + ' bytes to ' + size + ' bytes, but got error: ' + e);
+      }
+      // implicit 0 return to save code size (caller will cast "undefined" into 0
+      // anyhow)
     }
   function _emscripten_resize_heap(requestedSize) {
       var oldSize = HEAPU8.length;
       requestedSize = requestedSize >>> 0;
-      abortOnCannotGrowMemory(requestedSize);
+      // With multithreaded builds, races can happen (another thread might increase the size
+      // in between), so return a failure, and let the caller retry.
+      assert(requestedSize > oldSize);
+  
+      // Memory resize rules:
+      // 1.  Always increase heap size to at least the requested size, rounded up
+      //     to next page multiple.
+      // 2a. If MEMORY_GROWTH_LINEAR_STEP == -1, excessively resize the heap
+      //     geometrically: increase the heap size according to
+      //     MEMORY_GROWTH_GEOMETRIC_STEP factor (default +20%), At most
+      //     overreserve by MEMORY_GROWTH_GEOMETRIC_CAP bytes (default 96MB).
+      // 2b. If MEMORY_GROWTH_LINEAR_STEP != -1, excessively resize the heap
+      //     linearly: increase the heap size by at least
+      //     MEMORY_GROWTH_LINEAR_STEP bytes.
+      // 3.  Max size for the heap is capped at 2048MB-WASM_PAGE_SIZE, or by
+      //     MAXIMUM_MEMORY, or by ASAN limit, depending on which is smallest
+      // 4.  If we were unable to allocate as much memory, it may be due to
+      //     over-eager decision to excessively reserve due to (3) above.
+      //     Hence if an allocation fails, cut down on the amount of excess
+      //     growth, in an attempt to succeed to perform a smaller allocation.
+  
+      // A limit is set for how much we can grow. We should not exceed that
+      // (the wasm binary specifies it, so if we tried, we'd fail anyhow).
+      var maxHeapSize = _emscripten_get_heap_max();
+      if (requestedSize > maxHeapSize) {
+        err('Cannot enlarge memory, asked to go up to ' + requestedSize + ' bytes, but the limit is ' + maxHeapSize + ' bytes!');
+        return false;
+      }
+  
+      let alignUp = (x, multiple) => x + (multiple - x % multiple) % multiple;
+  
+      // Loop through potential heap size increases. If we attempt a too eager
+      // reservation that fails, cut down on the attempted size and reserve a
+      // smaller bump instead. (max 3 times, chosen somewhat arbitrarily)
+      for (var cutDown = 1; cutDown <= 4; cutDown *= 2) {
+        var overGrownHeapSize = oldSize * (1 + 0.2 / cutDown); // ensure geometric growth
+        // but limit overreserving (default to capping at +96MB overgrowth at most)
+        overGrownHeapSize = Math.min(overGrownHeapSize, requestedSize + 100663296 );
+  
+        var newSize = Math.min(maxHeapSize, alignUp(Math.max(requestedSize, overGrownHeapSize), 65536));
+  
+        var replacement = emscripten_realloc_buffer(newSize);
+        if (replacement) {
+  
+          return true;
+        }
+      }
+      err('Failed to grow the heap from ' + oldSize + ' bytes to ' + newSize + ' bytes, not enough memory!');
+      return false;
     }
 
   var ENV = {};
@@ -3015,6 +3434,14 @@ function array_bounds_check_error(idx,size){ throw 'Array index ' + idx + ' out 
       }
       HEAP32[((pnum)>>2)] = num;
       return 0;
+    }
+
+  function _getTempRet0() {
+      return getTempRet0();
+    }
+
+  function _llvm_eh_typeid_for(type) {
+      return type;
     }
 
   function _setTempRet0(val) {
@@ -3388,7 +3815,16 @@ function checkIncomingModuleAPI() {
 var asmLibraryArg = {
   "__assert_fail": ___assert_fail,
   "__cxa_allocate_exception": ___cxa_allocate_exception,
+  "__cxa_begin_catch": ___cxa_begin_catch,
+  "__cxa_end_catch": ___cxa_end_catch,
+  "__cxa_find_matching_catch_2": ___cxa_find_matching_catch_2,
+  "__cxa_find_matching_catch_3": ___cxa_find_matching_catch_3,
+  "__cxa_free_exception": ___cxa_free_exception,
+  "__cxa_get_exception_ptr": ___cxa_get_exception_ptr,
+  "__cxa_rethrow": ___cxa_rethrow,
   "__cxa_throw": ___cxa_throw,
+  "__cxa_uncaught_exceptions": ___cxa_uncaught_exceptions,
+  "__resumeException": ___resumeException,
   "_emscripten_date_now": __emscripten_date_now,
   "abort": _abort,
   "array_bounds_check_error": array_bounds_check_error,
@@ -3399,6 +3835,49 @@ var asmLibraryArg = {
   "fd_close": _fd_close,
   "fd_seek": _fd_seek,
   "fd_write": _fd_write,
+  "getTempRet0": _getTempRet0,
+  "invoke_di": invoke_di,
+  "invoke_didiii": invoke_didiii,
+  "invoke_dii": invoke_dii,
+  "invoke_diii": invoke_diii,
+  "invoke_diiii": invoke_diiii,
+  "invoke_fiii": invoke_fiii,
+  "invoke_i": invoke_i,
+  "invoke_ii": invoke_ii,
+  "invoke_iid": invoke_iid,
+  "invoke_iidd": invoke_iidd,
+  "invoke_iii": invoke_iii,
+  "invoke_iiid": invoke_iiid,
+  "invoke_iiidd": invoke_iiidd,
+  "invoke_iiii": invoke_iiii,
+  "invoke_iiiid": invoke_iiiid,
+  "invoke_iiiidddi": invoke_iiiidddi,
+  "invoke_iiiiddidi": invoke_iiiiddidi,
+  "invoke_iiiidi": invoke_iiiidi,
+  "invoke_iiiii": invoke_iiiii,
+  "invoke_iiiiid": invoke_iiiiid,
+  "invoke_iiiiii": invoke_iiiiii,
+  "invoke_iiiiiii": invoke_iiiiiii,
+  "invoke_iiiiiiii": invoke_iiiiiiii,
+  "invoke_iiiiiiiidd": invoke_iiiiiiiidd,
+  "invoke_iiiiiiiiiii": invoke_iiiiiiiiiii,
+  "invoke_iiiiiiiiiiii": invoke_iiiiiiiiiiii,
+  "invoke_iiiiiiiiiiiii": invoke_iiiiiiiiiiiii,
+  "invoke_jiiii": invoke_jiiii,
+  "invoke_v": invoke_v,
+  "invoke_vi": invoke_vi,
+  "invoke_vid": invoke_vid,
+  "invoke_vidd": invoke_vidd,
+  "invoke_vii": invoke_vii,
+  "invoke_viid": invoke_viid,
+  "invoke_viii": invoke_viii,
+  "invoke_viiid": invoke_viiid,
+  "invoke_viiii": invoke_viiii,
+  "invoke_viiiii": invoke_viiiii,
+  "invoke_viiiiiii": invoke_viiiiiii,
+  "invoke_viiiiiiiiii": invoke_viiiiiiiiii,
+  "invoke_viiiiiiiiiiiiiii": invoke_viiiiiiiiiiiiiii,
+  "llvm_eh_typeid_for": _llvm_eh_typeid_for,
   "setTempRet0": _setTempRet0,
   "strftime_l": _strftime_l
 };
@@ -3408,6 +3887,9 @@ var ___wasm_call_ctors = Module["___wasm_call_ctors"] = createExportWrapper("__w
 
 /** @type {function(...*):?} */
 var _malloc = Module["_malloc"] = createExportWrapper("malloc");
+
+/** @type {function(...*):?} */
+var _free = Module["_free"] = createExportWrapper("free");
 
 /** @type {function(...*):?} */
 var _emscripten_bind_VoidPtr___destroy___0 = Module["_emscripten_bind_VoidPtr___destroy___0"] = createExportWrapper("emscripten_bind_VoidPtr___destroy___0");
@@ -3677,6 +4159,9 @@ var _emscripten_bind_Obstacle_router_0 = Module["_emscripten_bind_Obstacle_route
 var _emscripten_bind_Obstacle_position_0 = Module["_emscripten_bind_Obstacle_position_0"] = createExportWrapper("emscripten_bind_Obstacle_position_0");
 
 /** @type {function(...*):?} */
+var _emscripten_bind_Obstacle_setNewPoly_1 = Module["_emscripten_bind_Obstacle_setNewPoly_1"] = createExportWrapper("emscripten_bind_Obstacle_setNewPoly_1");
+
+/** @type {function(...*):?} */
 var _emscripten_bind_Obstacle___destroy___0 = Module["_emscripten_bind_Obstacle___destroy___0"] = createExportWrapper("emscripten_bind_Obstacle___destroy___0");
 
 /** @type {function(...*):?} */
@@ -3702,6 +4187,9 @@ var _emscripten_bind_ShapeRef_polygon_0 = Module["_emscripten_bind_ShapeRef_poly
 
 /** @type {function(...*):?} */
 var _emscripten_bind_ShapeRef_position_0 = Module["_emscripten_bind_ShapeRef_position_0"] = createExportWrapper("emscripten_bind_ShapeRef_position_0");
+
+/** @type {function(...*):?} */
+var _emscripten_bind_ShapeRef_setNewPoly_1 = Module["_emscripten_bind_ShapeRef_setNewPoly_1"] = createExportWrapper("emscripten_bind_ShapeRef_setNewPoly_1");
 
 /** @type {function(...*):?} */
 var _emscripten_bind_ShapeRef___destroy___0 = Module["_emscripten_bind_ShapeRef___destroy___0"] = createExportWrapper("emscripten_bind_ShapeRef___destroy___0");
@@ -3809,6 +4297,12 @@ var _emscripten_bind_ConnRef_setRoutingType_1 = Module["_emscripten_bind_ConnRef
 var _emscripten_bind_ConnRef_displayRoute_0 = Module["_emscripten_bind_ConnRef_displayRoute_0"] = createExportWrapper("emscripten_bind_ConnRef_displayRoute_0");
 
 /** @type {function(...*):?} */
+var _emscripten_bind_ConnRef_setHateCrossings_1 = Module["_emscripten_bind_ConnRef_setHateCrossings_1"] = createExportWrapper("emscripten_bind_ConnRef_setHateCrossings_1");
+
+/** @type {function(...*):?} */
+var _emscripten_bind_ConnRef_doesHateCrossings_0 = Module["_emscripten_bind_ConnRef_doesHateCrossings_0"] = createExportWrapper("emscripten_bind_ConnRef_doesHateCrossings_0");
+
+/** @type {function(...*):?} */
 var _emscripten_bind_ConnRef___destroy___0 = Module["_emscripten_bind_ConnRef___destroy___0"] = createExportWrapper("emscripten_bind_ConnRef___destroy___0");
 
 /** @type {function(...*):?} */
@@ -3848,7 +4342,19 @@ var _emscripten_bind_Router_printInfo_0 = Module["_emscripten_bind_Router_printI
 var _emscripten_bind_Router_deleteConnector_1 = Module["_emscripten_bind_Router_deleteConnector_1"] = createExportWrapper("emscripten_bind_Router_deleteConnector_1");
 
 /** @type {function(...*):?} */
+var _emscripten_bind_Router_moveShape_2 = Module["_emscripten_bind_Router_moveShape_2"] = createExportWrapper("emscripten_bind_Router_moveShape_2");
+
+/** @type {function(...*):?} */
 var _emscripten_bind_Router_moveShape_3 = Module["_emscripten_bind_Router_moveShape_3"] = createExportWrapper("emscripten_bind_Router_moveShape_3");
+
+/** @type {function(...*):?} */
+var _emscripten_bind_Router_deleteShape_1 = Module["_emscripten_bind_Router_deleteShape_1"] = createExportWrapper("emscripten_bind_Router_deleteShape_1");
+
+/** @type {function(...*):?} */
+var _emscripten_bind_Router_setRoutingParameter_2 = Module["_emscripten_bind_Router_setRoutingParameter_2"] = createExportWrapper("emscripten_bind_Router_setRoutingParameter_2");
+
+/** @type {function(...*):?} */
+var _emscripten_bind_Router_setRoutingOption_2 = Module["_emscripten_bind_Router_setRoutingOption_2"] = createExportWrapper("emscripten_bind_Router_setRoutingOption_2");
 
 /** @type {function(...*):?} */
 var _emscripten_bind_Router___destroy___0 = Module["_emscripten_bind_Router___destroy___0"] = createExportWrapper("emscripten_bind_Router___destroy___0");
@@ -3938,10 +4444,61 @@ var _emscripten_enum_Avoid_RouterFlag_PolyLineRouting = Module["_emscripten_enum
 var _emscripten_enum_Avoid_RouterFlag_OrthogonalRouting = Module["_emscripten_enum_Avoid_RouterFlag_OrthogonalRouting"] = createExportWrapper("emscripten_enum_Avoid_RouterFlag_OrthogonalRouting");
 
 /** @type {function(...*):?} */
+var _emscripten_enum_Avoid_RoutingParameter_segmentPenalty = Module["_emscripten_enum_Avoid_RoutingParameter_segmentPenalty"] = createExportWrapper("emscripten_enum_Avoid_RoutingParameter_segmentPenalty");
+
+/** @type {function(...*):?} */
+var _emscripten_enum_Avoid_RoutingParameter_anglePenalty = Module["_emscripten_enum_Avoid_RoutingParameter_anglePenalty"] = createExportWrapper("emscripten_enum_Avoid_RoutingParameter_anglePenalty");
+
+/** @type {function(...*):?} */
+var _emscripten_enum_Avoid_RoutingParameter_crossingPenalty = Module["_emscripten_enum_Avoid_RoutingParameter_crossingPenalty"] = createExportWrapper("emscripten_enum_Avoid_RoutingParameter_crossingPenalty");
+
+/** @type {function(...*):?} */
+var _emscripten_enum_Avoid_RoutingParameter_clusterCrossingPenalty = Module["_emscripten_enum_Avoid_RoutingParameter_clusterCrossingPenalty"] = createExportWrapper("emscripten_enum_Avoid_RoutingParameter_clusterCrossingPenalty");
+
+/** @type {function(...*):?} */
+var _emscripten_enum_Avoid_RoutingParameter_fixedSharedPathPenalty = Module["_emscripten_enum_Avoid_RoutingParameter_fixedSharedPathPenalty"] = createExportWrapper("emscripten_enum_Avoid_RoutingParameter_fixedSharedPathPenalty");
+
+/** @type {function(...*):?} */
+var _emscripten_enum_Avoid_RoutingParameter_portDirectionPenalty = Module["_emscripten_enum_Avoid_RoutingParameter_portDirectionPenalty"] = createExportWrapper("emscripten_enum_Avoid_RoutingParameter_portDirectionPenalty");
+
+/** @type {function(...*):?} */
+var _emscripten_enum_Avoid_RoutingParameter_shapeBufferDistance = Module["_emscripten_enum_Avoid_RoutingParameter_shapeBufferDistance"] = createExportWrapper("emscripten_enum_Avoid_RoutingParameter_shapeBufferDistance");
+
+/** @type {function(...*):?} */
+var _emscripten_enum_Avoid_RoutingParameter_idealNudgingDistance = Module["_emscripten_enum_Avoid_RoutingParameter_idealNudgingDistance"] = createExportWrapper("emscripten_enum_Avoid_RoutingParameter_idealNudgingDistance");
+
+/** @type {function(...*):?} */
+var _emscripten_enum_Avoid_RoutingParameter_reverseDirectionPenalty = Module["_emscripten_enum_Avoid_RoutingParameter_reverseDirectionPenalty"] = createExportWrapper("emscripten_enum_Avoid_RoutingParameter_reverseDirectionPenalty");
+
+/** @type {function(...*):?} */
+var _emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalSegmentsConnectedToShapes = Module["_emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalSegmentsConnectedToShapes"] = createExportWrapper("emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalSegmentsConnectedToShapes");
+
+/** @type {function(...*):?} */
+var _emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingJunctions = Module["_emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingJunctions"] = createExportWrapper("emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingJunctions");
+
+/** @type {function(...*):?} */
+var _emscripten_enum_Avoid_RoutingOption_penaliseOrthogonalSharedPathsAtConnEnds = Module["_emscripten_enum_Avoid_RoutingOption_penaliseOrthogonalSharedPathsAtConnEnds"] = createExportWrapper("emscripten_enum_Avoid_RoutingOption_penaliseOrthogonalSharedPathsAtConnEnds");
+
+/** @type {function(...*):?} */
+var _emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalTouchingColinearSegments = Module["_emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalTouchingColinearSegments"] = createExportWrapper("emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalTouchingColinearSegments");
+
+/** @type {function(...*):?} */
+var _emscripten_enum_Avoid_RoutingOption_performUnifyingNudgingPreprocessingStep = Module["_emscripten_enum_Avoid_RoutingOption_performUnifyingNudgingPreprocessingStep"] = createExportWrapper("emscripten_enum_Avoid_RoutingOption_performUnifyingNudgingPreprocessingStep");
+
+/** @type {function(...*):?} */
+var _emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingAddingAndDeletingJunctions = Module["_emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingAddingAndDeletingJunctions"] = createExportWrapper("emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingAddingAndDeletingJunctions");
+
+/** @type {function(...*):?} */
+var _emscripten_enum_Avoid_RoutingOption_nudgeSharedPathsWithCommonEndPoint = Module["_emscripten_enum_Avoid_RoutingOption_nudgeSharedPathsWithCommonEndPoint"] = createExportWrapper("emscripten_enum_Avoid_RoutingOption_nudgeSharedPathsWithCommonEndPoint");
+
+/** @type {function(...*):?} */
 var ___errno_location = Module["___errno_location"] = createExportWrapper("__errno_location");
 
 /** @type {function(...*):?} */
 var ___stdio_exit = Module["___stdio_exit"] = createExportWrapper("__stdio_exit");
+
+/** @type {function(...*):?} */
+var _setThrew = Module["_setThrew"] = createExportWrapper("setThrew");
 
 /** @type {function(...*):?} */
 var _emscripten_stack_init = Module["_emscripten_stack_init"] = function() {
@@ -3973,10 +4530,19 @@ var stackRestore = Module["stackRestore"] = createExportWrapper("stackRestore");
 var stackAlloc = Module["stackAlloc"] = createExportWrapper("stackAlloc");
 
 /** @type {function(...*):?} */
+var ___cxa_can_catch = Module["___cxa_can_catch"] = createExportWrapper("__cxa_can_catch");
+
+/** @type {function(...*):?} */
+var ___cxa_is_pointer_type = Module["___cxa_is_pointer_type"] = createExportWrapper("__cxa_is_pointer_type");
+
+/** @type {function(...*):?} */
 var dynCall_jiji = Module["dynCall_jiji"] = createExportWrapper("dynCall_jiji");
 
 /** @type {function(...*):?} */
 var dynCall_viijii = Module["dynCall_viijii"] = createExportWrapper("dynCall_viijii");
+
+/** @type {function(...*):?} */
+var dynCall_jiiii = Module["dynCall_jiiii"] = createExportWrapper("dynCall_jiiii");
 
 /** @type {function(...*):?} */
 var dynCall_iiiiij = Module["dynCall_iiiiij"] = createExportWrapper("dynCall_iiiiij");
@@ -3987,6 +4553,457 @@ var dynCall_iiiiijj = Module["dynCall_iiiiijj"] = createExportWrapper("dynCall_i
 /** @type {function(...*):?} */
 var dynCall_iiiiiijj = Module["dynCall_iiiiiijj"] = createExportWrapper("dynCall_iiiiiijj");
 
+
+function invoke_iiiiii(index,a1,a2,a3,a4,a5) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3,a4,a5);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iii(index,a1,a2) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_viii(index,a1,a2,a3) {
+  var sp = stackSave();
+  try {
+    getWasmTableEntry(index)(a1,a2,a3);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_v(index) {
+  var sp = stackSave();
+  try {
+    getWasmTableEntry(index)();
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_ii(index,a1) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_vii(index,a1,a2) {
+  var sp = stackSave();
+  try {
+    getWasmTableEntry(index)(a1,a2);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiid(index,a1,a2,a3,a4) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3,a4);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_vi(index,a1) {
+  var sp = stackSave();
+  try {
+    getWasmTableEntry(index)(a1);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiii(index,a1,a2,a3,a4) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3,a4);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiii(index,a1,a2,a3) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_viiii(index,a1,a2,a3,a4) {
+  var sp = stackSave();
+  try {
+    getWasmTableEntry(index)(a1,a2,a3,a4);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_viiiii(index,a1,a2,a3,a4,a5) {
+  var sp = stackSave();
+  try {
+    getWasmTableEntry(index)(a1,a2,a3,a4,a5);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iidd(index,a1,a2,a3) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_diiii(index,a1,a2,a3,a4) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3,a4);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_dii(index,a1,a2) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_didiii(index,a1,a2,a3,a4,a5) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3,a4,a5);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_diii(index,a1,a2,a3) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiiiii(index,a1,a2,a3,a4,a5,a6) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_vid(index,a1,a2) {
+  var sp = stackSave();
+  try {
+    getWasmTableEntry(index)(a1,a2);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiid(index,a1,a2,a3) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_di(index,a1) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_vidd(index,a1,a2,a3) {
+  var sp = stackSave();
+  try {
+    getWasmTableEntry(index)(a1,a2,a3);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_viid(index,a1,a2,a3) {
+  var sp = stackSave();
+  try {
+    getWasmTableEntry(index)(a1,a2,a3);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiidd(index,a1,a2,a3,a4) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3,a4);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiidddi(index,a1,a2,a3,a4,a5,a6,a7) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiiddidi(index,a1,a2,a3,a4,a5,a6,a7,a8) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7,a8);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiiiiiidd(index,a1,a2,a3,a4,a5,a6,a7,a8,a9) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7,a8,a9);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiidi(index,a1,a2,a3,a4,a5) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3,a4,a5);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_viiid(index,a1,a2,a3,a4) {
+  var sp = stackSave();
+  try {
+    getWasmTableEntry(index)(a1,a2,a3,a4);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iid(index,a1,a2) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiiid(index,a1,a2,a3,a4,a5) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3,a4,a5);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiiiiii(index,a1,a2,a3,a4,a5,a6,a7) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiiiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_fiii(index,a1,a2,a3) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_i(index) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)();
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_viiiiiii(index,a1,a2,a3,a4,a5,a6,a7) {
+  var sp = stackSave();
+  try {
+    getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11) {
+  var sp = stackSave();
+  try {
+    return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_viiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10) {
+  var sp = stackSave();
+  try {
+    getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_viiiiiiiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15) {
+  var sp = stackSave();
+  try {
+    getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_jiiii(index,a1,a2,a3,a4) {
+  var sp = stackSave();
+  try {
+    return dynCall_jiiii(index,a1,a2,a3,a4);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
 
 
 
@@ -4043,7 +5060,6 @@ unexportedRuntimeFunction('abort', false);
 unexportedRuntimeFunction('keepRuntimeAlive', false);
 unexportedRuntimeFunction('zeroMemory', false);
 unexportedRuntimeFunction('stringToNewUTF8', false);
-unexportedRuntimeFunction('abortOnCannotGrowMemory', false);
 unexportedRuntimeFunction('emscripten_realloc_buffer', false);
 unexportedRuntimeFunction('ENV', false);
 unexportedRuntimeFunction('ERRNO_CODES', false);
@@ -4163,6 +5179,7 @@ unexportedRuntimeFunction('ExceptionInfo', false);
 unexportedRuntimeFunction('CatchInfo', false);
 unexportedRuntimeFunction('exception_addRef', false);
 unexportedRuntimeFunction('exception_decRef', false);
+unexportedRuntimeFunction('formatException', false);
 unexportedRuntimeFunction('Browser', false);
 unexportedRuntimeFunction('funcWrappers', false);
 unexportedRuntimeFunction('getFuncWrapper', false);
@@ -5033,11 +6050,11 @@ AStarPath.prototype['search'] = AStarPath.prototype.search = function(lineRef, s
 /**
  * @class
  */
-function ConnEnd(point, visDirs) {
-  if (point && typeof point === 'object') point = point.ptr;
-  if (visDirs && typeof visDirs === 'object') visDirs = visDirs.ptr;
-  if (visDirs === undefined) { this.ptr = _emscripten_bind_ConnEnd_ConnEnd_1(point); getCache(ConnEnd)[this.ptr] = this;return }
-  this.ptr = _emscripten_bind_ConnEnd_ConnEnd_2(point, visDirs);
+function ConnEnd(shapeRef, connectionPinClassID) {
+  if (shapeRef && typeof shapeRef === 'object') shapeRef = shapeRef.ptr;
+  if (connectionPinClassID && typeof connectionPinClassID === 'object') connectionPinClassID = connectionPinClassID.ptr;
+  if (connectionPinClassID === undefined) { this.ptr = _emscripten_bind_ConnEnd_ConnEnd_1(shapeRef); getCache(ConnEnd)[this.ptr] = this;return }
+  this.ptr = _emscripten_bind_ConnEnd_ConnEnd_2(shapeRef, connectionPinClassID);
   getCache(ConnEnd)[this.ptr] = this;
 };;
 ConnEnd.prototype = Object.create(WrapperObject.prototype);
@@ -5324,6 +6341,16 @@ Obstacle.prototype['position'] = Obstacle.prototype.position = function() {
   return wrapPointer(_emscripten_bind_Obstacle_position_0(self), Point);
 };;
 
+/**
+ * @method
+ * @param {Polygon} poly
+ */
+Obstacle.prototype['setNewPoly'] = Obstacle.prototype.setNewPoly = function(poly) {
+  var self = this.ptr;
+  if (poly && typeof poly === 'object') poly = poly.ptr;
+  _emscripten_bind_Obstacle_setNewPoly_1(self, poly);
+};;
+
   Obstacle.prototype['__destroy__'] = Obstacle.prototype.__destroy__ = function() {
   var self = this.ptr;
   _emscripten_bind_Obstacle___destroy___0(self);
@@ -5398,6 +6425,16 @@ ShapeRef.prototype['polygon'] = ShapeRef.prototype.polygon = function() {
 ShapeRef.prototype['position'] = ShapeRef.prototype.position = function() {
   var self = this.ptr;
   return wrapPointer(_emscripten_bind_ShapeRef_position_0(self), Point);
+};;
+
+/**
+ * @method
+ * @param {Polygon} poly
+ */
+ShapeRef.prototype['setNewPoly'] = ShapeRef.prototype.setNewPoly = function(poly) {
+  var self = this.ptr;
+  if (poly && typeof poly === 'object') poly = poly.ptr;
+  _emscripten_bind_ShapeRef_setNewPoly_1(self, poly);
 };;
 
   ShapeRef.prototype['__destroy__'] = ShapeRef.prototype.__destroy__ = function() {
@@ -5698,6 +6735,26 @@ ConnRef.prototype['displayRoute'] = ConnRef.prototype.displayRoute = function() 
   return wrapPointer(_emscripten_bind_ConnRef_displayRoute_0(self), Polygon);
 };;
 
+/**
+ * @method
+ * @param {Boolean} value
+ */
+ConnRef.prototype['setHateCrossings'] = ConnRef.prototype.setHateCrossings = function(value) {
+  var self = this.ptr;
+  if (value && typeof value === 'object') value = value.ptr;
+  _emscripten_bind_ConnRef_setHateCrossings_1(self, value);
+};;
+
+/**
+ * @method
+ * 
+ * @returns {Boolean}
+ */
+ConnRef.prototype['doesHateCrossings'] = ConnRef.prototype.doesHateCrossings = function() {
+  var self = this.ptr;
+  return !!(_emscripten_bind_ConnRef_doesHateCrossings_0(self));
+};;
+
   ConnRef.prototype['__destroy__'] = ConnRef.prototype.__destroy__ = function() {
   var self = this.ptr;
   _emscripten_bind_ConnRef___destroy___0(self);
@@ -5813,15 +6870,49 @@ Router.prototype['deleteConnector'] = Router.prototype.deleteConnector = functio
 /**
  * @method
  * @param {ShapeRef} shape
- * @param {number} xDiff
- * @param {number} yDiff
+ * @param {Polygon} newPolygon
  */
 Router.prototype['moveShape'] = Router.prototype.moveShape = function(shape, xDiff, yDiff) {
   var self = this.ptr;
   if (shape && typeof shape === 'object') shape = shape.ptr;
   if (xDiff && typeof xDiff === 'object') xDiff = xDiff.ptr;
   if (yDiff && typeof yDiff === 'object') yDiff = yDiff.ptr;
+  if (yDiff === undefined) { _emscripten_bind_Router_moveShape_2(self, shape, xDiff);  return }
   _emscripten_bind_Router_moveShape_3(self, shape, xDiff, yDiff);
+};;
+
+/**
+ * @method
+ * @param {ShapeRef} shape
+ */
+Router.prototype['deleteShape'] = Router.prototype.deleteShape = function(shape) {
+  var self = this.ptr;
+  if (shape && typeof shape === 'object') shape = shape.ptr;
+  _emscripten_bind_Router_deleteShape_1(self, shape);
+};;
+
+/**
+ * @method
+ * @param {Avoid_RoutingParameter} parameter
+ * @param {number} value
+ */
+Router.prototype['setRoutingParameter'] = Router.prototype.setRoutingParameter = function(parameter, value) {
+  var self = this.ptr;
+  if (parameter && typeof parameter === 'object') parameter = parameter.ptr;
+  if (value && typeof value === 'object') value = value.ptr;
+  _emscripten_bind_Router_setRoutingParameter_2(self, parameter, value);
+};;
+
+/**
+ * @method
+ * @param {Avoid_RoutingOption} option
+ * @param {Boolean} value
+ */
+Router.prototype['setRoutingOption'] = Router.prototype.setRoutingOption = function(option, value) {
+  var self = this.ptr;
+  if (option && typeof option === 'object') option = option.ptr;
+  if (value && typeof value === 'object') value = value.ptr;
+  _emscripten_bind_Router_setRoutingOption_2(self, option, value);
 };;
 
   Router.prototype['__destroy__'] = Router.prototype.__destroy__ = function() {
@@ -5909,6 +7000,46 @@ Router.prototype['moveShape'] = Router.prototype.moveShape = function(shape, xDi
     Module['PolyLineRouting'] = _emscripten_enum_Avoid_RouterFlag_PolyLineRouting();
 
     Module['OrthogonalRouting'] = _emscripten_enum_Avoid_RouterFlag_OrthogonalRouting();
+
+    
+
+    // Avoid_RoutingParameter
+
+    Module['segmentPenalty'] = _emscripten_enum_Avoid_RoutingParameter_segmentPenalty();
+
+    Module['anglePenalty'] = _emscripten_enum_Avoid_RoutingParameter_anglePenalty();
+
+    Module['crossingPenalty'] = _emscripten_enum_Avoid_RoutingParameter_crossingPenalty();
+
+    Module['clusterCrossingPenalty'] = _emscripten_enum_Avoid_RoutingParameter_clusterCrossingPenalty();
+
+    Module['fixedSharedPathPenalty'] = _emscripten_enum_Avoid_RoutingParameter_fixedSharedPathPenalty();
+
+    Module['portDirectionPenalty'] = _emscripten_enum_Avoid_RoutingParameter_portDirectionPenalty();
+
+    Module['shapeBufferDistance'] = _emscripten_enum_Avoid_RoutingParameter_shapeBufferDistance();
+
+    Module['idealNudgingDistance'] = _emscripten_enum_Avoid_RoutingParameter_idealNudgingDistance();
+
+    Module['reverseDirectionPenalty'] = _emscripten_enum_Avoid_RoutingParameter_reverseDirectionPenalty();
+
+    
+
+    // Avoid_RoutingOption
+
+    Module['nudgeOrthogonalSegmentsConnectedToShapes'] = _emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalSegmentsConnectedToShapes();
+
+    Module['improveHyperedgeRoutesMovingJunctions'] = _emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingJunctions();
+
+    Module['penaliseOrthogonalSharedPathsAtConnEnds'] = _emscripten_enum_Avoid_RoutingOption_penaliseOrthogonalSharedPathsAtConnEnds();
+
+    Module['nudgeOrthogonalTouchingColinearSegments'] = _emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalTouchingColinearSegments();
+
+    Module['performUnifyingNudgingPreprocessingStep'] = _emscripten_enum_Avoid_RoutingOption_performUnifyingNudgingPreprocessingStep();
+
+    Module['improveHyperedgeRoutesMovingAddingAndDeletingJunctions'] = _emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingAddingAndDeletingJunctions();
+
+    Module['nudgeSharedPathsWithCommonEndPoint'] = _emscripten_enum_Avoid_RoutingOption_nudgeSharedPathsWithCommonEndPoint();
 
   }
   if (runtimeInitialized) setupEnums();

@@ -15,18 +15,42 @@ enum Avoid_RouterFlag {
   "Avoid::OrthogonalRouting"
 };
 
+enum Avoid_RoutingParameter {
+  "Avoid::segmentPenalty",
+  "Avoid::anglePenalty",
+  "Avoid::crossingPenalty",
+  "Avoid::clusterCrossingPenalty",
+  "Avoid::fixedSharedPathPenalty",
+  "Avoid::portDirectionPenalty",
+  "Avoid::shapeBufferDistance",
+  "Avoid::idealNudgingDistance",
+  "Avoid::reverseDirectionPenalty"
+};
+
+enum Avoid_RoutingOption {
+  "Avoid::nudgeOrthogonalSegmentsConnectedToShapes",
+  "Avoid::improveHyperedgeRoutesMovingJunctions",
+  "Avoid::penaliseOrthogonalSharedPathsAtConnEnds",
+  "Avoid::nudgeOrthogonalTouchingColinearSegments",
+  "Avoid::performUnifyingNudgingPreprocessingStep",
+  "Avoid::improveHyperedgeRoutesMovingAddingAndDeletingJunctions",
+  "Avoid::nudgeSharedPathsWithCommonEndPoint"
+};
+
 // TODO: ...
 
 [Prefix = "Avoid::"]
 interface Router {
   void Router(unsigned long flags);
-  // attribute ObstacleList m_obstacles;
 
   boolean processTransaction();
   void printInfo();
   void deleteConnector(ConnRef connector);
 
-  // void moveShape(ShapeRef shape, [Ref] Polygon newPoly,
-  //               optional boolean first_move = false);
+  void moveShape(ShapeRef shape, [Ref] Polygon newPolygon);
   void moveShape(ShapeRef shape, double xDiff, double yDiff);
+  void deleteShape(ShapeRef shape);
+
+  void setRoutingParameter(Avoid_RoutingParameter parameter, double value);
+  void setRoutingOption(Avoid_RoutingOption option, boolean value);
 };

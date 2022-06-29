@@ -104,9 +104,9 @@ def compile(debug=False):
   pwd = Path('.').resolve()
   args = ''
   if debug:
-    args += ' -g4 --source-map-base http://localhost:8080/lib/ -s RUNTIME_LOGGING=1'
+    args += ' -g4 --source-map-base http://localhost:8080/ -s RUNTIME_LOGGING=1 -s ASSERTIONS=1 -s NO_DISABLE_EXCEPTION_CATCHING'
   else:
-    args += '-O3'
+    args += '-O2 -s NO_DISABLE_EXCEPTION_CATCHING -s ASSERTIONS=1 -flto'
 
   execute_command(f"""
   docker run \
@@ -117,7 +117,6 @@ def compile(debug=False):
   emcc {args} \
     --closure 1 \
     -s LLD_REPORT_UNDEFINED \
-    -flto \
     -s FILESYSTEM=0 \
     -s MODULARIZE=1 \
     -s EXPORT_ES6=1 \
@@ -126,6 +125,7 @@ def compile(debug=False):
     -s ALLOW_TABLE_GROWTH=1 \
     -s ENVIRONMENT="web" \
     --no-entry \
+    -s ALLOW_MEMORY_GROWTH=1 \
     -Iadaptagrams/cola/ \
     -I{generated_sources_dir}/ \
     {compiler_sources} \
@@ -137,6 +137,9 @@ def compile(debug=False):
   # EXPORT_NAME ...  explanation: https://stackoverflow.com/a/30153119
   # source-map-base is required for browser recognition of source maps
   # -s STRICT=1 \
+  # -s SAFE_HEAP=1 \
+  # -fsanitize=address \
+  # -e EMCC_AUTODEBUG=1 \
 
 
 def main():
@@ -191,7 +194,9 @@ def main():
     ...
 
   try:
-    rmtree('../examples/lib/')
+    os.remove('../examples/libavoid.wasm')
+    os.remove('../examples/libavoid.wasm.map')
+    os.remove('../examples/libavoid.js')
   except FileNotFoundError:
     ...
 
@@ -207,7 +212,7 @@ def main():
   logger.info('Build debug version')
   generate_bindings(debug=True)
   compile(debug=True)
-  copytree('dist_debug', '../examples/lib/', dirs_exist_ok=True)
+  copytree('dist_debug', '../examples/', dirs_exist_ok=True)
 
   logger.info('Build API documentation')
   execute_command('npm run api-docs', logger, '../')

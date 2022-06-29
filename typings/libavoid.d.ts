@@ -1,7 +1,7 @@
 declare module "libavoid-js";
 
-declare class Point {
-  constructor(x: number, y: number);
+declare interface Point {
+  new (x: number, y: number): Point;
   x: number;
   y: number;
 }
@@ -12,15 +12,22 @@ declare interface Router {
   processTransaction(): void;
   printInfo(): void;
   deleteConnector(connRef: ConnRef): void;
+
+  moveShape(shape: ShapeRef, newPolygon: Polygon);
+  moveShape(shape: ShapeRef, xDiff: number, yDiff: number);
+  deleteShape(shape: ShapeRef);
+  setRoutingParameter(parameter: number, value: number): void;
+  setRoutingOption(option: number, value: boolean): void;
 }
 
-declare class PolyLine {
+declare interface PolyLine {
   size(): number;
   get_ps(index: number): Point;
 }
 
-declare class ConnEnd {
-  constructor(point: Point);
+declare interface ConnEnd {
+  new (point: Point): ConnEnd;
+  new (shapeRef: ShapeRef, classId: number): ConnEnd;
 }
 
 declare interface ConnRef {
@@ -30,16 +37,29 @@ declare interface ConnRef {
   setSourceEndpoint(srcPoint: ConnEnd): void;
   setDestEndpoint(dstPoint: ConnEnd): void;
   setRoutingType(type: number): void;
+  setCallback(callback: (connRef: ConnRef) => void, connRef: ConnRef): void;
+
+  setHateCrossings(value: boolean): void;
+  doesHateCrossings(): boolean;
 }
 
-declare class Polygon {}
+declare interface Polygon {}
 
-declare class Rectangle extends Polygon {
-  constructor(centre: Point, width: number, height: number);
+declare interface Rectangle extends Polygon {
+  new (centre: Point, width: number, height: number): Rectangle;
 }
 
-declare class ShapeRef {
-  constructor(router: Router, shapePoly: Polygon);
+declare interface Obstacle {
+  id(): number;
+  polygon(): Polygon;
+  router(): Router;
+  position(): Point;
+
+  setNewPoly(polygon: Polygon): void;
+}
+
+declare interface ShapeRef extends Obstacle {
+  new (router: Router, shapePoly: Polygon): ShapeRef;
 }
 
 export interface Avoid {
@@ -47,12 +67,13 @@ export interface Avoid {
   PolyLineRouting: number;
   OrthogonalRouting: number;
 
-  ConnEnd: typeof ConnEnd;
+  ConnEnd: ConnEnd;
   ConnRef: ConnRef;
-  Point: typeof Point;
-  Rectangle: typeof Rectangle;
+  Point: Point;
+  Rectangle: Rectangle;
   Router: Router;
-  ShapeRef: typeof ShapeRef;
+  Obstacle: Obstacle;
+  ShapeRef: ShapeRef;
 
   destroy(obj: any): void;
 }
@@ -62,4 +83,3 @@ export namespace AvoidLib {
   function load(): Promise<void>;
   function getInstance(): Avoid;
 }
-

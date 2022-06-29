@@ -1,5 +1,5 @@
 // debug version
-import initAvoidModule from './lib/libavoid.js';
+import initAvoidModule from './libavoid.js';
 // production version
 // import initAvoidModule from './dist/libavoid.js';
 

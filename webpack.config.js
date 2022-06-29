@@ -28,6 +28,10 @@ module.exports = {
       }
     ],
   },
+//   optimization:{
+//       minimize: false,
+//       concatenateModules: false,
+//   },
   // resolve: {
   //   modules: [path.resolve(__dirname, './src/') , path.resolve(__dirname, 'node_modules') ],
   //   extensions: ['js', 'wasm'],
@@ -35,5 +39,5 @@ module.exports = {
   experiments: {
     asyncWebAssembly: true,
   },
-  mode: "development",
+//   mode: "development",
 }
