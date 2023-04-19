@@ -1,4 +1,4 @@
-import initAvoid from "./libavoid.js";
+import { AvoidLib } from './dist/index.mjs';
 
 let Avoid;
 
@@ -438,7 +438,9 @@ function route() {
 
 /* Test 1: full router creation & routing */
 async function test_1() {
-  Avoid = await initAvoid();
+  await AvoidLib.load();
+  Avoid = AvoidLib.getInstance();
+
   const measurements = [];
   for (let i = 0; i < 100; i++) {
     const startTime = performance.now();
@@ -460,7 +462,9 @@ function moveShape(router, shape) {
 
 /* Test 2: create router once and move one shape repeatedly */
 async function test_2() {
-  Avoid = await initAvoid();
+  await AvoidLib.load();
+  Avoid = AvoidLib.getInstance();
+
   const measurements = [];
   const [router, shape] = prepareRouter();
   for (let i = 0; i < 100; i++) {
@@ -483,7 +487,9 @@ async function test_2() {
 
 /* Test 3: measure processing transactions without actions */
 async function test_3() {
-  Avoid = await initAvoid();
+  await AvoidLib.load();
+  Avoid = AvoidLib.getInstance();
+
   const measurements = [];
   const [router] = prepareRouter();
   for (let i = 0; i < 100; i++) {
