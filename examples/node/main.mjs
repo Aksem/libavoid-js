@@ -1,7 +1,7 @@
-// debug web version
-// import { AvoidLib } from './debug-dist/index.mjs';
-// production web version
-import { AvoidLib } from './dist/index.mjs';
+// debug version
+// import { AvoidLib } from '../debug-dist/index.mjs';
+// production version
+import { AvoidLib } from '.../dist/index.mjs';
 
 async function main() {
   // init Avoid module

@@ -1,11 +1,21 @@
 {
   "name": "libavoid-js",
-  "version": "0.1.19",
+  "version": "0.2.0",
   "description": "JS port of libavoid library",
   "main": "dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "typings/libavoid.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "types": "./dist/libavoid.d.ts"
+    }
+  },
+  "files": [
+    "dist/"
+  ],
   "scripts": {
-    "build": "webpack --mode=production && cp src/generated/libavoid.wasm dist/",
+    "build": "node build.js",
     "api-docs": "jsdoc -c jsdoc.conf.js -d ./api_docs_build/ build/generated_debug/glue.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,22 +30,9 @@
   },
   "homepage": "https://github.com/big-thesis/Hnatiuk.Adaptagrams",
   "devDependencies": {
-    "@babel/core": "^7.13.10",
-    "@babel/plugin-transform-runtime": "^7.15.8",
-    "@babel/preset-env": "^7.13.10",
-    "babel-loader": "^8.2.2",
     "docdash": "^1.2.0",
-    "jsdoc": "^3.6.6",
-    "webpack": "^5.26.3",
-    "webpack-cli": "^4.5.0"
-  },
-  "dependencies": {
-    "@babel/runtime-corejs3": "^7.15.4",
-    "core-js-pure": "^3.18.3"
-  },
-  "browser": {
-    "fs": false,
-    "path": false,
-    "os": false
+    "esbuild": "^0.17.15",
+    "esbuild-plugin-copy": "^2.1.1",
+    "jsdoc": "^3.6.6"
   }
 }

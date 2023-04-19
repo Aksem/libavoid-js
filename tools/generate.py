@@ -1,7 +1,7 @@
 import logging
 import os
 from pathlib import Path
-from shutil import copytree, rmtree
+from shutil import rmtree, copyfile
 
 from process_utils import execute_command
 
@@ -40,10 +40,12 @@ def patch_adaptagrams_sources(path):
     file.write(hyperedgeimprover_header_content)
 
 
-def generate_bindings(debug=False):
-  output_dir = 'generated'
-  if debug:
-    output_dir += '_debug'
+def generate_bindings(output_dir, debug=False):
+  try:
+    os.mkdir(output_dir)
+  except FileExistsError:
+    ...
+
   glue_wrapper_content = ''
   # combine all idls in one
   result_idl_content = ''
@@ -71,12 +73,7 @@ def generate_bindings(debug=False):
     glue_wrapper_file.write(glue_wrapper_content)
 
 
-def compile(debug=False):
-  dist_dir_name = 'dist'
-  generated_sources_dir = 'generated'
-  if debug:
-    dist_dir_name += '_debug'
-    generated_sources_dir += '_debug'
+def compile(generated_sources_dir, dist_dir_name, debug=False):
   try:
     os.mkdir(dist_dir_name)
   except FileExistsError:
@@ -104,28 +101,31 @@ def compile(debug=False):
   pwd = Path('.').resolve()
   args = ''
   if debug:
-    args += ' -g4 --source-map-base http://localhost:8080/ -s RUNTIME_LOGGING=1 -s ASSERTIONS=1 -s NO_DISABLE_EXCEPTION_CATCHING'
+    args += ' -g4 --source-map-base http://localhost:8080/ -s RUNTIME_LOGGING=1 -s ASSERTIONS=1 -s DISABLE_EXCEPTION_CATCHING=0'
   else:
-    args += '-O2 -s NO_DISABLE_EXCEPTION_CATCHING -s ASSERTIONS=1 -flto'
+    args += '-O2 -s DISABLE_EXCEPTION_CATCHING=0 -s ASSERTIONS=1 -flto'
 
+  # list of parameters: https://emsettings.surma.technology/
   execute_command(f"""
   docker run \
   --rm \
   -v {str(pwd)}:/src -w /src/ \
   -u {os.getuid()}:{os.getgid()} \
-  emscripten/emsdk:3.1.8 \
+  emscripten/emsdk:3.1.36 \
   emcc {args} \
     --closure 1 \
     -s LLD_REPORT_UNDEFINED \
     -s FILESYSTEM=0 \
     -s MODULARIZE=1 \
     -s EXPORT_ES6=1 \
-    -s USE_ES6_IMPORT_META=0 \
+    -s USE_ES6_IMPORT_META=1 \
     -s EXPORT_NAME="'initAvoidModule'" \
     -s ALLOW_TABLE_GROWTH=1 \
-    -s ENVIRONMENT="web" \
+    -s ENVIRONMENT="web,node" \
     --no-entry \
     -s ALLOW_MEMORY_GROWTH=1 \
+    -sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=$addFunction \
+    -s EXPORTED_FUNCTIONS=['_malloc'] \
     -Iadaptagrams/cola/ \
     -I{generated_sources_dir}/ \
     {compiler_sources} \
@@ -168,59 +168,46 @@ def main():
 
   # remove old build data if exists
   logger.info('Remove old builds if they exist')
-  try:
-    rmtree('generated')
-  except FileNotFoundError:
-    ...
-  
-  try:
-    rmtree('generated_debug')
-  except FileNotFoundError:
-    ...
+  dirs_to_recreate = [
+    'generated',
+    'generated_debug',
+    'dist',
+    'dist_debug',
+    '../dist',
+    '../examples/dist',
+    '../examples/debug-src/generated',
+    '../examples/debug-dist',
+    '../src/generated'
+  ]
+  for dir_to_delete in dirs_to_recreate:
+    try:
+      rmtree(dir_to_delete)
+    except FileNotFoundError:
+      ...
 
-  try:
-    rmtree('dist')
-  except FileNotFoundError:
-    ...
-
-  try:
-    rmtree('dist_debug')
-  except FileNotFoundError:
-    ...
-
-  try:
-    rmtree('../dist')
-  except FileNotFoundError:
-    ...
-
-  try:
-    os.remove('../examples/libavoid.wasm')
-    os.remove('../examples/libavoid.wasm.map')
-    os.remove('../examples/libavoid.js')
-  except FileNotFoundError:
-    ...
-
-  try:
-    os.mkdir('generated')
-  except FileExistsError:
-    ...
-  try:
-    os.mkdir('generated_debug')
-  except FileExistsError:
-    ...
+  for dir_to_create in dirs_to_recreate:
+    try:
+      os.mkdir(dir_to_create)
+    except FileExistsError:
+      ...
 
   logger.info('Build debug version')
-  generate_bindings(debug=True)
-  compile(debug=True)
-  copytree('dist_debug', '../examples/', dirs_exist_ok=True)
-
+  output_dir = 'generated_debug'
+  generate_bindings(output_dir, debug=True)
+  compile(output_dir, 'dist_debug', debug=True)
+  copyfile('dist_debug/libavoid.js', '../examples/debug-src/generated/libavoid.js')
+  copyfile('dist_debug/libavoid.wasm', '../examples/debug-src/generated/libavoid.wasm')
+  copyfile('dist_debug/libavoid.wasm.map', '../examples/debug-src/generated/libavoid.wasm.map')
+  
   logger.info('Build API documentation')
   execute_command('npm run api-docs', logger, '../')
 
   logger.info('Build production version')
-  generate_bindings(debug=False)
-  compile(debug=False)
-  copytree('dist', '../src/generated/', dirs_exist_ok=True)
+  output_dir = 'generated'
+  generate_bindings(output_dir, debug=False)
+  compile(output_dir, 'dist', debug=False)
+  copyfile('dist/libavoid.js', '../src/generated/libavoid.js')
+  copyfile('dist/libavoid.wasm', '../src/generated/libavoid.wasm')
 
 
 if __name__ == '__main__':

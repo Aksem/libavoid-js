@@ -6,11 +6,13 @@ Libavoid port for js. This port is created mostly using [WebIDL Bindings](https:
 
 There are two versions of the library:
 
-- **Production version** of the library is in `dist` directory
+- **Release version** of the library is in `dist` directory
 - **Debug version** of the library is in `examples/lib` directory
 
 A usage example is in `examples` directory. To try it out start http server in this
 directory, just opening index.html in your browser doesn't work unfortunately.
+
+The library works in both webbrowser and node.js environments.
 
 ## Documentation
 
@@ -26,10 +28,13 @@ Library API Documentation is in `api_docs_build` directory, just open `index.htm
 
 ### Build commands
 
-- `python3 ../tools/generate.py`
-  
-  It will generate both production and debug versions of the library, also update documentation.
+1. `python3 ../tools/generate.py`
 
+    It will generate both release and debug versions of the library, also update documentation.
+
+2. `npm run build`
+
+    It will create a package with generated release version of the library.
 
 ### Debugging
 
@@ -39,7 +44,6 @@ Also, symlink to adaptagrams should be in `examples` directory to provide libavo
 
 ## TODO
 
-- idea: docs from c++
 - tests
 - extend WebIDL bindings to provide the same abilities as C++ library
 - host API Docs in platform such Github Pages
