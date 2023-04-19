@@ -12,7 +12,8 @@
     }
   },
   "files": [
-    "dist/"
+    "dist/",
+    "typings/"
   ],
   "scripts": {
     "build": "node build.js",
