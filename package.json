@@ -8,7 +8,7 @@
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
-      "types": "./dist/libavoid.d.ts"
+      "types": "./typings/libavoid.d.ts"
     }
   },
   "files": [
