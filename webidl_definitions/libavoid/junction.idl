@@ -5,4 +5,9 @@ interface JunctionRef : Obstacle {
   void JunctionRef(Router router, [Ref] Point position, optional unsigned long id = 0);
 
   [Value] Point position();
+
+  void setPositionFixed(boolean fixed);
+  [Const] boolean positionFixed();
+
+  [Value] Point recommendedPosition();
 };

@@ -8,7 +8,7 @@ var initAvoidModule = (() => {
       readyPromiseResolve = resolve;
       readyPromiseReject = reject;
     });
-    ["_malloc", "getExceptionMessage", "___get_exception_message", "_free", "_fflush", "_emscripten_bind_VoidPtr___destroy___0", "_emscripten_bind_HyperedgeImprover_HyperedgeImprover_0", "_emscripten_bind_HyperedgeImprover_clear_0", "_emscripten_bind_HyperedgeImprover_setRouter_1", "_emscripten_bind_HyperedgeImprover___destroy___0", "_emscripten_bind_Box_Box_0", "_emscripten_bind_Box_length_1", "_emscripten_bind_Box_width_0", "_emscripten_bind_Box_height_0", "_emscripten_bind_Box_get_min_0", "_emscripten_bind_Box_set_min_1", "_emscripten_bind_Box_get_max_0", "_emscripten_bind_Box_set_max_1", "_emscripten_bind_Box___destroy___0", "_emscripten_bind_PolygonInterface_clear_0", "_emscripten_bind_PolygonInterface_empty_0", "_emscripten_bind_PolygonInterface_size_0", "_emscripten_bind_PolygonInterface_id_0", "_emscripten_bind_PolygonInterface_at_1", "_emscripten_bind_PolygonInterface_boundingRectPolygon_0", "_emscripten_bind_PolygonInterface_offsetBoundingBox_1", "_emscripten_bind_PolygonInterface_offsetPolygon_1", "_emscripten_bind_PolygonInterface___destroy___0", "_emscripten_bind_Polygon_Polygon_0", "_emscripten_bind_Polygon_Polygon_1", "_emscripten_bind_Polygon_setPoint_2", "_emscripten_bind_Polygon_size_0", "_emscripten_bind_Polygon_get_ps_1", "_emscripten_bind_Polygon_set_ps_2", "_emscripten_bind_Polygon___destroy___0", "_emscripten_bind_Point_Point_0", "_emscripten_bind_Point_Point_2", "_emscripten_bind_Point_equal_1", "_emscripten_bind_Point_get_x_0", "_emscripten_bind_Point_set_x_1", "_emscripten_bind_Point_get_y_0", "_emscripten_bind_Point_set_y_1", "_emscripten_bind_Point_get_id_0", "_emscripten_bind_Point_set_id_1", "_emscripten_bind_Point_get_vn_0", "_emscripten_bind_Point_set_vn_1", "_emscripten_bind_Point___destroy___0", "_emscripten_bind_Rectangle_Rectangle_3", "_emscripten_bind_Rectangle___destroy___0", "_emscripten_bind_HyperedgeTreeNode_HyperedgeTreeNode_0", "_emscripten_bind_HyperedgeTreeNode_writeEdgesToConns_2", "_emscripten_bind_HyperedgeTreeNode___destroy___0", "_emscripten_bind_HyperedgeTreeEdge_HyperedgeTreeEdge_3", "_emscripten_bind_HyperedgeTreeEdge___destroy___0", "_emscripten_bind_AStarPath_AStarPath_0", "_emscripten_bind_AStarPath_search_4", "_emscripten_bind_AStarPath___destroy___0", "_emscripten_bind_ConnEnd_ConnEnd_1", "_emscripten_bind_ConnEnd_ConnEnd_2", "_emscripten_bind_ConnEnd___destroy___0", "_emscripten_bind_ActionInfo_ActionInfo_2", "_emscripten_bind_ActionInfo_ActionInfo_3", "_emscripten_bind_ActionInfo_ActionInfo_4", "_emscripten_bind_ActionInfo_obstacle_0", "_emscripten_bind_ActionInfo_shape_0", "_emscripten_bind_ActionInfo_conn_0", "_emscripten_bind_ActionInfo_junction_0", "_emscripten_bind_ActionInfo_addConnEndUpdate_3", "_emscripten_bind_ActionInfo_get_type_0", "_emscripten_bind_ActionInfo_set_type_1", "_emscripten_bind_ActionInfo_get_objPtr_0", "_emscripten_bind_ActionInfo_set_objPtr_1", "_emscripten_bind_ActionInfo_get_newPoly_0", "_emscripten_bind_ActionInfo_set_newPoly_1", "_emscripten_bind_ActionInfo_get_newPosition_0", "_emscripten_bind_ActionInfo_set_newPosition_1", "_emscripten_bind_ActionInfo_get_firstMove_0", "_emscripten_bind_ActionInfo_set_firstMove_1", "_emscripten_bind_ActionInfo___destroy___0", "_emscripten_bind_ShapeConnectionPin_ShapeConnectionPin_2", "_emscripten_bind_ShapeConnectionPin_ShapeConnectionPin_3", "_emscripten_bind_ShapeConnectionPin_ShapeConnectionPin_6", "_emscripten_bind_ShapeConnectionPin_ShapeConnectionPin_7", "_emscripten_bind_ShapeConnectionPin_setConnectionCost_1", "_emscripten_bind_ShapeConnectionPin_position_0", "_emscripten_bind_ShapeConnectionPin_position_1", "_emscripten_bind_ShapeConnectionPin_directions_0", "_emscripten_bind_ShapeConnectionPin_setExclusive_1", "_emscripten_bind_ShapeConnectionPin_isExclusive_0", "_emscripten_bind_ShapeConnectionPin___destroy___0", "_emscripten_bind_Obstacle_id_0", "_emscripten_bind_Obstacle_polygon_0", "_emscripten_bind_Obstacle_router_0", "_emscripten_bind_Obstacle_position_0", "_emscripten_bind_Obstacle_setNewPoly_1", "_emscripten_bind_Obstacle___destroy___0", "_emscripten_bind_JunctionRef_JunctionRef_2", "_emscripten_bind_JunctionRef_JunctionRef_3", "_emscripten_bind_JunctionRef_position_0", "_emscripten_bind_JunctionRef___destroy___0", "_emscripten_bind_ShapeRef_ShapeRef_2", "_emscripten_bind_ShapeRef_ShapeRef_3", "_emscripten_bind_ShapeRef_polygon_0", "_emscripten_bind_ShapeRef_position_0", "_emscripten_bind_ShapeRef_setNewPoly_1", "_emscripten_bind_ShapeRef___destroy___0", "_emscripten_bind_HyperedgeNewAndDeletedObjectLists___destroy___0", "_emscripten_bind_HyperedgeRerouter_HyperedgeRerouter_0", "_emscripten_bind_HyperedgeRerouter_registerHyperedgeForRerouting_1", "_emscripten_bind_HyperedgeRerouter___destroy___0", "_emscripten_bind_VertInf___destroy___0", "_emscripten_bind_VertID_VertID_0", "_emscripten_bind_VertID_VertID_2", "_emscripten_bind_VertID_VertID_3", "_emscripten_bind_VertID_get_objID_0", "_emscripten_bind_VertID_set_objID_1", "_emscripten_bind_VertID_get_vn_0", "_emscripten_bind_VertID_set_vn_1", "_emscripten_bind_VertID_get_props_0", "_emscripten_bind_VertID_set_props_1", "_emscripten_bind_VertID_get_src_0", "_emscripten_bind_VertID_get_tar_0", "_emscripten_bind_VertID_get_PROP_ConnPoint_0", "_emscripten_bind_VertID_get_PROP_OrthShapeEdge_0", "_emscripten_bind_VertID_get_PROP_ConnectionPin_0", "_emscripten_bind_VertID_get_PROP_ConnCheckpoint_0", "_emscripten_bind_VertID_get_PROP_DummyPinHelper_0", "_emscripten_bind_VertID___destroy___0", "_emscripten_bind_MinimumTerminalSpanningTree___destroy___0", "_emscripten_bind_Checkpoint_Checkpoint_1", "_emscripten_bind_Checkpoint___destroy___0", "_emscripten_bind_ConnRef_ConnRef_3", "_emscripten_bind_ConnRef_ConnRef_4", "_emscripten_bind_ConnRef_id_0", "_emscripten_bind_ConnRef_setCallback_2", "_emscripten_bind_ConnRef_setSourceEndpoint_1", "_emscripten_bind_ConnRef_setDestEndpoint_1", "_emscripten_bind_ConnRef_routingType_0", "_emscripten_bind_ConnRef_setRoutingType_1", "_emscripten_bind_ConnRef_displayRoute_0", "_emscripten_bind_ConnRef_setHateCrossings_1", "_emscripten_bind_ConnRef_doesHateCrossings_0", "_emscripten_bind_ConnRef___destroy___0", "_emscripten_bind_EdgeInf_EdgeInf_2", "_emscripten_bind_EdgeInf_EdgeInf_3", "_emscripten_bind_EdgeInf___destroy___0", "_emscripten_bind_LineRep_get_begin_0", "_emscripten_bind_LineRep_set_begin_1", "_emscripten_bind_LineRep_get_end_0", "_emscripten_bind_LineRep_set_end_1", "_emscripten_bind_LineRep___destroy___0", "_emscripten_bind_Router_Router_1", "_emscripten_bind_Router_processTransaction_0", "_emscripten_bind_Router_printInfo_0", "_emscripten_bind_Router_deleteConnector_1", "_emscripten_bind_Router_moveShape_2", "_emscripten_bind_Router_moveShape_3", "_emscripten_bind_Router_deleteShape_1", "_emscripten_bind_Router_setRoutingParameter_2", "_emscripten_bind_Router_setRoutingOption_2", "_emscripten_bind_Router___destroy___0", "_emscripten_enum_Avoid_ConnDirFlag_ConnDirNone", "_emscripten_enum_Avoid_ConnDirFlag_ConnDirUp", "_emscripten_enum_Avoid_ConnDirFlag_ConnDirDown", "_emscripten_enum_Avoid_ConnDirFlag_ConnDirLeft", "_emscripten_enum_Avoid_ConnDirFlag_ConnDirRight", "_emscripten_enum_Avoid_ConnDirFlag_ConnDirAll", "_emscripten_enum_Avoid_ConnEndType_ConnEndPoint", "_emscripten_enum_Avoid_ConnEndType_ConnEndShapePin", "_emscripten_enum_Avoid_ConnEndType_ConnEndJunction", "_emscripten_enum_Avoid_ConnEndType_ConnEndEmpty", "_emscripten_enum_Avoid_ActionType_ShapeMove", "_emscripten_enum_Avoid_ActionType_ShapeAdd", "_emscripten_enum_Avoid_ActionType_ShapeRemove", "_emscripten_enum_Avoid_ActionType_JunctionMove", "_emscripten_enum_Avoid_ActionType_JunctionAdd", "_emscripten_enum_Avoid_ActionType_JunctionRemove", "_emscripten_enum_Avoid_ActionType_ConnChange", "_emscripten_enum_Avoid_ActionType_ConnectionPinChange", "_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_CW90", "_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_CW180", "_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_CW270", "_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_FlipX", "_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_FlipY", "_emscripten_enum_Avoid_ConnType_ConnType_None", "_emscripten_enum_Avoid_ConnType_ConnType_PolyLine", "_emscripten_enum_Avoid_ConnType_ConnType_Orthogonal", "_emscripten_enum_Avoid_RouterFlag_PolyLineRouting", "_emscripten_enum_Avoid_RouterFlag_OrthogonalRouting", "_emscripten_enum_Avoid_RoutingParameter_segmentPenalty", "_emscripten_enum_Avoid_RoutingParameter_anglePenalty", "_emscripten_enum_Avoid_RoutingParameter_crossingPenalty", "_emscripten_enum_Avoid_RoutingParameter_clusterCrossingPenalty", "_emscripten_enum_Avoid_RoutingParameter_fixedSharedPathPenalty", "_emscripten_enum_Avoid_RoutingParameter_portDirectionPenalty", "_emscripten_enum_Avoid_RoutingParameter_shapeBufferDistance", "_emscripten_enum_Avoid_RoutingParameter_idealNudgingDistance", "_emscripten_enum_Avoid_RoutingParameter_reverseDirectionPenalty", "_emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalSegmentsConnectedToShapes", "_emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingJunctions", "_emscripten_enum_Avoid_RoutingOption_penaliseOrthogonalSharedPathsAtConnEnds", "_emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalTouchingColinearSegments", "_emscripten_enum_Avoid_RoutingOption_performUnifyingNudgingPreprocessingStep", "_emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingAddingAndDeletingJunctions", "_emscripten_enum_Avoid_RoutingOption_nudgeSharedPathsWithCommonEndPoint", "onRuntimeInitialized"].forEach((prop) => {
+    ["_malloc", "getExceptionMessage", "___get_exception_message", "_free", "_fflush", "_emscripten_bind_VoidPtr___destroy___0", "_emscripten_bind_HyperedgeImprover_HyperedgeImprover_0", "_emscripten_bind_HyperedgeImprover_clear_0", "_emscripten_bind_HyperedgeImprover_setRouter_1", "_emscripten_bind_HyperedgeImprover___destroy___0", "_emscripten_bind_Box_Box_0", "_emscripten_bind_Box_length_1", "_emscripten_bind_Box_width_0", "_emscripten_bind_Box_height_0", "_emscripten_bind_Box_get_min_0", "_emscripten_bind_Box_set_min_1", "_emscripten_bind_Box_get_max_0", "_emscripten_bind_Box_set_max_1", "_emscripten_bind_Box___destroy___0", "_emscripten_bind_PolygonInterface_clear_0", "_emscripten_bind_PolygonInterface_empty_0", "_emscripten_bind_PolygonInterface_size_0", "_emscripten_bind_PolygonInterface_id_0", "_emscripten_bind_PolygonInterface_at_1", "_emscripten_bind_PolygonInterface_boundingRectPolygon_0", "_emscripten_bind_PolygonInterface_offsetBoundingBox_1", "_emscripten_bind_PolygonInterface_offsetPolygon_1", "_emscripten_bind_PolygonInterface___destroy___0", "_emscripten_bind_Polygon_Polygon_0", "_emscripten_bind_Polygon_Polygon_1", "_emscripten_bind_Polygon_setPoint_2", "_emscripten_bind_Polygon_size_0", "_emscripten_bind_Polygon_get_ps_1", "_emscripten_bind_Polygon_set_ps_2", "_emscripten_bind_Polygon___destroy___0", "_emscripten_bind_Point_Point_0", "_emscripten_bind_Point_Point_2", "_emscripten_bind_Point_equal_1", "_emscripten_bind_Point_get_x_0", "_emscripten_bind_Point_set_x_1", "_emscripten_bind_Point_get_y_0", "_emscripten_bind_Point_set_y_1", "_emscripten_bind_Point_get_id_0", "_emscripten_bind_Point_set_id_1", "_emscripten_bind_Point_get_vn_0", "_emscripten_bind_Point_set_vn_1", "_emscripten_bind_Point___destroy___0", "_emscripten_bind_Rectangle_Rectangle_2", "_emscripten_bind_Rectangle_Rectangle_3", "_emscripten_bind_Rectangle___destroy___0", "_emscripten_bind_HyperedgeTreeNode_HyperedgeTreeNode_0", "_emscripten_bind_HyperedgeTreeNode_writeEdgesToConns_2", "_emscripten_bind_HyperedgeTreeNode___destroy___0", "_emscripten_bind_HyperedgeTreeEdge_HyperedgeTreeEdge_3", "_emscripten_bind_HyperedgeTreeEdge___destroy___0", "_emscripten_bind_AStarPath_AStarPath_0", "_emscripten_bind_AStarPath_search_4", "_emscripten_bind_AStarPath___destroy___0", "_emscripten_bind_ConnEnd_ConnEnd_1", "_emscripten_bind_ConnEnd_ConnEnd_2", "_emscripten_bind_ConnEnd_createConnEndFromJunctionRef_1", "_emscripten_bind_ConnEnd___destroy___0", "_emscripten_bind_ActionInfo_ActionInfo_2", "_emscripten_bind_ActionInfo_ActionInfo_3", "_emscripten_bind_ActionInfo_ActionInfo_4", "_emscripten_bind_ActionInfo_obstacle_0", "_emscripten_bind_ActionInfo_shape_0", "_emscripten_bind_ActionInfo_conn_0", "_emscripten_bind_ActionInfo_junction_0", "_emscripten_bind_ActionInfo_addConnEndUpdate_3", "_emscripten_bind_ActionInfo_get_type_0", "_emscripten_bind_ActionInfo_set_type_1", "_emscripten_bind_ActionInfo_get_objPtr_0", "_emscripten_bind_ActionInfo_set_objPtr_1", "_emscripten_bind_ActionInfo_get_newPoly_0", "_emscripten_bind_ActionInfo_set_newPoly_1", "_emscripten_bind_ActionInfo_get_newPosition_0", "_emscripten_bind_ActionInfo_set_newPosition_1", "_emscripten_bind_ActionInfo_get_firstMove_0", "_emscripten_bind_ActionInfo_set_firstMove_1", "_emscripten_bind_ActionInfo___destroy___0", "_emscripten_bind_ShapeConnectionPin_ShapeConnectionPin_2", "_emscripten_bind_ShapeConnectionPin_ShapeConnectionPin_3", "_emscripten_bind_ShapeConnectionPin_ShapeConnectionPin_6", "_emscripten_bind_ShapeConnectionPin_ShapeConnectionPin_7", "_emscripten_bind_ShapeConnectionPin_setConnectionCost_1", "_emscripten_bind_ShapeConnectionPin_position_0", "_emscripten_bind_ShapeConnectionPin_position_1", "_emscripten_bind_ShapeConnectionPin_directions_0", "_emscripten_bind_ShapeConnectionPin_setExclusive_1", "_emscripten_bind_ShapeConnectionPin_isExclusive_0", "_emscripten_bind_ShapeConnectionPin___destroy___0", "_emscripten_bind_Obstacle_id_0", "_emscripten_bind_Obstacle_polygon_0", "_emscripten_bind_Obstacle_router_0", "_emscripten_bind_Obstacle_position_0", "_emscripten_bind_Obstacle_setNewPoly_1", "_emscripten_bind_Obstacle___destroy___0", "_emscripten_bind_JunctionRef_JunctionRef_2", "_emscripten_bind_JunctionRef_JunctionRef_3", "_emscripten_bind_JunctionRef_position_0", "_emscripten_bind_JunctionRef_setPositionFixed_1", "_emscripten_bind_JunctionRef_positionFixed_0", "_emscripten_bind_JunctionRef_recommendedPosition_0", "_emscripten_bind_JunctionRef___destroy___0", "_emscripten_bind_ShapeRef_ShapeRef_2", "_emscripten_bind_ShapeRef_ShapeRef_3", "_emscripten_bind_ShapeRef_polygon_0", "_emscripten_bind_ShapeRef_position_0", "_emscripten_bind_ShapeRef_setNewPoly_1", "_emscripten_bind_ShapeRef___destroy___0", "_emscripten_bind_HyperedgeNewAndDeletedObjectLists___destroy___0", "_emscripten_bind_HyperedgeRerouter_HyperedgeRerouter_0", "_emscripten_bind_HyperedgeRerouter_registerHyperedgeForRerouting_1", "_emscripten_bind_HyperedgeRerouter___destroy___0", "_emscripten_bind_VertInf___destroy___0", "_emscripten_bind_VertID_VertID_0", "_emscripten_bind_VertID_VertID_2", "_emscripten_bind_VertID_VertID_3", "_emscripten_bind_VertID_get_objID_0", "_emscripten_bind_VertID_set_objID_1", "_emscripten_bind_VertID_get_vn_0", "_emscripten_bind_VertID_set_vn_1", "_emscripten_bind_VertID_get_props_0", "_emscripten_bind_VertID_set_props_1", "_emscripten_bind_VertID_get_src_0", "_emscripten_bind_VertID_get_tar_0", "_emscripten_bind_VertID_get_PROP_ConnPoint_0", "_emscripten_bind_VertID_get_PROP_OrthShapeEdge_0", "_emscripten_bind_VertID_get_PROP_ConnectionPin_0", "_emscripten_bind_VertID_get_PROP_ConnCheckpoint_0", "_emscripten_bind_VertID_get_PROP_DummyPinHelper_0", "_emscripten_bind_VertID___destroy___0", "_emscripten_bind_MinimumTerminalSpanningTree___destroy___0", "_emscripten_bind_Checkpoint_Checkpoint_1", "_emscripten_bind_Checkpoint___destroy___0", "_emscripten_bind_ConnRef_ConnRef_3", "_emscripten_bind_ConnRef_ConnRef_4", "_emscripten_bind_ConnRef_id_0", "_emscripten_bind_ConnRef_setCallback_2", "_emscripten_bind_ConnRef_setSourceEndpoint_1", "_emscripten_bind_ConnRef_setDestEndpoint_1", "_emscripten_bind_ConnRef_routingType_0", "_emscripten_bind_ConnRef_setRoutingType_1", "_emscripten_bind_ConnRef_displayRoute_0", "_emscripten_bind_ConnRef_setHateCrossings_1", "_emscripten_bind_ConnRef_doesHateCrossings_0", "_emscripten_bind_ConnRef___destroy___0", "_emscripten_bind_EdgeInf_EdgeInf_2", "_emscripten_bind_EdgeInf_EdgeInf_3", "_emscripten_bind_EdgeInf___destroy___0", "_emscripten_bind_LineRep_get_begin_0", "_emscripten_bind_LineRep_set_begin_1", "_emscripten_bind_LineRep_get_end_0", "_emscripten_bind_LineRep_set_end_1", "_emscripten_bind_LineRep___destroy___0", "_emscripten_bind_Router_Router_1", "_emscripten_bind_Router_processTransaction_0", "_emscripten_bind_Router_printInfo_0", "_emscripten_bind_Router_deleteConnector_1", "_emscripten_bind_Router_moveShape_2", "_emscripten_bind_Router_moveShape_3", "_emscripten_bind_Router_deleteShape_1", "_emscripten_bind_Router_moveJunction_2", "_emscripten_bind_Router_moveJunction_3", "_emscripten_bind_Router_setRoutingParameter_2", "_emscripten_bind_Router_setRoutingOption_2", "_emscripten_bind_Router___destroy___0", "_emscripten_enum_Avoid_ConnDirFlag_ConnDirNone", "_emscripten_enum_Avoid_ConnDirFlag_ConnDirUp", "_emscripten_enum_Avoid_ConnDirFlag_ConnDirDown", "_emscripten_enum_Avoid_ConnDirFlag_ConnDirLeft", "_emscripten_enum_Avoid_ConnDirFlag_ConnDirRight", "_emscripten_enum_Avoid_ConnDirFlag_ConnDirAll", "_emscripten_enum_Avoid_ConnEndType_ConnEndPoint", "_emscripten_enum_Avoid_ConnEndType_ConnEndShapePin", "_emscripten_enum_Avoid_ConnEndType_ConnEndJunction", "_emscripten_enum_Avoid_ConnEndType_ConnEndEmpty", "_emscripten_enum_Avoid_ActionType_ShapeMove", "_emscripten_enum_Avoid_ActionType_ShapeAdd", "_emscripten_enum_Avoid_ActionType_ShapeRemove", "_emscripten_enum_Avoid_ActionType_JunctionMove", "_emscripten_enum_Avoid_ActionType_JunctionAdd", "_emscripten_enum_Avoid_ActionType_JunctionRemove", "_emscripten_enum_Avoid_ActionType_ConnChange", "_emscripten_enum_Avoid_ActionType_ConnectionPinChange", "_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_CW90", "_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_CW180", "_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_CW270", "_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_FlipX", "_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_FlipY", "_emscripten_enum_Avoid_ConnType_ConnType_None", "_emscripten_enum_Avoid_ConnType_ConnType_PolyLine", "_emscripten_enum_Avoid_ConnType_ConnType_Orthogonal", "_emscripten_enum_Avoid_RouterFlag_PolyLineRouting", "_emscripten_enum_Avoid_RouterFlag_OrthogonalRouting", "_emscripten_enum_Avoid_RoutingParameter_segmentPenalty", "_emscripten_enum_Avoid_RoutingParameter_anglePenalty", "_emscripten_enum_Avoid_RoutingParameter_crossingPenalty", "_emscripten_enum_Avoid_RoutingParameter_clusterCrossingPenalty", "_emscripten_enum_Avoid_RoutingParameter_fixedSharedPathPenalty", "_emscripten_enum_Avoid_RoutingParameter_portDirectionPenalty", "_emscripten_enum_Avoid_RoutingParameter_shapeBufferDistance", "_emscripten_enum_Avoid_RoutingParameter_idealNudgingDistance", "_emscripten_enum_Avoid_RoutingParameter_reverseDirectionPenalty", "_emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalSegmentsConnectedToShapes", "_emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingJunctions", "_emscripten_enum_Avoid_RoutingOption_penaliseOrthogonalSharedPathsAtConnEnds", "_emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalTouchingColinearSegments", "_emscripten_enum_Avoid_RoutingOption_performUnifyingNudgingPreprocessingStep", "_emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingAddingAndDeletingJunctions", "_emscripten_enum_Avoid_RoutingOption_nudgeSharedPathsWithCommonEndPoint", "onRuntimeInitialized"].forEach((prop) => {
       if (!Object.getOwnPropertyDescriptor(Module["ready"], prop)) {
         Object.defineProperty(Module["ready"], prop, {
           get: () => abort("You are getting " + prop + " on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js"),
@@ -496,6 +496,52 @@ var initAvoidModule = (() => {
         this.message = excInfo[1];
       }
     }
+    var abortWrapperDepth = 0;
+    function makeAbortWrapper(original) {
+      return function() {
+        if (ABORT) {
+          throw "program has already aborted!";
+        }
+        abortWrapperDepth += 1;
+        try {
+          return original.apply(null, arguments);
+        } catch (e) {
+          if (ABORT || abortWrapperDepth > 1 || e instanceof EmscriptenSjLj || e === "unwind") {
+            throw e;
+          }
+          abort("unhandled exception: " + [e, e.stack]);
+        } finally {
+          abortWrapperDepth -= 1;
+        }
+      };
+    }
+    function instrumentWasmExportsWithAbort(exports) {
+      var instExports = {};
+      for (var name in exports) {
+        var original = exports[name];
+        if (typeof original == "function") {
+          instExports[name] = makeAbortWrapper(original);
+        } else {
+          instExports[name] = original;
+        }
+      }
+      return instExports;
+    }
+    function instrumentWasmTableWithAbort() {
+      var realGet = wasmTable.get;
+      var wrapperCache = {};
+      wasmTable.get = (i) => {
+        var func = realGet.call(wasmTable, i);
+        var cached = wrapperCache[i];
+        if (!cached || cached.func !== func) {
+          cached = wrapperCache[i] = {
+            func,
+            wrapper: makeAbortWrapper(func)
+          };
+        }
+        return cached.wrapper;
+      };
+    }
     var wasmBinaryFile;
     if (Module["locateFile"]) {
       wasmBinaryFile = "libavoid.wasm";
@@ -578,6 +624,7 @@ var initAvoidModule = (() => {
       };
       function receiveInstance(instance, module) {
         var exports = instance.exports;
+        exports = instrumentWasmExportsWithAbort(exports);
         Module["asm"] = exports;
         wasmMemory = Module["asm"]["memory"];
         assert(wasmMemory, "memory not found in wasm exports");
@@ -585,6 +632,7 @@ var initAvoidModule = (() => {
         wasmTable = Module["asm"]["__indirect_function_table"];
         assert(wasmTable, "table not found in wasm exports");
         addOnInit(Module["asm"]["__wasm_call_ctors"]);
+        instrumentWasmTableWithAbort();
         removeRunDependency("wasm-instantiate");
         return exports;
       }
@@ -1797,6 +1845,7 @@ var initAvoidModule = (() => {
     var _emscripten_bind_Point_get_vn_0 = Module["_emscripten_bind_Point_get_vn_0"] = createExportWrapper("emscripten_bind_Point_get_vn_0");
     var _emscripten_bind_Point_set_vn_1 = Module["_emscripten_bind_Point_set_vn_1"] = createExportWrapper("emscripten_bind_Point_set_vn_1");
     var _emscripten_bind_Point___destroy___0 = Module["_emscripten_bind_Point___destroy___0"] = createExportWrapper("emscripten_bind_Point___destroy___0");
+    var _emscripten_bind_Rectangle_Rectangle_2 = Module["_emscripten_bind_Rectangle_Rectangle_2"] = createExportWrapper("emscripten_bind_Rectangle_Rectangle_2");
     var _emscripten_bind_Rectangle_Rectangle_3 = Module["_emscripten_bind_Rectangle_Rectangle_3"] = createExportWrapper("emscripten_bind_Rectangle_Rectangle_3");
     var _emscripten_bind_Rectangle___destroy___0 = Module["_emscripten_bind_Rectangle___destroy___0"] = createExportWrapper("emscripten_bind_Rectangle___destroy___0");
     var _emscripten_bind_HyperedgeTreeNode_HyperedgeTreeNode_0 = Module["_emscripten_bind_HyperedgeTreeNode_HyperedgeTreeNode_0"] = createExportWrapper("emscripten_bind_HyperedgeTreeNode_HyperedgeTreeNode_0");
@@ -1809,6 +1858,7 @@ var initAvoidModule = (() => {
     var _emscripten_bind_AStarPath___destroy___0 = Module["_emscripten_bind_AStarPath___destroy___0"] = createExportWrapper("emscripten_bind_AStarPath___destroy___0");
     var _emscripten_bind_ConnEnd_ConnEnd_1 = Module["_emscripten_bind_ConnEnd_ConnEnd_1"] = createExportWrapper("emscripten_bind_ConnEnd_ConnEnd_1");
     var _emscripten_bind_ConnEnd_ConnEnd_2 = Module["_emscripten_bind_ConnEnd_ConnEnd_2"] = createExportWrapper("emscripten_bind_ConnEnd_ConnEnd_2");
+    var _emscripten_bind_ConnEnd_createConnEndFromJunctionRef_1 = Module["_emscripten_bind_ConnEnd_createConnEndFromJunctionRef_1"] = createExportWrapper("emscripten_bind_ConnEnd_createConnEndFromJunctionRef_1");
     var _emscripten_bind_ConnEnd___destroy___0 = Module["_emscripten_bind_ConnEnd___destroy___0"] = createExportWrapper("emscripten_bind_ConnEnd___destroy___0");
     var _emscripten_bind_ActionInfo_ActionInfo_2 = Module["_emscripten_bind_ActionInfo_ActionInfo_2"] = createExportWrapper("emscripten_bind_ActionInfo_ActionInfo_2");
     var _emscripten_bind_ActionInfo_ActionInfo_3 = Module["_emscripten_bind_ActionInfo_ActionInfo_3"] = createExportWrapper("emscripten_bind_ActionInfo_ActionInfo_3");
@@ -1849,6 +1899,9 @@ var initAvoidModule = (() => {
     var _emscripten_bind_JunctionRef_JunctionRef_2 = Module["_emscripten_bind_JunctionRef_JunctionRef_2"] = createExportWrapper("emscripten_bind_JunctionRef_JunctionRef_2");
     var _emscripten_bind_JunctionRef_JunctionRef_3 = Module["_emscripten_bind_JunctionRef_JunctionRef_3"] = createExportWrapper("emscripten_bind_JunctionRef_JunctionRef_3");
     var _emscripten_bind_JunctionRef_position_0 = Module["_emscripten_bind_JunctionRef_position_0"] = createExportWrapper("emscripten_bind_JunctionRef_position_0");
+    var _emscripten_bind_JunctionRef_setPositionFixed_1 = Module["_emscripten_bind_JunctionRef_setPositionFixed_1"] = createExportWrapper("emscripten_bind_JunctionRef_setPositionFixed_1");
+    var _emscripten_bind_JunctionRef_positionFixed_0 = Module["_emscripten_bind_JunctionRef_positionFixed_0"] = createExportWrapper("emscripten_bind_JunctionRef_positionFixed_0");
+    var _emscripten_bind_JunctionRef_recommendedPosition_0 = Module["_emscripten_bind_JunctionRef_recommendedPosition_0"] = createExportWrapper("emscripten_bind_JunctionRef_recommendedPosition_0");
     var _emscripten_bind_JunctionRef___destroy___0 = Module["_emscripten_bind_JunctionRef___destroy___0"] = createExportWrapper("emscripten_bind_JunctionRef___destroy___0");
     var _emscripten_bind_ShapeRef_ShapeRef_2 = Module["_emscripten_bind_ShapeRef_ShapeRef_2"] = createExportWrapper("emscripten_bind_ShapeRef_ShapeRef_2");
     var _emscripten_bind_ShapeRef_ShapeRef_3 = Module["_emscripten_bind_ShapeRef_ShapeRef_3"] = createExportWrapper("emscripten_bind_ShapeRef_ShapeRef_3");
@@ -1908,6 +1961,8 @@ var initAvoidModule = (() => {
     var _emscripten_bind_Router_moveShape_2 = Module["_emscripten_bind_Router_moveShape_2"] = createExportWrapper("emscripten_bind_Router_moveShape_2");
     var _emscripten_bind_Router_moveShape_3 = Module["_emscripten_bind_Router_moveShape_3"] = createExportWrapper("emscripten_bind_Router_moveShape_3");
     var _emscripten_bind_Router_deleteShape_1 = Module["_emscripten_bind_Router_deleteShape_1"] = createExportWrapper("emscripten_bind_Router_deleteShape_1");
+    var _emscripten_bind_Router_moveJunction_2 = Module["_emscripten_bind_Router_moveJunction_2"] = createExportWrapper("emscripten_bind_Router_moveJunction_2");
+    var _emscripten_bind_Router_moveJunction_3 = Module["_emscripten_bind_Router_moveJunction_3"] = createExportWrapper("emscripten_bind_Router_moveJunction_3");
     var _emscripten_bind_Router_setRoutingParameter_2 = Module["_emscripten_bind_Router_setRoutingParameter_2"] = createExportWrapper("emscripten_bind_Router_setRoutingParameter_2");
     var _emscripten_bind_Router_setRoutingOption_2 = Module["_emscripten_bind_Router_setRoutingOption_2"] = createExportWrapper("emscripten_bind_Router_setRoutingOption_2");
     var _emscripten_bind_Router___destroy___0 = Module["_emscripten_bind_Router___destroy___0"] = createExportWrapper("emscripten_bind_Router___destroy___0");
@@ -1987,8 +2042,8 @@ var initAvoidModule = (() => {
     var dynCall_iiiiij = Module["dynCall_iiiiij"] = createExportWrapper("dynCall_iiiiij");
     var dynCall_iiiiijj = Module["dynCall_iiiiijj"] = createExportWrapper("dynCall_iiiiijj");
     var dynCall_iiiiiijj = Module["dynCall_iiiiiijj"] = createExportWrapper("dynCall_iiiiiijj");
-    var ___start_em_js = Module["___start_em_js"] = 109880;
-    var ___stop_em_js = Module["___stop_em_js"] = 109978;
+    var ___start_em_js = Module["___start_em_js"] = 109896;
+    var ___stop_em_js = Module["___stop_em_js"] = 109994;
     function invoke_iiiiii(index, a1, a2, a3, a4, a5) {
       var sp = stackSave();
       try {
@@ -3238,6 +3293,11 @@ var initAvoidModule = (() => {
         width = width.ptr;
       if (height && typeof height === "object")
         height = height.ptr;
+      if (height === void 0) {
+        this.ptr = _emscripten_bind_Rectangle_Rectangle_2(centre, width);
+        getCache(Rectangle)[this.ptr] = this;
+        return;
+      }
       this.ptr = _emscripten_bind_Rectangle_Rectangle_3(centre, width, height);
       getCache(Rectangle)[this.ptr] = this;
     }
@@ -3345,6 +3405,13 @@ var initAvoidModule = (() => {
     ConnEnd.prototype.__class__ = ConnEnd;
     ConnEnd.__cache__ = {};
     Module["ConnEnd"] = ConnEnd;
+    ConnEnd.prototype["createConnEndFromJunctionRef"] = ConnEnd.prototype.createConnEndFromJunctionRef = function(junctionRef) {
+      var self2 = this.ptr;
+      if (junctionRef && typeof junctionRef === "object")
+        junctionRef = junctionRef.ptr;
+      return wrapPointer(_emscripten_bind_ConnEnd_createConnEndFromJunctionRef_1(self2, junctionRef), ConnEnd);
+    };
+    ;
     ConnEnd.prototype["__destroy__"] = ConnEnd.prototype.__destroy__ = function() {
       var self2 = this.ptr;
       _emscripten_bind_ConnEnd___destroy___0(self2);
@@ -3620,6 +3687,23 @@ var initAvoidModule = (() => {
     JunctionRef.prototype["position"] = JunctionRef.prototype.position = function() {
       var self2 = this.ptr;
       return wrapPointer(_emscripten_bind_JunctionRef_position_0(self2), Point);
+    };
+    ;
+    JunctionRef.prototype["setPositionFixed"] = JunctionRef.prototype.setPositionFixed = function(fixed) {
+      var self2 = this.ptr;
+      if (fixed && typeof fixed === "object")
+        fixed = fixed.ptr;
+      _emscripten_bind_JunctionRef_setPositionFixed_1(self2, fixed);
+    };
+    ;
+    JunctionRef.prototype["positionFixed"] = JunctionRef.prototype.positionFixed = function() {
+      var self2 = this.ptr;
+      return !!_emscripten_bind_JunctionRef_positionFixed_0(self2);
+    };
+    ;
+    JunctionRef.prototype["recommendedPosition"] = JunctionRef.prototype.recommendedPosition = function() {
+      var self2 = this.ptr;
+      return wrapPointer(_emscripten_bind_JunctionRef_recommendedPosition_0(self2), Point);
     };
     ;
     JunctionRef.prototype["__destroy__"] = JunctionRef.prototype.__destroy__ = function() {
@@ -4045,6 +4129,21 @@ var initAvoidModule = (() => {
       _emscripten_bind_Router_deleteShape_1(self2, shape);
     };
     ;
+    Router.prototype["moveJunction"] = Router.prototype.moveJunction = function(junction, xDiff, yDiff) {
+      var self2 = this.ptr;
+      if (junction && typeof junction === "object")
+        junction = junction.ptr;
+      if (xDiff && typeof xDiff === "object")
+        xDiff = xDiff.ptr;
+      if (yDiff && typeof yDiff === "object")
+        yDiff = yDiff.ptr;
+      if (yDiff === void 0) {
+        _emscripten_bind_Router_moveJunction_2(self2, junction, xDiff);
+        return;
+      }
+      _emscripten_bind_Router_moveJunction_3(self2, junction, xDiff, yDiff);
+    };
+    ;
     Router.prototype["setRoutingParameter"] = Router.prototype.setRoutingParameter = function(parameter, value) {
       var self2 = this.ptr;
       if (parameter && typeof parameter === "object")
@@ -4128,9 +4227,14 @@ var libavoid_default = initAvoidModule;
 var createAvoidLibObj = (initAvoid) => {
   return {
     avoidLib: void 0,
-    async load() {
+    async load(filePath = void 0) {
       if (!this.avoidLib) {
-        this.avoidLib = await initAvoid();
+        let locateFile = function(path, prefix) {
+          if (filePath !== void 0 && path.endsWith(".wasm"))
+            return filePath;
+          return prefix + path;
+        };
+        this.avoidLib = await initAvoid({ "locateFile": locateFile });
       } else {
         console.log("Avoid library is already initialized");
       }

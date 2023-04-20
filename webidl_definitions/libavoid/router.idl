@@ -51,6 +51,9 @@ interface Router {
   void moveShape(ShapeRef shape, double xDiff, double yDiff);
   void deleteShape(ShapeRef shape);
 
+  void moveJunction(JunctionRef junction, [Ref] Point point);
+  void moveJunction(JunctionRef junction, double xDiff, double yDiff);
+
   void setRoutingParameter(Avoid_RoutingParameter parameter, double value);
   void setRoutingOption(Avoid_RoutingOption option, boolean value);
 };
