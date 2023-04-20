@@ -28,6 +28,7 @@ declare interface PolyLine {
 declare interface ConnEnd {
   new (point: Point): ConnEnd;
   new (shapeRef: ShapeRef, classId: number): ConnEnd;
+  createConnEndFromJunctionRef(JunctionRef: JunctionRef, classId: number): ConnEnd;
 }
 
 declare interface ConnRef {
@@ -43,10 +44,20 @@ declare interface ConnRef {
   doesHateCrossings(): boolean;
 }
 
+declare interface JunctionRef {
+  new (router: Router, point: Point, id?: number): JunctionRef;
+
+  position(): Point;
+  setPositionFixed(fixed: boolean): void;
+  positionFixed(): boolean;
+  recommendedPosition(): Point;
+}
+
 declare interface Polygon {}
 
 declare interface Rectangle extends Polygon {
   new (centre: Point, width: number, height: number): Rectangle;
+  new (topLeft: Point, bottomRight: Point): Rectangle;
 }
 
 declare interface Obstacle {
@@ -74,12 +85,13 @@ export interface Avoid {
   Router: Router;
   Obstacle: Obstacle;
   ShapeRef: ShapeRef;
+  JunctionRef: JunctionRef;
 
   destroy(obj: any): void;
 }
 
 export namespace AvoidLib {
   const avoidLib: Avoid | null;
-  function load(): Promise<void>;
+  function load(filePath?: string): Promise<void>;
   function getInstance(): Avoid;
 }

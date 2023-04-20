@@ -103,7 +103,7 @@ def compile(generated_sources_dir, dist_dir_name, debug=False):
   if debug:
     args += ' -g4 --source-map-base http://localhost:8080/ -s RUNTIME_LOGGING=1 -s ASSERTIONS=1 -s DISABLE_EXCEPTION_CATCHING=0'
   else:
-    args += '-O2 -s DISABLE_EXCEPTION_CATCHING=0 -s ASSERTIONS=1 -flto'
+    args += '-O2 -s ASSERTIONS=1 -flto'  # -s DISABLE_EXCEPTION_CATCHING=0
 
   # list of parameters: https://emsettings.surma.technology/
   execute_command(f"""
@@ -126,6 +126,7 @@ def compile(generated_sources_dir, dist_dir_name, debug=False):
     -s ALLOW_MEMORY_GROWTH=1 \
     -sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=$addFunction \
     -s EXPORTED_FUNCTIONS=['_malloc'] \
+    -s ABORT_ON_WASM_EXCEPTIONS=1 \
     -Iadaptagrams/cola/ \
     -I{generated_sources_dir}/ \
     {compiler_sources} \

@@ -51,4 +51,5 @@ interface Point {
 [Prefix="Avoid::"]
 interface Rectangle : Polygon {
   void Rectangle([Ref] Point centre, double width, double height);
+  void Rectangle([Ref] Point topLeft, [Ref] Point bottomRight);
 };

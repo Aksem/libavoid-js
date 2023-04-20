@@ -20,6 +20,7 @@ enum Avoid_ConnEndType {
 [Prefix="Avoid::"]
 interface ConnEnd {
   void ConnEnd([Ref] Point point);
+  [Value] ConnEnd createConnEndFromJunctionRef(JunctionRef junctionRef);
   // void ConnEnd([Ref] Point point, ConnDirFlags visDirs);
   // TODO: find solution
   // in webidl bindings overloading works only if number of arguments differs
