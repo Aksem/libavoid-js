@@ -1,6 +1,6 @@
 {
   "name": "libavoid-js",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "JS port of libavoid library",
   "main": "dist/index.js",
   "module": "./dist/index.mjs",
@@ -22,14 +22,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/big-thesis/Hnatiuk.Adaptagrams.git"
+    "url": "git+https://github.com/Aksem/libavoid-js.git"
   },
   "author": "Vladyslav Hnatiuk",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/big-thesis/Hnatiuk.Adaptagrams/issues"
+    "url": "https://github.com/Aksem/libavoid-js/issues"
   },
-  "homepage": "https://github.com/big-thesis/Hnatiuk.Adaptagrams",
+  "homepage": "https://github.com/Aksem/libavoid-js",
   "devDependencies": {
     "docdash": "^1.2.0",
     "esbuild": "^0.17.15",
