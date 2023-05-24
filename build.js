@@ -4,15 +4,15 @@ const { copy } = require("esbuild-plugin-copy");
 
 // .mjs for better node.js support
 const builds = [
-  { extension: ".js", format: "esm", platform: "browser" },
-  { extension: ".mjs", format: "esm", platform: "node" },
+  { entrypoint: 'index', extension: ".js", format: "esm", platform: "browser" },
+  { entrypoint: 'index-node', extension: ".mjs", format: "esm", platform: "node" },
 ];
 
 for (const build of builds) {
   // release
   esbuild
     .build({
-      entryPoints: [`src/index${build.extension}`],
+      entryPoints: [`src/${build.entrypoint}${build.extension}`],
       outdir: "dist",
       outExtension: {
         ".js": build.extension,
@@ -36,6 +36,13 @@ for (const build of builds) {
       ],
     })
     .then(() => {
+      fs.copyFile(
+        './typings/libavoid.d.ts',
+        `./dist/${build.entrypoint}.d.ts`,
+        (err) => {
+          if (err) throw err;
+        }
+      );
       fs.copyFile(
         `./dist/index${build.extension}`,
         `./examples/dist/index${build.extension}`,

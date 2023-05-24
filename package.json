@@ -1,14 +1,14 @@
 {
   "name": "libavoid-js",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "JS port of libavoid library",
   "main": "dist/index.js",
-  "types": "typings/libavoid.d.ts",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs",
-      "types": "./typings/libavoid.d.ts"
+      "import": "./dist/index.js",
+      "node": "./dist/index-node.mjs",
+      "types": "./dist/libavoid.d.ts"
     }
   },
   "files": [
