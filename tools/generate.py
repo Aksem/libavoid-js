@@ -2,6 +2,7 @@ import logging
 import os
 from pathlib import Path
 from shutil import rmtree, copyfile
+from typing import Literal
 
 from process_utils import execute_command
 
@@ -73,7 +74,7 @@ def generate_bindings(output_dir, debug=False):
     glue_wrapper_file.write(glue_wrapper_content)
 
 
-def compile(generated_sources_dir, dist_dir_name, debug=False):
+def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Literal["web"] | Literal["node"] = "web"):
   try:
     os.mkdir(dist_dir_name)
   except FileExistsError:
@@ -121,7 +122,7 @@ def compile(generated_sources_dir, dist_dir_name, debug=False):
     -s USE_ES6_IMPORT_META=1 \
     -s EXPORT_NAME="'initAvoidModule'" \
     -s ALLOW_TABLE_GROWTH=1 \
-    -s ENVIRONMENT="web,node" \
+    -s ENVIRONMENT="{environment}" \
     --no-entry \
     -s ALLOW_MEMORY_GROWTH=1 \
     -sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=$addFunction \
@@ -170,10 +171,12 @@ def main():
   # remove old build data if exists
   logger.info('Remove old builds if they exist')
   dirs_to_recreate = [
-    'generated',
+    'generated_web',
     'generated_debug',
-    'dist',
+    'generated_node',
     'dist_debug',
+    'dist_web',
+    'dist_node',
     '../dist',
     '../examples/dist',
     '../examples/debug-src/generated',
@@ -203,12 +206,19 @@ def main():
   logger.info('Build API documentation')
   execute_command('npm run api-docs', logger, '../')
 
-  logger.info('Build production version')
-  output_dir = 'generated'
+  logger.info('Build production version for web')
+  output_dir = 'generated_web'
   generate_bindings(output_dir, debug=False)
-  compile(output_dir, 'dist', debug=False)
-  copyfile('dist/libavoid.js', '../src/generated/libavoid.js')
-  copyfile('dist/libavoid.wasm', '../src/generated/libavoid.wasm')
+  compile(output_dir, 'dist_web', debug=False)
+  copyfile('dist_web/libavoid.js', '../src/generated/libavoid.js')
+  copyfile('dist_web/libavoid.wasm', '../src/generated/libavoid.wasm')
+  
+  logger.info('Build production version for node')
+  output_dir = 'generated_node'
+  generate_bindings(output_dir, debug=False)
+  compile(output_dir, 'dist_node', debug=False)
+  # wasm is the same for all envs, copy only js
+  copyfile('dist_node/libavoid.js', '../src/generated/libavoid.mjs')
 
 
 if __name__ == '__main__':
