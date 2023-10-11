@@ -106,6 +106,7 @@ def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Lite
   else:
     args += '-O2 -s ASSERTIONS=1 -flto'  # -s DISABLE_EXCEPTION_CATCHING=0
 
+  mjs = environment == 'node'
   # list of parameters: https://emsettings.surma.technology/
   execute_command(f"""
   docker run \
@@ -119,7 +120,7 @@ def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Lite
     -s FILESYSTEM=0 \
     -s MODULARIZE=1 \
     -s EXPORT_ES6=1 \
-    -s USE_ES6_IMPORT_META=1 \
+    -s USE_ES6_IMPORT_META={'1' if mjs else '0'} \
     -s EXPORT_NAME="'initAvoidModule'" \
     -s ALLOW_TABLE_GROWTH=1 \
     -s ENVIRONMENT="{environment}" \
