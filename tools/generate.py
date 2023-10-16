@@ -102,9 +102,10 @@ def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Lite
   pwd = Path('.').resolve()
   args = ''
   if debug:
-    args += ' -g4 --source-map-base http://localhost:8080/ -s RUNTIME_LOGGING=1 -s ASSERTIONS=1 -s DISABLE_EXCEPTION_CATCHING=0'
+    #  -s DISABLE_EXCEPTION_CATCHING=0
+    args += ' -gsource-map --source-map-base http://localhost:8080/ -s RUNTIME_LOGGING=1 -s ASSERTIONS=1'
   else:
-    args += '-O2 -s ASSERTIONS=1 -flto'  # -s DISABLE_EXCEPTION_CATCHING=0
+    args += '-O3 -s ASSERTIONS=1 -flto'  # -s DISABLE_EXCEPTION_CATCHING=0
 
   mjs = environment == 'node'
   # list of parameters: https://emsettings.surma.technology/
@@ -116,6 +117,7 @@ def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Lite
   emscripten/emsdk:3.1.36 \
   emcc {args} \
     --closure 1 \
+    -fwasm-exceptions \
     -s LLD_REPORT_UNDEFINED \
     -s FILESYSTEM=0 \
     -s MODULARIZE=1 \
@@ -161,7 +163,7 @@ def main():
   # build sources
   adaptagrams_sources_path = Path('./adaptagrams')
   if adaptagrams_sources_path.exists() != True or adaptagrams_sources_path.is_dir() != True:
-    execute_command('git clone https://github.com/Aksem/adaptagrams.git', logger)
+    execute_command('git clone https://github.com/Aksem/adaptagrams.git -b feature/update-connpin-position', logger)
     patch_adaptagrams_sources('./adaptagrams/')
   
   # build tools: webidl_binder

@@ -44,6 +44,23 @@ declare interface ConnRef {
   doesHateCrossings(): boolean;
 }
 
+declare enum ConnDirFlags {
+  // TODO
+}
+
+declare interface ShapeConnectionPin {
+  new(shape: ShapeRef, classId: number, xOffset: number, yOffset: number, proportional: boolean, insideOffset: number, visDirs: ConnDirFlags): ShapeConnectionPin;
+  new(junction: JunctionRef, classId: number, visDirs?: ConnDirFlags): ShapeConnectionPin;
+
+  setConnectionCost(cost: number): void;
+  setExclusive(exclusive: boolean): void;
+  isExclusive(): boolean;
+  directions(): ConnDirFlags;
+  position(): Point;
+  updatePosition(newPosition: Point): void;
+}
+
+
 declare interface JunctionRef {
   new (router: Router, point: Point, id?: number): JunctionRef;
 

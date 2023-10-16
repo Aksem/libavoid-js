@@ -21,6 +21,7 @@ interface ShapeConnectionPin {
   ConnDirFlags directions();
   void setExclusive(boolean exclusive);
   boolean isExclusive();
+  void updatePosition([Ref] Point newPosition);
 
   // TODO: fix
   // ConnectionPinIds ids();

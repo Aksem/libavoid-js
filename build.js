@@ -44,15 +44,15 @@ for (const build of builds) {
         }
       );
       fs.copyFile(
-        `./dist/index${build.extension}`,
-        `./examples/dist/index${build.extension}`,
+        `./dist/${build.entrypoint}${build.extension}`,
+        `./examples/dist/${build.entrypoint}${build.extension}`,
         (err) => {
           if (err) throw err;
         }
       );
       fs.copyFile(
-        `./dist/index${build.extension}.map`,
-        `./examples/dist/index${build.extension}.map`,
+        `./dist/${build.entrypoint}${build.extension}.map`,
+        `./examples/dist/${build.entrypoint}${build.extension}.map`,
         (err) => {
           if (err) throw err;
         }
