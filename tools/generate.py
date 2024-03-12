@@ -23,8 +23,9 @@ SOURCE_FILES = [
   'mtst',
   'connector',
   'graph',
-  'router',
+  'router'
 ]
+ADAPTAGRAMS_VERSION = "1.0.0"
 
 logging.basicConfig()
 logger = logging.getLogger()
@@ -89,7 +90,8 @@ def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Lite
   # add dependencies that has no public class interfaces
   compiler_sources += ' ' + ' '.join([
     './adaptagrams/cola/libavoid/geometry.cpp',
-    './adaptagrams/cola/libavoid/visibility.cpp'
+    './adaptagrams/cola/libavoid/visibility.cpp',
+    './adaptagrams/cola/libavoid/uniqueid.cpp'
   ])
   # sources for that bindings are not implemented yet
   compiler_sources += ' ' + ' '.join([
@@ -163,7 +165,7 @@ def main():
   # build sources
   adaptagrams_sources_path = Path('./adaptagrams')
   if adaptagrams_sources_path.exists() != True or adaptagrams_sources_path.is_dir() != True:
-    execute_command('git clone https://github.com/Aksem/adaptagrams.git -b feature/update-connpin-position', logger)
+    execute_command(f'git clone https://github.com/Aksem/adaptagrams.git -b v{ADAPTAGRAMS_VERSION}', logger)
     patch_adaptagrams_sources('./adaptagrams/')
   
   # build tools: webidl_binder
