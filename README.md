@@ -28,7 +28,7 @@ Library API Documentation is in `api_docs_build` directory, just open `index.htm
 
 ### Build commands
 
-1. `python3 ../tools/generate.py`
+1. `python3 ./tools/generate.py`
 
     It will generate both release and debug versions of the library, also update documentation.
 

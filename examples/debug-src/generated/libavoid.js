@@ -27,7 +27,7 @@ Module['ready'] = new Promise(function(resolve, reject) {
   readyPromiseResolve = resolve;
   readyPromiseReject = reject;
 });
-["_malloc","getExceptionMessage","___get_exception_message","_free","_fflush","_emscripten_bind_VoidPtr___destroy___0","_emscripten_bind_HyperedgeImprover_HyperedgeImprover_0","_emscripten_bind_HyperedgeImprover_clear_0","_emscripten_bind_HyperedgeImprover_setRouter_1","_emscripten_bind_HyperedgeImprover___destroy___0","_emscripten_bind_Box_Box_0","_emscripten_bind_Box_length_1","_emscripten_bind_Box_width_0","_emscripten_bind_Box_height_0","_emscripten_bind_Box_get_min_0","_emscripten_bind_Box_set_min_1","_emscripten_bind_Box_get_max_0","_emscripten_bind_Box_set_max_1","_emscripten_bind_Box___destroy___0","_emscripten_bind_PolygonInterface_clear_0","_emscripten_bind_PolygonInterface_empty_0","_emscripten_bind_PolygonInterface_size_0","_emscripten_bind_PolygonInterface_id_0","_emscripten_bind_PolygonInterface_at_1","_emscripten_bind_PolygonInterface_boundingRectPolygon_0","_emscripten_bind_PolygonInterface_offsetBoundingBox_1","_emscripten_bind_PolygonInterface_offsetPolygon_1","_emscripten_bind_PolygonInterface___destroy___0","_emscripten_bind_Polygon_Polygon_0","_emscripten_bind_Polygon_Polygon_1","_emscripten_bind_Polygon_setPoint_2","_emscripten_bind_Polygon_size_0","_emscripten_bind_Polygon_get_ps_1","_emscripten_bind_Polygon_set_ps_2","_emscripten_bind_Polygon___destroy___0","_emscripten_bind_Point_Point_0","_emscripten_bind_Point_Point_2","_emscripten_bind_Point_equal_1","_emscripten_bind_Point_get_x_0","_emscripten_bind_Point_set_x_1","_emscripten_bind_Point_get_y_0","_emscripten_bind_Point_set_y_1","_emscripten_bind_Point_get_id_0","_emscripten_bind_Point_set_id_1","_emscripten_bind_Point_get_vn_0","_emscripten_bind_Point_set_vn_1","_emscripten_bind_Point___destroy___0","_emscripten_bind_Rectangle_Rectangle_2","_emscripten_bind_Rectangle_Rectangle_3","_emscripten_bind_Rectangle___destroy___0","_emscripten_bind_HyperedgeTreeNode_HyperedgeTreeNode_0","_emscripten_bind_HyperedgeTreeNode_writeEdgesToConns_2","_emscripten_bind_HyperedgeTreeNode___destroy___0","_emscripten_bind_HyperedgeTreeEdge_HyperedgeTreeEdge_3","_emscripten_bind_HyperedgeTreeEdge___destroy___0","_emscripten_bind_AStarPath_AStarPath_0","_emscripten_bind_AStarPath_search_4","_emscripten_bind_AStarPath___destroy___0","_emscripten_bind_ConnEnd_ConnEnd_1","_emscripten_bind_ConnEnd_ConnEnd_2","_emscripten_bind_ConnEnd_createConnEndFromJunctionRef_1","_emscripten_bind_ConnEnd___destroy___0","_emscripten_bind_ActionInfo_ActionInfo_2","_emscripten_bind_ActionInfo_ActionInfo_3","_emscripten_bind_ActionInfo_ActionInfo_4","_emscripten_bind_ActionInfo_obstacle_0","_emscripten_bind_ActionInfo_shape_0","_emscripten_bind_ActionInfo_conn_0","_emscripten_bind_ActionInfo_junction_0","_emscripten_bind_ActionInfo_addConnEndUpdate_3","_emscripten_bind_ActionInfo_get_type_0","_emscripten_bind_ActionInfo_set_type_1","_emscripten_bind_ActionInfo_get_objPtr_0","_emscripten_bind_ActionInfo_set_objPtr_1","_emscripten_bind_ActionInfo_get_newPoly_0","_emscripten_bind_ActionInfo_set_newPoly_1","_emscripten_bind_ActionInfo_get_newPosition_0","_emscripten_bind_ActionInfo_set_newPosition_1","_emscripten_bind_ActionInfo_get_firstMove_0","_emscripten_bind_ActionInfo_set_firstMove_1","_emscripten_bind_ActionInfo___destroy___0","_emscripten_bind_ShapeConnectionPin_ShapeConnectionPin_2","_emscripten_bind_ShapeConnectionPin_ShapeConnectionPin_3","_emscripten_bind_ShapeConnectionPin_ShapeConnectionPin_6","_emscripten_bind_ShapeConnectionPin_ShapeConnectionPin_7","_emscripten_bind_ShapeConnectionPin_setConnectionCost_1","_emscripten_bind_ShapeConnectionPin_position_0","_emscripten_bind_ShapeConnectionPin_position_1","_emscripten_bind_ShapeConnectionPin_directions_0","_emscripten_bind_ShapeConnectionPin_setExclusive_1","_emscripten_bind_ShapeConnectionPin_isExclusive_0","_emscripten_bind_ShapeConnectionPin_updatePosition_1","_emscripten_bind_ShapeConnectionPin___destroy___0","_emscripten_bind_Obstacle_id_0","_emscripten_bind_Obstacle_polygon_0","_emscripten_bind_Obstacle_router_0","_emscripten_bind_Obstacle_position_0","_emscripten_bind_Obstacle_setNewPoly_1","_emscripten_bind_Obstacle___destroy___0","_emscripten_bind_JunctionRef_JunctionRef_2","_emscripten_bind_JunctionRef_JunctionRef_3","_emscripten_bind_JunctionRef_position_0","_emscripten_bind_JunctionRef_setPositionFixed_1","_emscripten_bind_JunctionRef_positionFixed_0","_emscripten_bind_JunctionRef_recommendedPosition_0","_emscripten_bind_JunctionRef___destroy___0","_emscripten_bind_ShapeRef_ShapeRef_2","_emscripten_bind_ShapeRef_ShapeRef_3","_emscripten_bind_ShapeRef_polygon_0","_emscripten_bind_ShapeRef_position_0","_emscripten_bind_ShapeRef_setNewPoly_1","_emscripten_bind_ShapeRef___destroy___0","_emscripten_bind_HyperedgeNewAndDeletedObjectLists___destroy___0","_emscripten_bind_HyperedgeRerouter_HyperedgeRerouter_0","_emscripten_bind_HyperedgeRerouter_registerHyperedgeForRerouting_1","_emscripten_bind_HyperedgeRerouter___destroy___0","_emscripten_bind_VertInf___destroy___0","_emscripten_bind_VertID_VertID_0","_emscripten_bind_VertID_VertID_2","_emscripten_bind_VertID_VertID_3","_emscripten_bind_VertID_get_objID_0","_emscripten_bind_VertID_set_objID_1","_emscripten_bind_VertID_get_vn_0","_emscripten_bind_VertID_set_vn_1","_emscripten_bind_VertID_get_props_0","_emscripten_bind_VertID_set_props_1","_emscripten_bind_VertID_get_src_0","_emscripten_bind_VertID_get_tar_0","_emscripten_bind_VertID_get_PROP_ConnPoint_0","_emscripten_bind_VertID_get_PROP_OrthShapeEdge_0","_emscripten_bind_VertID_get_PROP_ConnectionPin_0","_emscripten_bind_VertID_get_PROP_ConnCheckpoint_0","_emscripten_bind_VertID_get_PROP_DummyPinHelper_0","_emscripten_bind_VertID___destroy___0","_emscripten_bind_MinimumTerminalSpanningTree___destroy___0","_emscripten_bind_Checkpoint_Checkpoint_1","_emscripten_bind_Checkpoint___destroy___0","_emscripten_bind_ConnRef_ConnRef_3","_emscripten_bind_ConnRef_ConnRef_4","_emscripten_bind_ConnRef_id_0","_emscripten_bind_ConnRef_setCallback_2","_emscripten_bind_ConnRef_setSourceEndpoint_1","_emscripten_bind_ConnRef_setDestEndpoint_1","_emscripten_bind_ConnRef_routingType_0","_emscripten_bind_ConnRef_setRoutingType_1","_emscripten_bind_ConnRef_displayRoute_0","_emscripten_bind_ConnRef_setHateCrossings_1","_emscripten_bind_ConnRef_doesHateCrossings_0","_emscripten_bind_ConnRef___destroy___0","_emscripten_bind_EdgeInf_EdgeInf_2","_emscripten_bind_EdgeInf_EdgeInf_3","_emscripten_bind_EdgeInf___destroy___0","_emscripten_bind_LineRep_get_begin_0","_emscripten_bind_LineRep_set_begin_1","_emscripten_bind_LineRep_get_end_0","_emscripten_bind_LineRep_set_end_1","_emscripten_bind_LineRep___destroy___0","_emscripten_bind_Router_Router_1","_emscripten_bind_Router_processTransaction_0","_emscripten_bind_Router_printInfo_0","_emscripten_bind_Router_deleteConnector_1","_emscripten_bind_Router_moveShape_2","_emscripten_bind_Router_moveShape_3","_emscripten_bind_Router_deleteShape_1","_emscripten_bind_Router_moveJunction_2","_emscripten_bind_Router_moveJunction_3","_emscripten_bind_Router_setRoutingParameter_2","_emscripten_bind_Router_setRoutingOption_2","_emscripten_bind_Router___destroy___0","_emscripten_enum_Avoid_ConnDirFlag_ConnDirNone","_emscripten_enum_Avoid_ConnDirFlag_ConnDirUp","_emscripten_enum_Avoid_ConnDirFlag_ConnDirDown","_emscripten_enum_Avoid_ConnDirFlag_ConnDirLeft","_emscripten_enum_Avoid_ConnDirFlag_ConnDirRight","_emscripten_enum_Avoid_ConnDirFlag_ConnDirAll","_emscripten_enum_Avoid_ConnEndType_ConnEndPoint","_emscripten_enum_Avoid_ConnEndType_ConnEndShapePin","_emscripten_enum_Avoid_ConnEndType_ConnEndJunction","_emscripten_enum_Avoid_ConnEndType_ConnEndEmpty","_emscripten_enum_Avoid_ActionType_ShapeMove","_emscripten_enum_Avoid_ActionType_ShapeAdd","_emscripten_enum_Avoid_ActionType_ShapeRemove","_emscripten_enum_Avoid_ActionType_JunctionMove","_emscripten_enum_Avoid_ActionType_JunctionAdd","_emscripten_enum_Avoid_ActionType_JunctionRemove","_emscripten_enum_Avoid_ActionType_ConnChange","_emscripten_enum_Avoid_ActionType_ConnectionPinChange","_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_CW90","_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_CW180","_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_CW270","_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_FlipX","_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_FlipY","_emscripten_enum_Avoid_ConnType_ConnType_None","_emscripten_enum_Avoid_ConnType_ConnType_PolyLine","_emscripten_enum_Avoid_ConnType_ConnType_Orthogonal","_emscripten_enum_Avoid_RouterFlag_PolyLineRouting","_emscripten_enum_Avoid_RouterFlag_OrthogonalRouting","_emscripten_enum_Avoid_RoutingParameter_segmentPenalty","_emscripten_enum_Avoid_RoutingParameter_anglePenalty","_emscripten_enum_Avoid_RoutingParameter_crossingPenalty","_emscripten_enum_Avoid_RoutingParameter_clusterCrossingPenalty","_emscripten_enum_Avoid_RoutingParameter_fixedSharedPathPenalty","_emscripten_enum_Avoid_RoutingParameter_portDirectionPenalty","_emscripten_enum_Avoid_RoutingParameter_shapeBufferDistance","_emscripten_enum_Avoid_RoutingParameter_idealNudgingDistance","_emscripten_enum_Avoid_RoutingParameter_reverseDirectionPenalty","_emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalSegmentsConnectedToShapes","_emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingJunctions","_emscripten_enum_Avoid_RoutingOption_penaliseOrthogonalSharedPathsAtConnEnds","_emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalTouchingColinearSegments","_emscripten_enum_Avoid_RoutingOption_performUnifyingNudgingPreprocessingStep","_emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingAddingAndDeletingJunctions","_emscripten_enum_Avoid_RoutingOption_nudgeSharedPathsWithCommonEndPoint","onRuntimeInitialized"].forEach((prop) => {
+["_malloc","getExceptionMessage","___get_exception_message","_free","___cpp_exception","___cxa_increment_exception_refcount","___cxa_decrement_exception_refcount","___thrown_object_from_unwind_exception","_fflush","_emscripten_bind_VoidPtr___destroy___0","_emscripten_bind_HyperedgeImprover_HyperedgeImprover_0","_emscripten_bind_HyperedgeImprover_clear_0","_emscripten_bind_HyperedgeImprover_setRouter_1","_emscripten_bind_HyperedgeImprover___destroy___0","_emscripten_bind_Box_Box_0","_emscripten_bind_Box_length_1","_emscripten_bind_Box_width_0","_emscripten_bind_Box_height_0","_emscripten_bind_Box_get_min_0","_emscripten_bind_Box_set_min_1","_emscripten_bind_Box_get_max_0","_emscripten_bind_Box_set_max_1","_emscripten_bind_Box___destroy___0","_emscripten_bind_PolygonInterface_clear_0","_emscripten_bind_PolygonInterface_empty_0","_emscripten_bind_PolygonInterface_size_0","_emscripten_bind_PolygonInterface_id_0","_emscripten_bind_PolygonInterface_at_1","_emscripten_bind_PolygonInterface_boundingRectPolygon_0","_emscripten_bind_PolygonInterface_offsetBoundingBox_1","_emscripten_bind_PolygonInterface_offsetPolygon_1","_emscripten_bind_PolygonInterface___destroy___0","_emscripten_bind_Polygon_Polygon_0","_emscripten_bind_Polygon_Polygon_1","_emscripten_bind_Polygon_setPoint_2","_emscripten_bind_Polygon_size_0","_emscripten_bind_Polygon_get_ps_1","_emscripten_bind_Polygon_set_ps_2","_emscripten_bind_Polygon___destroy___0","_emscripten_bind_Point_Point_0","_emscripten_bind_Point_Point_2","_emscripten_bind_Point_equal_1","_emscripten_bind_Point_get_x_0","_emscripten_bind_Point_set_x_1","_emscripten_bind_Point_get_y_0","_emscripten_bind_Point_set_y_1","_emscripten_bind_Point_get_id_0","_emscripten_bind_Point_set_id_1","_emscripten_bind_Point_get_vn_0","_emscripten_bind_Point_set_vn_1","_emscripten_bind_Point___destroy___0","_emscripten_bind_Rectangle_Rectangle_2","_emscripten_bind_Rectangle_Rectangle_3","_emscripten_bind_Rectangle___destroy___0","_emscripten_bind_HyperedgeTreeNode_HyperedgeTreeNode_0","_emscripten_bind_HyperedgeTreeNode_writeEdgesToConns_2","_emscripten_bind_HyperedgeTreeNode___destroy___0","_emscripten_bind_HyperedgeTreeEdge_HyperedgeTreeEdge_3","_emscripten_bind_HyperedgeTreeEdge___destroy___0","_emscripten_bind_AStarPath_AStarPath_0","_emscripten_bind_AStarPath_search_4","_emscripten_bind_AStarPath___destroy___0","_emscripten_bind_ConnEnd_ConnEnd_1","_emscripten_bind_ConnEnd_ConnEnd_2","_emscripten_bind_ConnEnd_createConnEndFromJunctionRef_1","_emscripten_bind_ConnEnd___destroy___0","_emscripten_bind_ActionInfo_ActionInfo_2","_emscripten_bind_ActionInfo_ActionInfo_3","_emscripten_bind_ActionInfo_ActionInfo_4","_emscripten_bind_ActionInfo_obstacle_0","_emscripten_bind_ActionInfo_shape_0","_emscripten_bind_ActionInfo_conn_0","_emscripten_bind_ActionInfo_junction_0","_emscripten_bind_ActionInfo_addConnEndUpdate_3","_emscripten_bind_ActionInfo_get_type_0","_emscripten_bind_ActionInfo_set_type_1","_emscripten_bind_ActionInfo_get_objPtr_0","_emscripten_bind_ActionInfo_set_objPtr_1","_emscripten_bind_ActionInfo_get_newPoly_0","_emscripten_bind_ActionInfo_set_newPoly_1","_emscripten_bind_ActionInfo_get_newPosition_0","_emscripten_bind_ActionInfo_set_newPosition_1","_emscripten_bind_ActionInfo_get_firstMove_0","_emscripten_bind_ActionInfo_set_firstMove_1","_emscripten_bind_ActionInfo___destroy___0","_emscripten_bind_ShapeConnectionPin_ShapeConnectionPin_2","_emscripten_bind_ShapeConnectionPin_ShapeConnectionPin_3","_emscripten_bind_ShapeConnectionPin_ShapeConnectionPin_6","_emscripten_bind_ShapeConnectionPin_ShapeConnectionPin_7","_emscripten_bind_ShapeConnectionPin_setConnectionCost_1","_emscripten_bind_ShapeConnectionPin_position_0","_emscripten_bind_ShapeConnectionPin_position_1","_emscripten_bind_ShapeConnectionPin_directions_0","_emscripten_bind_ShapeConnectionPin_setExclusive_1","_emscripten_bind_ShapeConnectionPin_isExclusive_0","_emscripten_bind_ShapeConnectionPin_updatePosition_1","_emscripten_bind_ShapeConnectionPin___destroy___0","_emscripten_bind_Obstacle_id_0","_emscripten_bind_Obstacle_polygon_0","_emscripten_bind_Obstacle_router_0","_emscripten_bind_Obstacle_position_0","_emscripten_bind_Obstacle_setNewPoly_1","_emscripten_bind_Obstacle___destroy___0","_emscripten_bind_JunctionRef_JunctionRef_2","_emscripten_bind_JunctionRef_JunctionRef_3","_emscripten_bind_JunctionRef_position_0","_emscripten_bind_JunctionRef_setPositionFixed_1","_emscripten_bind_JunctionRef_positionFixed_0","_emscripten_bind_JunctionRef_recommendedPosition_0","_emscripten_bind_JunctionRef___destroy___0","_emscripten_bind_ShapeRef_ShapeRef_2","_emscripten_bind_ShapeRef_ShapeRef_3","_emscripten_bind_ShapeRef_polygon_0","_emscripten_bind_ShapeRef_position_0","_emscripten_bind_ShapeRef_setNewPoly_1","_emscripten_bind_ShapeRef___destroy___0","_emscripten_bind_HyperedgeNewAndDeletedObjectLists___destroy___0","_emscripten_bind_HyperedgeRerouter_HyperedgeRerouter_0","_emscripten_bind_HyperedgeRerouter_registerHyperedgeForRerouting_1","_emscripten_bind_HyperedgeRerouter___destroy___0","_emscripten_bind_VertInf___destroy___0","_emscripten_bind_VertID_VertID_0","_emscripten_bind_VertID_VertID_2","_emscripten_bind_VertID_VertID_3","_emscripten_bind_VertID_get_objID_0","_emscripten_bind_VertID_set_objID_1","_emscripten_bind_VertID_get_vn_0","_emscripten_bind_VertID_set_vn_1","_emscripten_bind_VertID_get_props_0","_emscripten_bind_VertID_set_props_1","_emscripten_bind_VertID_get_src_0","_emscripten_bind_VertID_get_tar_0","_emscripten_bind_VertID_get_PROP_ConnPoint_0","_emscripten_bind_VertID_get_PROP_OrthShapeEdge_0","_emscripten_bind_VertID_get_PROP_ConnectionPin_0","_emscripten_bind_VertID_get_PROP_ConnCheckpoint_0","_emscripten_bind_VertID_get_PROP_DummyPinHelper_0","_emscripten_bind_VertID___destroy___0","_emscripten_bind_MinimumTerminalSpanningTree___destroy___0","_emscripten_bind_Checkpoint_Checkpoint_1","_emscripten_bind_Checkpoint___destroy___0","_emscripten_bind_ConnRef_ConnRef_3","_emscripten_bind_ConnRef_ConnRef_4","_emscripten_bind_ConnRef_id_0","_emscripten_bind_ConnRef_setCallback_2","_emscripten_bind_ConnRef_setSourceEndpoint_1","_emscripten_bind_ConnRef_setDestEndpoint_1","_emscripten_bind_ConnRef_routingType_0","_emscripten_bind_ConnRef_setRoutingType_1","_emscripten_bind_ConnRef_displayRoute_0","_emscripten_bind_ConnRef_setHateCrossings_1","_emscripten_bind_ConnRef_doesHateCrossings_0","_emscripten_bind_ConnRef___destroy___0","_emscripten_bind_EdgeInf_EdgeInf_2","_emscripten_bind_EdgeInf_EdgeInf_3","_emscripten_bind_EdgeInf___destroy___0","_emscripten_bind_LineRep_get_begin_0","_emscripten_bind_LineRep_set_begin_1","_emscripten_bind_LineRep_get_end_0","_emscripten_bind_LineRep_set_end_1","_emscripten_bind_LineRep___destroy___0","_emscripten_bind_Router_Router_1","_emscripten_bind_Router_processTransaction_0","_emscripten_bind_Router_printInfo_0","_emscripten_bind_Router_deleteConnector_1","_emscripten_bind_Router_moveShape_2","_emscripten_bind_Router_moveShape_3","_emscripten_bind_Router_deleteShape_1","_emscripten_bind_Router_moveJunction_2","_emscripten_bind_Router_moveJunction_3","_emscripten_bind_Router_setRoutingParameter_2","_emscripten_bind_Router_setRoutingOption_2","_emscripten_bind_Router___destroy___0","_emscripten_enum_Avoid_ConnDirFlag_ConnDirNone","_emscripten_enum_Avoid_ConnDirFlag_ConnDirUp","_emscripten_enum_Avoid_ConnDirFlag_ConnDirDown","_emscripten_enum_Avoid_ConnDirFlag_ConnDirLeft","_emscripten_enum_Avoid_ConnDirFlag_ConnDirRight","_emscripten_enum_Avoid_ConnDirFlag_ConnDirAll","_emscripten_enum_Avoid_ConnEndType_ConnEndPoint","_emscripten_enum_Avoid_ConnEndType_ConnEndShapePin","_emscripten_enum_Avoid_ConnEndType_ConnEndJunction","_emscripten_enum_Avoid_ConnEndType_ConnEndEmpty","_emscripten_enum_Avoid_ActionType_ShapeMove","_emscripten_enum_Avoid_ActionType_ShapeAdd","_emscripten_enum_Avoid_ActionType_ShapeRemove","_emscripten_enum_Avoid_ActionType_JunctionMove","_emscripten_enum_Avoid_ActionType_JunctionAdd","_emscripten_enum_Avoid_ActionType_JunctionRemove","_emscripten_enum_Avoid_ActionType_ConnChange","_emscripten_enum_Avoid_ActionType_ConnectionPinChange","_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_CW90","_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_CW180","_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_CW270","_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_FlipX","_emscripten_enum_Avoid_ShapeTransformationType_TransformationType_FlipY","_emscripten_enum_Avoid_ConnType_ConnType_None","_emscripten_enum_Avoid_ConnType_ConnType_PolyLine","_emscripten_enum_Avoid_ConnType_ConnType_Orthogonal","_emscripten_enum_Avoid_RouterFlag_PolyLineRouting","_emscripten_enum_Avoid_RouterFlag_OrthogonalRouting","_emscripten_enum_Avoid_RoutingParameter_segmentPenalty","_emscripten_enum_Avoid_RoutingParameter_anglePenalty","_emscripten_enum_Avoid_RoutingParameter_crossingPenalty","_emscripten_enum_Avoid_RoutingParameter_clusterCrossingPenalty","_emscripten_enum_Avoid_RoutingParameter_fixedSharedPathPenalty","_emscripten_enum_Avoid_RoutingParameter_portDirectionPenalty","_emscripten_enum_Avoid_RoutingParameter_shapeBufferDistance","_emscripten_enum_Avoid_RoutingParameter_idealNudgingDistance","_emscripten_enum_Avoid_RoutingParameter_reverseDirectionPenalty","_emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalSegmentsConnectedToShapes","_emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingJunctions","_emscripten_enum_Avoid_RoutingOption_penaliseOrthogonalSharedPathsAtConnEnds","_emscripten_enum_Avoid_RoutingOption_nudgeOrthogonalTouchingColinearSegments","_emscripten_enum_Avoid_RoutingOption_performUnifyingNudgingPreprocessingStep","_emscripten_enum_Avoid_RoutingOption_improveHyperedgeRoutesMovingAddingAndDeletingJunctions","_emscripten_enum_Avoid_RoutingOption_nudgeSharedPathsWithCommonEndPoint","onRuntimeInitialized"].forEach((prop) => {
   if (!Object.getOwnPropertyDescriptor(Module['ready'], prop)) {
     Object.defineProperty(Module['ready'], prop, {
       get: () => abort('You are getting ' + prop + ' on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js'),
@@ -598,6 +598,19 @@ function abort(what) {
   // defintion for WebAssembly.RuntimeError claims it takes no arguments even
   // though it can.
   // TODO(https://github.com/google/closure-compiler/pull/3913): Remove if/when upstream closure gets fixed.
+  // See above, in the meantime, we resort to wasm code for trapping.
+  //
+  // In case abort() is called before the module is initialized, Module['asm']
+  // and its exported '__trap' function is not available, in which case we throw
+  // a RuntimeError.
+  //
+  // We trap instead of throwing RuntimeError to prevent infinite-looping in
+  // Wasm EH code (because RuntimeError is considered as a foreign exception and
+  // caught by 'catch_all'), but in case throwing RuntimeError is fine because
+  // the module has not even been instantiated, even less running.
+  if (runtimeInitialized) {
+    ___trap();
+  }
   /** @suppress {checkTypes} */
   var e = new WebAssembly.RuntimeError(what);
 
@@ -662,21 +675,6 @@ function createExportWrapper(name, fixedasm) {
 }
 
 // include: runtime_exceptions.js
-// Base Emscripten EH error class
-class EmscriptenEH extends Error {}
-
-class EmscriptenSjLj extends EmscriptenEH {}
-
-class CppException extends EmscriptenEH {
-  constructor(excPtr) {
-    super(excPtr);
-    this.excPtr = excPtr;
-    const excInfo = getExceptionMessage(excPtr);
-    this.name = excInfo[0];
-    this.message = excInfo[1];
-  }
-}
-
 // end include: runtime_exceptions.js
 // `abortWrapperDepth` counts the recursion level of the wrapper function so
 // that we only handle exceptions at the top level letting the exception
@@ -700,7 +698,6 @@ function makeAbortWrapper(original) {
       if (
         ABORT // rethrow exception if abort() was called in the original function call above
         || abortWrapperDepth > 1 // rethrow exceptions not caught at the top level if exception catching is enabled; rethrow from exceptions from within callMain
-        || e instanceof EmscriptenSjLj // EXCEPTION_STACK_TRACES=1 will throw an instance of EmscriptenSjLj
         || e === 'unwind'
       ) {
         throw e;
@@ -1238,10 +1235,26 @@ function array_bounds_check_error(idx,size) { throw 'Array index ' + idx + ' out
       }
     }
 
-  function decrementExceptionRefcount(ptr) {
+  
+  function getCppExceptionTag() {
+      // In static linking, tags are defined within the wasm module and are
+      // exported, whereas in dynamic linking, tags are defined in library.js in
+      // JS code and wasm modules import them.
+      return Module['asm']['__cpp_exception'];
+    }
+  
+  function getCppExceptionThrownObjectFromWebAssemblyException(ex) {
+      // In Wasm EH, the value extracted from WebAssembly.Exception is a pointer
+      // to the unwind header. Convert it to the actual thrown value.
+      var unwind_header = ex.getArg(getCppExceptionTag(), 0);
+      return ___thrown_object_from_unwind_exception(unwind_header);
+    }
+  function decrementExceptionRefcount(ex) {
+      var ptr = getCppExceptionThrownObjectFromWebAssemblyException(ex);
       ___cxa_decrement_exception_refcount(ptr);
     }
 
+  
   
   
   function withStackSave(f) {
@@ -1342,7 +1355,8 @@ function array_bounds_check_error(idx,size) { throw 'Array index ' + idx + ' out
         return [type, message];
       });
     }
-  function getExceptionMessage(ptr) {
+  function getExceptionMessage(ex) {
+      var ptr = getCppExceptionThrownObjectFromWebAssemblyException(ex);
       return getExceptionMessageCommon(ptr);
     }
   Module["getExceptionMessage"] = getExceptionMessage;
@@ -1367,7 +1381,9 @@ function array_bounds_check_error(idx,size) { throw 'Array index ' + idx + ' out
     }
   }
 
-  function incrementExceptionRefcount(ptr) {
+  
+  function incrementExceptionRefcount(ex) {
+      var ptr = getCppExceptionThrownObjectFromWebAssemblyException(ex);
       ___cxa_increment_exception_refcount(ptr);
     }
 
@@ -1409,198 +1425,26 @@ function array_bounds_check_error(idx,size) { throw 'Array index ' + idx + ' out
       abort('Assertion failed: ' + UTF8ToString(condition) + ', at: ' + [filename ? UTF8ToString(filename) : 'unknown filename', line, func ? UTF8ToString(func) : 'unknown function']);
     }
 
-  var exceptionCaught =  [];
   
-  
-  var uncaughtExceptionCount = 0;
-  function ___cxa_begin_catch(ptr) {
-      var info = new ExceptionInfo(ptr);
-      if (!info.get_caught()) {
-        info.set_caught(true);
-        uncaughtExceptionCount--;
+  function ___throw_exception_with_stack_trace(ex) {
+      var e = new WebAssembly.Exception(getCppExceptionTag(), [ex], {traceStack: true});
+      e.message = getExceptionMessage(e);
+      // The generated stack trace will be in the form of:
+      //
+      // Error
+      //     at ___throw_exception_with_stack_trace(test.js:1139:13)
+      //     at __cxa_throw (wasm://wasm/009a7c9a:wasm-function[1551]:0x24367)
+      //     ...
+      //
+      // Remove this JS function name, which is in the second line, from the stack
+      // trace. Note that .stack does not yet exist in all browsers (see #18828).
+      if (e.stack) {
+        var arr = e.stack.split('\n');
+        arr.splice(1,1);
+        e.stack = arr.join('\n');
       }
-      info.set_rethrown(false);
-      exceptionCaught.push(info);
-      ___cxa_increment_exception_refcount(info.excPtr);
-      return info.get_exception_ptr();
+      throw e;
     }
-
-  
-  var exceptionLast = 0;
-  
-  
-  function ___cxa_end_catch() {
-      // Clear state flag.
-      _setThrew(0);
-      assert(exceptionCaught.length > 0);
-      // Call destructor if one is registered then clear it.
-      var info = exceptionCaught.pop();
-  
-      ___cxa_decrement_exception_refcount(info.excPtr);
-      exceptionLast = 0; // XXX in decRef?
-    }
-
-  
-  /** @constructor */
-  function ExceptionInfo(excPtr) {
-      this.excPtr = excPtr;
-      this.ptr = excPtr - 24;
-  
-      this.set_type = function(type) {
-        HEAPU32[(((this.ptr)+(4))>>2)] = type;
-      };
-  
-      this.get_type = function() {
-        return HEAPU32[(((this.ptr)+(4))>>2)];
-      };
-  
-      this.set_destructor = function(destructor) {
-        HEAPU32[(((this.ptr)+(8))>>2)] = destructor;
-      };
-  
-      this.get_destructor = function() {
-        return HEAPU32[(((this.ptr)+(8))>>2)];
-      };
-  
-      this.set_caught = function (caught) {
-        caught = caught ? 1 : 0;
-        HEAP8[(((this.ptr)+(12))>>0)] = caught;
-      };
-  
-      this.get_caught = function () {
-        return HEAP8[(((this.ptr)+(12))>>0)] != 0;
-      };
-  
-      this.set_rethrown = function (rethrown) {
-        rethrown = rethrown ? 1 : 0;
-        HEAP8[(((this.ptr)+(13))>>0)] = rethrown;
-      };
-  
-      this.get_rethrown = function () {
-        return HEAP8[(((this.ptr)+(13))>>0)] != 0;
-      };
-  
-      // Initialize native structure fields. Should be called once after allocated.
-      this.init = function(type, destructor) {
-        this.set_adjusted_ptr(0);
-        this.set_type(type);
-        this.set_destructor(destructor);
-      }
-  
-      this.set_adjusted_ptr = function(adjustedPtr) {
-        HEAPU32[(((this.ptr)+(16))>>2)] = adjustedPtr;
-      };
-  
-      this.get_adjusted_ptr = function() {
-        return HEAPU32[(((this.ptr)+(16))>>2)];
-      };
-  
-      // Get pointer which is expected to be received by catch clause in C++ code. It may be adjusted
-      // when the pointer is casted to some of the exception object base classes (e.g. when virtual
-      // inheritance is used). When a pointer is thrown this method should return the thrown pointer
-      // itself.
-      this.get_exception_ptr = function() {
-        // Work around a fastcomp bug, this code is still included for some reason in a build without
-        // exceptions support.
-        var isPointer = ___cxa_is_pointer_type(this.get_type());
-        if (isPointer) {
-          return HEAPU32[((this.excPtr)>>2)];
-        }
-        var adjusted = this.get_adjusted_ptr();
-        if (adjusted !== 0) return adjusted;
-        return this.excPtr;
-      };
-    }
-  
-  function ___resumeException(ptr) {
-      if (!exceptionLast) { 
-        exceptionLast = new CppException(ptr);
-      }
-      throw exceptionLast;
-    }
-  
-  
-  /** @suppress {duplicate } */
-  function ___cxa_find_matching_catch() {
-      var thrown = 
-        exceptionLast && exceptionLast.excPtr;
-      if (!thrown) {
-        // just pass through the null ptr
-        setTempRet0(0);
-        return 0;
-      }
-      var info = new ExceptionInfo(thrown);
-      info.set_adjusted_ptr(thrown);
-      var thrownType = info.get_type();
-      if (!thrownType) {
-        // just pass through the thrown ptr
-        setTempRet0(0);
-        return thrown;
-      }
-  
-      // can_catch receives a **, add indirection
-      // The different catch blocks are denoted by different types.
-      // Due to inheritance, those types may not precisely match the
-      // type of the thrown object. Find one which matches, and
-      // return the type of the catch block which should be called.
-      for (var i = 0; i < arguments.length; i++) {
-        var caughtType = arguments[i];
-        if (caughtType === 0 || caughtType === thrownType) {
-          // Catch all clause matched or exactly the same type is caught
-          break;
-        }
-        var adjusted_ptr_addr = info.ptr + 16;
-        if (___cxa_can_catch(caughtType, thrownType, adjusted_ptr_addr)) {
-          setTempRet0(caughtType);
-          return thrown;
-        }
-      }
-      setTempRet0(thrownType);
-      return thrown;
-    }
-  var ___cxa_find_matching_catch_2 = ___cxa_find_matching_catch;
-
-  var ___cxa_find_matching_catch_3 = ___cxa_find_matching_catch;
-
-  function ___cxa_get_exception_ptr(ptr) {
-      var rtn = new ExceptionInfo(ptr).get_exception_ptr();
-      return rtn;
-    }
-
-  
-  
-  function ___cxa_rethrow() {
-      var info = exceptionCaught.pop();
-      if (!info) {
-        abort('no exception to throw');
-      }
-      var ptr = info.excPtr;
-      if (!info.get_rethrown()) {
-        // Only pop if the corresponding push was through rethrow_primary_exception
-        exceptionCaught.push(info);
-        info.set_rethrown(true);
-        info.set_caught(false);
-        uncaughtExceptionCount++;
-      }
-      exceptionLast = new CppException(ptr);
-      throw exceptionLast;
-    }
-
-  
-  
-  function ___cxa_throw(ptr, type, destructor) {
-      var info = new ExceptionInfo(ptr);
-      // Initialize ExceptionInfo content after it was allocated in __cxa_allocate_exception.
-      info.init(type, destructor);
-      exceptionLast = new CppException(ptr);
-      uncaughtExceptionCount++;
-      throw exceptionLast;
-    }
-
-  function ___cxa_uncaught_exceptions() {
-      return uncaughtExceptionCount;
-    }
-
 
   function _abort() {
       abort('native code called abort()');
@@ -1818,10 +1662,6 @@ function array_bounds_check_error(idx,size) { throw 'Array index ' + idx + ' out
       }
       HEAPU32[((pnum)>>2)] = num;
       return 0;
-    }
-
-  function _llvm_eh_typeid_for(type) {
-      return type;
     }
 
   function isLeapYear(year) {
@@ -2239,21 +2079,12 @@ function array_bounds_check_error(idx,size) { throw 'Array index ' + idx + ' out
   function _strftime_l(s, maxsize, format, tm, loc) {
       return _strftime(s, maxsize, format, tm); // no locale support yet
     }
-
 function checkIncomingModuleAPI() {
   ignoredModuleProp('fetchSettings');
 }
 var wasmImports = {
   "__assert_fail": ___assert_fail,
-  "__cxa_begin_catch": ___cxa_begin_catch,
-  "__cxa_end_catch": ___cxa_end_catch,
-  "__cxa_find_matching_catch_2": ___cxa_find_matching_catch_2,
-  "__cxa_find_matching_catch_3": ___cxa_find_matching_catch_3,
-  "__cxa_get_exception_ptr": ___cxa_get_exception_ptr,
-  "__cxa_rethrow": ___cxa_rethrow,
-  "__cxa_throw": ___cxa_throw,
-  "__cxa_uncaught_exceptions": ___cxa_uncaught_exceptions,
-  "__resumeException": ___resumeException,
+  "__throw_exception_with_stack_trace": ___throw_exception_with_stack_trace,
   "abort": _abort,
   "emscripten_date_now": _emscripten_date_now,
   "emscripten_memcpy_big": _emscripten_memcpy_big,
@@ -2263,57 +2094,11 @@ var wasmImports = {
   "fd_close": _fd_close,
   "fd_seek": _fd_seek,
   "fd_write": _fd_write,
-  "invoke_di": invoke_di,
-  "invoke_didiii": invoke_didiii,
-  "invoke_dii": invoke_dii,
-  "invoke_diii": invoke_diii,
-  "invoke_diiii": invoke_diiii,
-  "invoke_fiii": invoke_fiii,
-  "invoke_i": invoke_i,
-  "invoke_ii": invoke_ii,
-  "invoke_iid": invoke_iid,
-  "invoke_iidd": invoke_iidd,
-  "invoke_iii": invoke_iii,
-  "invoke_iiid": invoke_iiid,
-  "invoke_iiidd": invoke_iiidd,
-  "invoke_iiii": invoke_iiii,
-  "invoke_iiiid": invoke_iiiid,
-  "invoke_iiiidddi": invoke_iiiidddi,
-  "invoke_iiiiddidi": invoke_iiiiddidi,
-  "invoke_iiiidi": invoke_iiiidi,
-  "invoke_iiiii": invoke_iiiii,
-  "invoke_iiiiid": invoke_iiiiid,
-  "invoke_iiiiii": invoke_iiiiii,
-  "invoke_iiiiiii": invoke_iiiiiii,
-  "invoke_iiiiiiii": invoke_iiiiiiii,
-  "invoke_iiiiiiiidd": invoke_iiiiiiiidd,
-  "invoke_iiiiiiiiiii": invoke_iiiiiiiiiii,
-  "invoke_iiiiiiiiiiii": invoke_iiiiiiiiiiii,
-  "invoke_iiiiiiiiiiiii": invoke_iiiiiiiiiiiii,
-  "invoke_jiiii": invoke_jiiii,
-  "invoke_v": invoke_v,
-  "invoke_vi": invoke_vi,
-  "invoke_vid": invoke_vid,
-  "invoke_vidd": invoke_vidd,
-  "invoke_vii": invoke_vii,
-  "invoke_viid": invoke_viid,
-  "invoke_viii": invoke_viii,
-  "invoke_viiid": invoke_viiid,
-  "invoke_viiii": invoke_viiii,
-  "invoke_viiiii": invoke_viiiii,
-  "invoke_viiiiiii": invoke_viiiiiii,
-  "invoke_viiiiiiiiii": invoke_viiiiiiiiii,
-  "invoke_viiiiiiiiiiiiiii": invoke_viiiiiiiiiiiiiii,
-  "llvm_eh_typeid_for": _llvm_eh_typeid_for,
   "strftime_l": _strftime_l
 };
 var asm = createWasm();
 /** @type {function(...*):?} */
 var ___wasm_call_ctors = createExportWrapper("__wasm_call_ctors");
-/** @type {function(...*):?} */
-var getTempRet0 = createExportWrapper("getTempRet0");
-/** @type {function(...*):?} */
-var ___cxa_free_exception = createExportWrapper("__cxa_free_exception");
 /** @type {function(...*):?} */
 var _malloc = Module["_malloc"] = createExportWrapper("malloc");
 /** @type {function(...*):?} */
@@ -2739,9 +2524,10 @@ var _emscripten_enum_Avoid_RoutingOption_nudgeSharedPathsWithCommonEndPoint = Mo
 /** @type {function(...*):?} */
 var ___errno_location = createExportWrapper("__errno_location");
 /** @type {function(...*):?} */
-var _setThrew = createExportWrapper("setThrew");
-/** @type {function(...*):?} */
-var setTempRet0 = createExportWrapper("setTempRet0");
+var ___trap = function() {
+  return (___trap = Module["asm"]["__trap"]).apply(null, arguments);
+};
+
 /** @type {function(...*):?} */
 var _emscripten_stack_init = function() {
   return (_emscripten_stack_init = Module["asm"]["emscripten_stack_init"]).apply(null, arguments);
@@ -2774,480 +2560,25 @@ var _emscripten_stack_get_current = function() {
 };
 
 /** @type {function(...*):?} */
-var ___cxa_decrement_exception_refcount = createExportWrapper("__cxa_decrement_exception_refcount");
+var ___cxa_decrement_exception_refcount = Module["___cxa_decrement_exception_refcount"] = createExportWrapper("__cxa_decrement_exception_refcount");
 /** @type {function(...*):?} */
-var ___cxa_increment_exception_refcount = createExportWrapper("__cxa_increment_exception_refcount");
+var ___cxa_increment_exception_refcount = Module["___cxa_increment_exception_refcount"] = createExportWrapper("__cxa_increment_exception_refcount");
+/** @type {function(...*):?} */
+var ___thrown_object_from_unwind_exception = Module["___thrown_object_from_unwind_exception"] = createExportWrapper("__thrown_object_from_unwind_exception");
 /** @type {function(...*):?} */
 var ___get_exception_message = Module["___get_exception_message"] = createExportWrapper("__get_exception_message");
-/** @type {function(...*):?} */
-var ___cxa_can_catch = createExportWrapper("__cxa_can_catch");
-/** @type {function(...*):?} */
-var ___cxa_is_pointer_type = createExportWrapper("__cxa_is_pointer_type");
 /** @type {function(...*):?} */
 var dynCall_jiji = Module["dynCall_jiji"] = createExportWrapper("dynCall_jiji");
 /** @type {function(...*):?} */
 var dynCall_viijii = Module["dynCall_viijii"] = createExportWrapper("dynCall_viijii");
-/** @type {function(...*):?} */
-var dynCall_jiiii = Module["dynCall_jiiii"] = createExportWrapper("dynCall_jiiii");
 /** @type {function(...*):?} */
 var dynCall_iiiiij = Module["dynCall_iiiiij"] = createExportWrapper("dynCall_iiiiij");
 /** @type {function(...*):?} */
 var dynCall_iiiiijj = Module["dynCall_iiiiijj"] = createExportWrapper("dynCall_iiiiijj");
 /** @type {function(...*):?} */
 var dynCall_iiiiiijj = Module["dynCall_iiiiiijj"] = createExportWrapper("dynCall_iiiiiijj");
-var ___start_em_js = Module['___start_em_js'] = 109896;
-var ___stop_em_js = Module['___stop_em_js'] = 109994;
-function invoke_iiiiii(index,a1,a2,a3,a4,a5) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3,a4,a5);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iii(index,a1,a2) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_viii(index,a1,a2,a3) {
-  var sp = stackSave();
-  try {
-    getWasmTableEntry(index)(a1,a2,a3);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_v(index) {
-  var sp = stackSave();
-  try {
-    getWasmTableEntry(index)();
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_ii(index,a1) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_vii(index,a1,a2) {
-  var sp = stackSave();
-  try {
-    getWasmTableEntry(index)(a1,a2);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iiiid(index,a1,a2,a3,a4) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3,a4);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_vi(index,a1) {
-  var sp = stackSave();
-  try {
-    getWasmTableEntry(index)(a1);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iiiii(index,a1,a2,a3,a4) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3,a4);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iiii(index,a1,a2,a3) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_viiii(index,a1,a2,a3,a4) {
-  var sp = stackSave();
-  try {
-    getWasmTableEntry(index)(a1,a2,a3,a4);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_viiiii(index,a1,a2,a3,a4,a5) {
-  var sp = stackSave();
-  try {
-    getWasmTableEntry(index)(a1,a2,a3,a4,a5);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iidd(index,a1,a2,a3) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_diiii(index,a1,a2,a3,a4) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3,a4);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_dii(index,a1,a2) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_didiii(index,a1,a2,a3,a4,a5) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3,a4,a5);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_diii(index,a1,a2,a3) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iiiiiii(index,a1,a2,a3,a4,a5,a6) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_vid(index,a1,a2) {
-  var sp = stackSave();
-  try {
-    getWasmTableEntry(index)(a1,a2);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iiid(index,a1,a2,a3) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_di(index,a1) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_vidd(index,a1,a2,a3) {
-  var sp = stackSave();
-  try {
-    getWasmTableEntry(index)(a1,a2,a3);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_viid(index,a1,a2,a3) {
-  var sp = stackSave();
-  try {
-    getWasmTableEntry(index)(a1,a2,a3);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iiidd(index,a1,a2,a3,a4) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3,a4);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iiiidddi(index,a1,a2,a3,a4,a5,a6,a7) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iiiiddidi(index,a1,a2,a3,a4,a5,a6,a7,a8) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7,a8);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iiiiiiiidd(index,a1,a2,a3,a4,a5,a6,a7,a8,a9) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7,a8,a9);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iiiidi(index,a1,a2,a3,a4,a5) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3,a4,a5);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_viiid(index,a1,a2,a3,a4) {
-  var sp = stackSave();
-  try {
-    getWasmTableEntry(index)(a1,a2,a3,a4);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iid(index,a1,a2) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iiiiid(index,a1,a2,a3,a4,a5) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3,a4,a5);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iiiiiiii(index,a1,a2,a3,a4,a5,a6,a7) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iiiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iiiiiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_fiii(index,a1,a2,a3) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_i(index) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)();
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_viiiiiii(index,a1,a2,a3,a4,a5,a6,a7) {
-  var sp = stackSave();
-  try {
-    getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iiiiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11) {
-  var sp = stackSave();
-  try {
-    return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_viiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10) {
-  var sp = stackSave();
-  try {
-    getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_viiiiiiiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15) {
-  var sp = stackSave();
-  try {
-    getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_jiiii(index,a1,a2,a3,a4) {
-  var sp = stackSave();
-  try {
-    return dynCall_jiiii(index,a1,a2,a3,a4);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
+var ___start_em_js = Module['___start_em_js'] = 110416;
+var ___stop_em_js = Module['___stop_em_js'] = 110514;
 
 // include: postamble.js
 // === Auto-generated postamble setup entry stuff ===
@@ -3500,11 +2831,9 @@ var unexportedSymbols = [
   'flush_NO_FILESYSTEM',
   'dlopenMissingError',
   'promiseMap',
-  'uncaughtExceptionCount',
-  'exceptionLast',
-  'exceptionCaught',
-  'ExceptionInfo',
   'getExceptionMessageCommon',
+  'getCppExceptionTag',
+  'getCppExceptionThrownObjectFromWebAssemblyException',
   'incrementExceptionRefcount',
   'decrementExceptionRefcount',
   'getExceptionMessage',
