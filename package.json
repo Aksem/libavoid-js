@@ -25,7 +25,7 @@
     "url": "git+https://github.com/Aksem/libavoid-js.git"
   },
   "author": "Vladyslav Hnatiuk",
-  "license": "MIT",
+  "license": "LGPL-2.1-or-later",
   "bugs": {
     "url": "https://github.com/Aksem/libavoid-js/issues"
   },
