@@ -18,6 +18,12 @@ The library works in both webbrowser and node.js environments.
 
 Library API Documentation is in `api_docs_build` directory, just open `index.html`
 
+## FAQ
+
+* I get the following error: `RuntimeError: Aborted(CompileError: WebAssembly.instantiate(): expected magic word ...`
+
+  It means, that libavoid.wasm file is invalid. Please check in Network tab of the browser, that it is downloaded without errors and its size is the same as of [libavoid.wasm file](https://github.com/Aksem/libavoid-js/blob/master/dist/libavoid.wasm).
+
 ## Build
 
 ### Requirements
@@ -41,9 +47,3 @@ Library API Documentation is in `api_docs_build` directory, just open `index.htm
 Address to source map is hardcoded in `tools/generate.py` script and is always 'http://localhost:8080' in debug build.
 
 Also, symlink to adaptagrams should be in `examples` directory to provide libavoid sources for debugger.
-
-## TODO
-
-- tests
-- extend WebIDL bindings to provide the same abilities as C++ library
-- host API Docs in platform such Github Pages
