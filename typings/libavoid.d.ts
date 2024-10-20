@@ -32,13 +32,16 @@ declare interface ConnEnd {
 }
 
 declare interface ConnRef {
+  new (router: Router): ConnRef;
   new (router: Router, srcConnEnd: ConnEnd, dstConnEnd: ConnEnd): ConnRef;
+
+  g: number;
 
   displayRoute(): PolyLine;
   setSourceEndpoint(srcPoint: ConnEnd): void;
   setDestEndpoint(dstPoint: ConnEnd): void;
   setRoutingType(type: number): void;
-  setCallback(callback: (connRef: ConnRef) => void, connRef: ConnRef): void;
+  setCallback(callback: (connRefPtr: number) => void, connRef: ConnRef): void;
 
   setHateCrossings(value: boolean): void;
   doesHateCrossings(): boolean;
