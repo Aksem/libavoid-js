@@ -47,3 +47,11 @@ Library API Documentation is in `api_docs_build` directory, just open `index.htm
 Address to source map is hardcoded in `tools/generate.py` script and is always 'http://localhost:8080' in debug build.
 
 Also, symlink to adaptagrams should be in `examples` directory to provide libavoid sources for debugger.
+
+## History
+
+This project was started as part of a research project at [Technische Universität Wien](https://www.tuwien.at) and is further developed by its author and contributors.
+
+<a href="https://www.tuwien.at">
+  <img src="https://raw.githubusercontent.com/Aksem/libavoid-js/refs/heads/master/docs/assets/TU_Logo_schwarz_RGB.svg" width="200" alt="Technische Universität Wien Logo" />
+</a>
