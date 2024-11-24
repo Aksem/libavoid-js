@@ -221,7 +221,7 @@ def main():
   logger.info('Build production version for node')
   output_dir = 'generated_node'
   generate_bindings(output_dir, debug=False)
-  compile(output_dir, 'dist_node', debug=False)
+  compile(output_dir, 'dist_node', debug=False, environment='node')
   # wasm is the same for all envs, copy only js
   copyfile('dist_node/libavoid.js', '../src/generated/libavoid.mjs')
 

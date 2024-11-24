@@ -32,13 +32,17 @@ declare interface ConnEnd {
 }
 
 declare interface ConnRef {
+  new (router: Router): ConnRef;
   new (router: Router, srcConnEnd: ConnEnd, dstConnEnd: ConnEnd): ConnRef;
 
   displayRoute(): PolyLine;
   setSourceEndpoint(srcPoint: ConnEnd): void;
   setDestEndpoint(dstPoint: ConnEnd): void;
   setRoutingType(type: number): void;
-  setCallback(callback: (connRef: ConnRef) => void, connRef: ConnRef): void;
+  // connRefPtr is raw pointer to the object, to get ConnRef object use:
+  // `const connRef = Avoid.wrapPointer(connRefPtr, Avoid.ConnRef)`
+  // more details: https://emscripten.org/docs/porting/connecting_cpp_and_javascript/WebIDL-Binder.html#pointers-and-comparisons
+  setCallback(callback: (connRefPtr: number) => void, connRef: ConnRef): void;
 
   setHateCrossings(value: boolean): void;
   doesHateCrossings(): boolean;

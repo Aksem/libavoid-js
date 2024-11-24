@@ -1,7 +1,7 @@
 // debug web version
 // import { AvoidLib } from './debug-dist/index.mjs';
 // production web version
-import { AvoidLib } from './dist/index.mjs';
+import { AvoidLib } from './dist/index.js';
 
 async function main() {
   // init Avoid module
@@ -15,10 +15,13 @@ async function main() {
 
   const srcConnEnd = new Avoid.ConnEnd(srcPt);
   const dstConnEnd = new Avoid.ConnEnd(dstPt);
-  const connRef = new Avoid.ConnRef(router, srcConnEnd, dstConnEnd);
+  const connRef = new Avoid.ConnRef(router); // , srcConnEnd, dstConnEnd
+  console.log(1, connRef, connRef.g)
 
   function connCallback(connRefPtr) {
+    // console.log(connRefPtr);
     const connRef = Avoid.wrapPointer(connRefPtr, Avoid.ConnRef);
+    console.log(connRefPtr, Avoid.getPointer(connRef));
     console.log(`Connector ${connRef.id()} needs rerouting!`);
     const route = connRef.displayRoute();
     console.log('New path: ');
