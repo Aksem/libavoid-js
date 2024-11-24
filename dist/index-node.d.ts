@@ -109,6 +109,8 @@ export interface Avoid {
   JunctionRef: JunctionRef;
 
   destroy(obj: any): void;
+  getPointer(obj: any): number;
+  wrapPointer<T>(ptr: number, Class: T): T;
 }
 
 export namespace AvoidLib {
