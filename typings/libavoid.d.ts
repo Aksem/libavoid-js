@@ -107,6 +107,7 @@ export interface Avoid {
   Obstacle: Obstacle;
   ShapeRef: ShapeRef;
   JunctionRef: JunctionRef;
+  ShapeConnectionPin: ShapeConnectionPin;
 
   destroy(obj: any): void;
   getPointer(obj: any): number;
