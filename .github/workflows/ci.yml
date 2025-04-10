@@ -34,14 +34,14 @@ jobs:
           python3.11 ./tools/generate.py
 
       - name: Upload artifact(production bindings)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: production-bindings
           path: |
             src/generated/
-      
+
       - name: Upload artifact(debug bindings)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: debug-bindings
           path: |
