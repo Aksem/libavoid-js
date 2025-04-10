@@ -1,6 +1,6 @@
 {
   "name": "libavoid-js",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "JS port of libavoid library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
