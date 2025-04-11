@@ -25,7 +25,7 @@ SOURCE_FILES = [
   'graph',
   'router'
 ]
-ADAPTAGRAMS_VERSION = "1.0.1"
+ADAPTAGRAMS_VERSION = "1.0.2"
 
 logging.basicConfig()
 logger = logging.getLogger()
