@@ -1,5 +1,3 @@
-typedef sequence<ShapeRef> ShapeRefList;
-
 enum Avoid_ShapeTransformationType {
   "Avoid::TransformationType_CW90",
   "Avoid::TransformationType_CW180",

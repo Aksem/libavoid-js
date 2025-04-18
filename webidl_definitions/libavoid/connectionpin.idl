@@ -1,6 +1,3 @@
-
-// typedef unsigned long[] ConnectionPinIds;
-
 [Prefix="Avoid::"]
 interface ShapeConnectionPin {
   void ShapeConnectionPin(ShapeRef shape, unsigned long classId,
@@ -22,9 +19,4 @@ interface ShapeConnectionPin {
   void setExclusive(boolean exclusive);
   boolean isExclusive();
   void updatePosition([Ref] Point newPosition);
-
-  // TODO: fix
-  // ConnectionPinIds ids();
-
-  // TODO: operators
 };

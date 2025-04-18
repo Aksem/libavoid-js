@@ -1,15 +1,3 @@
-[Prefix = "Avoid::"]
-interface LineRep {
-  [Value] attribute Point begin;
-  [Value] attribute Point end;
-};
-
-typedef sequence<LineRep> LineReps;
-typedef unsigned long IntList;
-
-// TODO: return when ClusterRef will be defined
-// typedef sequence<ClusterRef> ClusterRefList;
-
 enum Avoid_RouterFlag {
   "Avoid::PolyLineRouting",
   "Avoid::OrthogonalRouting"
@@ -36,8 +24,6 @@ enum Avoid_RoutingOption {
   "Avoid::improveHyperedgeRoutesMovingAddingAndDeletingJunctions",
   "Avoid::nudgeSharedPathsWithCommonEndPoint"
 };
-
-// TODO: ...
 
 [Prefix = "Avoid::"]
 interface Router {
