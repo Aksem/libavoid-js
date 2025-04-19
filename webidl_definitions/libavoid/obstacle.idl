@@ -1,5 +1,3 @@
-typedef sequence<Obstacle> ObstacleList;
-
 [Prefix="Avoid::"]
 interface Obstacle {
   // Obstacle is an abstract class, it cannot have a constructor(only reference constructor?)

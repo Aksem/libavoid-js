@@ -1,5 +1,3 @@
-typedef sequence<ConnRef> ConnRefList;
-
 enum Avoid_ConnType {
   "Avoid::ConnType_None",
   "Avoid::ConnType_PolyLine",

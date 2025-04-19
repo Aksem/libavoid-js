@@ -17,6 +17,7 @@
   ],
   "scripts": {
     "build": "node build.js",
+    "full-rebuild": "python tools/generate.py && npm run build",
     "api-docs": "jsdoc -c jsdoc.conf.js -d ./api_docs_build/ build/generated_debug/glue.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

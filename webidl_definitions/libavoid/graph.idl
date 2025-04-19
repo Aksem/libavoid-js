@@ -1,7 +1,0 @@
-typedef sequence<long> ShapeList;
-typedef sequence<boolean> FlagList;
-
-[Prefix="Avoid::"]
-interface EdgeInf {
-  void EdgeInf(VertInf v1, VertInf v2, optional boolean orthogonal = false);
-};
