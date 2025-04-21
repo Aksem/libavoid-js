@@ -2014,6 +2014,11 @@ ${invokerFnBody}`;
         ignoreDuplicateRegistrations: true
       });
     };
+    var EmValOptionalType = Object.assign({ optional: true }, EmValType);
+    ;
+    var __embind_register_optional = (rawOptionalType, rawType) => {
+      registerType(rawOptionalType, EmValOptionalType);
+    };
     var stringToUTF8Array = (str, heap, outIdx, maxBytesToWrite) => {
       assert(typeof str === "string", `stringToUTF8Array expects a string (got ${typeof str})`);
       if (!(maxBytesToWrite > 0))
@@ -3005,6 +3010,8 @@ ${invokerFnBody}`;
       _embind_register_integer: __embind_register_integer,
       /** @export */
       _embind_register_memory_view: __embind_register_memory_view,
+      /** @export */
+      _embind_register_optional: __embind_register_optional,
       /** @export */
       _embind_register_std_string: __embind_register_std_string,
       /** @export */

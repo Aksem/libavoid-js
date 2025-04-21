@@ -62,6 +62,8 @@ EMSCRIPTEN_BINDINGS(my_module) {
     .property("id", &Avoid::Point::id)
     .property("vn", &Avoid::Point::vn);
 
+    register_vector<Avoid::Point>("vector<Avoid::Point>");
+
     class_<Avoid::PolygonInterface>("PolygonInterface")
     .function("clear", &Avoid::PolygonInterface::clear)
     .function("empty", &Avoid::PolygonInterface::empty)

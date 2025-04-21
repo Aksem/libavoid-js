@@ -147,6 +147,12 @@ async function main() {
   function connCallback(connRef) {
     console.log(`Connector ${connRef.id()} needs rerouting!`);
     const route = connRef.displayRoute();
+    console.log('New path: ', route, route.size());
+    console.log('----------');
+    for (let i = 0; i < route.size(); i++) {
+      console.log(`(${route.ps.get(i).x}, ${route.ps.get(i).y})`);
+    }
+    console.log('----------');
   }
 
   function connectShapes(shape1, shape2) {

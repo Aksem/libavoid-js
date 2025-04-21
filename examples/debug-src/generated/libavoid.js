@@ -2727,6 +2727,12 @@ async function createWasm() {
     };
 
   
+  var EmValOptionalType = Object.assign({optional: true}, EmValType);;
+  var __embind_register_optional = (rawOptionalType, rawType) => {
+      registerType(rawOptionalType, EmValOptionalType);
+    };
+
+  
   
   
   
@@ -3883,6 +3889,8 @@ var wasmImports = {
   _embind_register_integer: __embind_register_integer,
   /** @export */
   _embind_register_memory_view: __embind_register_memory_view,
+  /** @export */
+  _embind_register_optional: __embind_register_optional,
   /** @export */
   _embind_register_std_string: __embind_register_std_string,
   /** @export */
