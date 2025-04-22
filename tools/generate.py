@@ -65,7 +65,7 @@ def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Lite
 
   libavoid_js_dir_path = Path(__file__).parent.parent.resolve()
   # list of parameters: https://emsettings.surma.technology/
-  # --closure 1 \
+  # ALLOW_TABLE_GROWTH and ALLOW_TABLE_GROWTH are needed for support of larger diagrams. Without them runtime is out of memory with ~10 shapes and 2 connections between all of them
   execute_command(f"""
   docker run \
   --rm \
@@ -75,6 +75,7 @@ def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Lite
   emcc {args} \
     -lembind \
     -fwasm-exceptions \
+    --closure 1 \
     -s LLD_REPORT_UNDEFINED \
     -s FILESYSTEM=0 \
     -s MODULARIZE=1 \
@@ -83,6 +84,8 @@ def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Lite
     -s ENVIRONMENT="{environment}" \
     -s ABORT_ON_WASM_EXCEPTIONS=1 \
     -s EXIT_RUNTIME=1 \
+    -s ALLOW_MEMORY_GROWTH=1 \
+    -s ALLOW_TABLE_GROWTH=1 \
     -Ibuild/adaptagrams/cola/ \
     /src/embind/bindings.cpp \
     {compiler_sources} \
@@ -99,10 +102,8 @@ def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Lite
 
   # old params:
   # --no-entry \
-  # -s ALLOW_MEMORY_GROWTH=1 \
   # -sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=$addFunction \
   # -s EXPORTED_FUNCTIONS=['_malloc'] \
-  # -s ALLOW_TABLE_GROWTH=1 \
 
 
 def main():

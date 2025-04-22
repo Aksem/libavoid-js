@@ -2456,13 +2456,48 @@ ${invokerFnBody}`;
       return 0;
       ;
     }
-    var abortOnCannotGrowMemory = (requestedSize) => {
-      abort(`Cannot enlarge memory arrays to size ${requestedSize} bytes (OOM). Either (1) compile with -sINITIAL_MEMORY=X with X higher than the current value ${HEAP8.length}, (2) compile with -sALLOW_MEMORY_GROWTH which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with -sABORTING_MALLOC=0`);
+    var getHeapMax = () => (
+      // Stay one Wasm page short of 4GB: while e.g. Chrome is able to allocate
+      // full 4GB Wasm memories, the size will wrap back to 0 bytes in Wasm side
+      // for any code that deals with heap sizes, which would require special
+      // casing all heap size related code to treat 0 specially.
+      2147483648
+    );
+    var alignMemory = (size, alignment) => {
+      assert(alignment, "alignment argument is required");
+      return Math.ceil(size / alignment) * alignment;
+    };
+    var growMemory = (size) => {
+      var b = wasmMemory.buffer;
+      var pages = (size - b.byteLength + 65535) / 65536 | 0;
+      try {
+        wasmMemory.grow(pages);
+        updateMemoryViews();
+        return 1;
+      } catch (e) {
+        err(`growMemory: Attempted to grow heap from ${b.byteLength} bytes to ${size} bytes, but got error: ${e}`);
+      }
     };
     var _emscripten_resize_heap = (requestedSize) => {
       var oldSize = HEAPU8.length;
       requestedSize >>>= 0;
-      abortOnCannotGrowMemory(requestedSize);
+      assert(requestedSize > oldSize);
+      var maxHeapSize = getHeapMax();
+      if (requestedSize > maxHeapSize) {
+        err(`Cannot enlarge memory, requested ${requestedSize} bytes, but the limit is ${maxHeapSize} bytes!`);
+        return false;
+      }
+      for (var cutDown = 1; cutDown <= 4; cutDown *= 2) {
+        var overGrownHeapSize = oldSize * (1 + 0.2 / cutDown);
+        overGrownHeapSize = Math.min(overGrownHeapSize, requestedSize + 100663296);
+        var newSize = Math.min(maxHeapSize, alignMemory(Math.max(requestedSize, overGrownHeapSize), 65536));
+        var replacement = growMemory(newSize);
+        if (replacement) {
+          return true;
+        }
+      }
+      err(`Failed to grow the heap from ${oldSize} bytes to ${newSize} bytes, not enough memory!`);
+      return false;
     };
     var ENV = {};
     var getExecutableName = () => thisProgram || "./this.program";
@@ -2618,8 +2653,6 @@ ${invokerFnBody}`;
       "setTempRet0",
       "zeroMemory",
       "exitJS",
-      "getHeapMax",
-      "growMemory",
       "strError",
       "inetPton4",
       "inetNtop4",
@@ -2642,7 +2675,6 @@ ${invokerFnBody}`;
       "maybeExit",
       "asmjsMangle",
       "asyncLoad",
-      "alignMemory",
       "mmapAlloc",
       "HandleAllocator",
       "getNativeTypeSize",
@@ -2813,7 +2845,8 @@ ${invokerFnBody}`;
       "stackRestore",
       "stackAlloc",
       "ptrToString",
-      "abortOnCannotGrowMemory",
+      "getHeapMax",
+      "growMemory",
       "ENV",
       "ERRNO_CODES",
       "DNS",
@@ -2824,6 +2857,7 @@ ${invokerFnBody}`;
       "readEmAsmArgsArray",
       "jstoi_s",
       "getExecutableName",
+      "alignMemory",
       "wasmTable",
       "noExitRuntime",
       "addOnPreRun",
