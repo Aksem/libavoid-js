@@ -48,6 +48,10 @@ Address to source map is hardcoded in `tools/generate.py` script and is always '
 
 Also, symlink to adaptagrams should be in `examples` directory to provide libavoid sources for debugger.
 
+## Lessons learned
+
+- WebIDL is a powerful concept, but implementation in emscripten toolset is not very actively developed and if certain feature is missing such as support of callbacks or you encounter a bug, you should be ready to implement or to fix it by yourself. We started with WebIDL(own fork with implementation of callbacks, support of prefixed enums and more) and then switched to embind. Embind supports more features, so probability you need to modify it is lower, and it is more performant.
+
 ## History
 
 This project was started as part of a research project at [Technische Universität Wien](https://www.tuwien.at) and is further developed by its author and contributors.
