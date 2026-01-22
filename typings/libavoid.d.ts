@@ -6,6 +6,28 @@ declare interface Point {
   y: number;
 }
 
+declare enum RoutingParameter {
+  "segmentPenalty",
+  "anglePenalty",
+  "crossingPenalty",
+  "clusterCrossingPenalty",
+  "fixedSharedPathPenalty",
+  "portDirectionPenalty",
+  "shapeBufferDistance",
+  "idealNudgingDistance",
+  "reverseDirectionPenalty",
+}
+
+declare enum RoutingOption {
+  "nudgeOrthogonalSegmentsConnectedToShapes",
+  "improveHyperedgeRoutesMovingJunctions",
+  "penaliseOrthogonalSharedPathsAtConnEnds",
+  "nudgeOrthogonalTouchingColinearSegments",
+  "performUnifyingNudgingPreprocessingStep",
+  "improveHyperedgeRoutesMovingAddingAndDeletingJunctions",
+  "nudgeSharedPathsWithCommonEndPoint",
+}
+
 declare interface Router {
   new (flags: number): Router;
 
@@ -16,8 +38,8 @@ declare interface Router {
   moveShape(shape: ShapeRef, newPolygon: Polygon);
   moveShape(shape: ShapeRef, xDiff: number, yDiff: number);
   deleteShape(shape: ShapeRef);
-  setRoutingParameter(parameter: number, value: number): void;
-  setRoutingOption(option: number, value: boolean): void;
+  setRoutingParameter(parameter: RoutingParameter, value: number): void;
+  setRoutingOption(option: RoutingOption, value: boolean): void;
 }
 
 declare interface PolyLine {
@@ -123,6 +145,9 @@ export interface Avoid {
   ShapeRef: ShapeRef;
   JunctionRef: JunctionRef;
   ShapeConnectionPin: ShapeConnectionPin;
+
+  RoutingParameter: Record<keyof typeof RoutingParameter, RoutingParameter>;
+  RoutingOption: Record<keyof typeof RoutingOption, RoutingOption>;
 
   destroy(obj: any): void;
   getPointer(obj: any): number;
