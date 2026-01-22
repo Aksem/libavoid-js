@@ -31,6 +31,16 @@ declare interface ConnEnd {
   createConnEndFromJunctionRef(JunctionRef: JunctionRef, classId: number): ConnEnd;
 }
 
+declare interface Checkpoint {
+  new (point: Point): Checkpoint;
+  new (point: Point, ad: ConnDirFlags, dd: ConnDirFlags): Checkpoint;
+}
+
+declare interface CheckpointVector {
+  new (): CheckpointVector;
+  push_back(checkpoint: Checkpoint): void;
+}
+
 declare interface ConnRef {
   new (router: Router): ConnRef;
   new (router: Router, srcConnEnd: ConnEnd, dstConnEnd: ConnEnd): ConnRef;
@@ -39,6 +49,9 @@ declare interface ConnRef {
   setSourceEndpoint(srcPoint: ConnEnd): void;
   setDestEndpoint(dstPoint: ConnEnd): void;
   setRoutingType(type: number): void;
+  setRoutingCheckpoints(checkpoints: CheckpointVector): void;
+  routingCheckpoints(): CheckpointVector;
+
   // connRefPtr is raw pointer to the object, to get ConnRef object use:
   // `const connRef = Avoid.wrapPointer(connRefPtr, Avoid.ConnRef)`
   // more details: https://emscripten.org/docs/porting/connecting_cpp_and_javascript/WebIDL-Binder.html#pointers-and-comparisons
@@ -101,6 +114,8 @@ export interface Avoid {
 
   ConnEnd: ConnEnd;
   ConnRef: ConnRef;
+  Checkpoint: Checkpoint;
+  CheckpointVector: CheckpointVector;
   Point: Point;
   Rectangle: Rectangle;
   Router: Router;
