@@ -35,16 +35,18 @@ declare interface Router {
   printInfo(): void;
   deleteConnector(connRef: ConnRef): void;
 
-  moveShape(shape: ShapeRef, newPolygon: Polygon);
-  moveShape(shape: ShapeRef, xDiff: number, yDiff: number);
+  moveShape_poly(shape: ShapeRef, newPolygon: Polygon);
+  moveShape_delta(shape: ShapeRef, xDiff: number, yDiff: number);
   deleteShape(shape: ShapeRef);
   setRoutingParameter(parameter: RoutingParameter, value: number): void;
   setRoutingOption(option: RoutingOption, value: boolean): void;
+
+  delete(): void;
 }
 
 declare interface PolyLine {
   size(): number;
-  get_ps(index: number): Point;
+  at(index: number): Point;
 }
 
 declare interface ConnEnd {
@@ -97,6 +99,7 @@ declare interface ShapeConnectionPin {
   directions(): ConnDirFlags;
   position(): Point;
   updatePosition(newPosition: Point): void;
+  delete(): void;
 }
 
 
