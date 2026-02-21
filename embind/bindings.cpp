@@ -104,7 +104,10 @@ EMSCRIPTEN_BINDINGS(my_module) {
     .value("ConnType_Orthogonal", Avoid::ConnType_Orthogonal);
 
     class_<Avoid::Checkpoint>("Checkpoint")
-    .constructor<const Avoid::Point&>();
+    .constructor<const Avoid::Point&>()
+    .constructor<const Avoid::Point&, Avoid::ConnDirFlags, Avoid::ConnDirFlags>();
+
+    register_vector<Avoid::Checkpoint>("CheckpointVector");
 
     class_<Avoid::ConnRef>("ConnRef")
     .constructor<Avoid::Router*, const Avoid::ConnEnd&, const Avoid::ConnEnd&>()
@@ -115,6 +118,8 @@ EMSCRIPTEN_BINDINGS(my_module) {
     .function("setDestEndpoint", &Avoid::ConnRef::setDestEndpoint)
     .function("routingType", &Avoid::ConnRef::routingType)
     .function("setRoutingType", &Avoid::ConnRef::setRoutingType)
+    .function("setRoutingCheckpoints", &Avoid::ConnRef::setRoutingCheckpoints, allow_raw_pointers())
+    .function("routingCheckpoints", &Avoid::ConnRef::routingCheckpoints)
     .function("displayRoute", &Avoid::ConnRef::displayRoute, allow_raw_pointers())
     .function("setHateCrossings", &Avoid::ConnRef::setHateCrossings)
     .function("doesHateCrossings", &Avoid::ConnRef::doesHateCrossings);

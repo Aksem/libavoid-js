@@ -6,6 +6,28 @@ declare interface Point {
   y: number;
 }
 
+declare enum RoutingParameter {
+  "segmentPenalty",
+  "anglePenalty",
+  "crossingPenalty",
+  "clusterCrossingPenalty",
+  "fixedSharedPathPenalty",
+  "portDirectionPenalty",
+  "shapeBufferDistance",
+  "idealNudgingDistance",
+  "reverseDirectionPenalty",
+}
+
+declare enum RoutingOption {
+  "nudgeOrthogonalSegmentsConnectedToShapes",
+  "improveHyperedgeRoutesMovingJunctions",
+  "penaliseOrthogonalSharedPathsAtConnEnds",
+  "nudgeOrthogonalTouchingColinearSegments",
+  "performUnifyingNudgingPreprocessingStep",
+  "improveHyperedgeRoutesMovingAddingAndDeletingJunctions",
+  "nudgeSharedPathsWithCommonEndPoint",
+}
+
 declare interface Router {
   new (flags: number): Router;
 
@@ -13,22 +35,34 @@ declare interface Router {
   printInfo(): void;
   deleteConnector(connRef: ConnRef): void;
 
-  moveShape(shape: ShapeRef, newPolygon: Polygon);
-  moveShape(shape: ShapeRef, xDiff: number, yDiff: number);
+  moveShape_poly(shape: ShapeRef, newPolygon: Polygon);
+  moveShape_delta(shape: ShapeRef, xDiff: number, yDiff: number);
   deleteShape(shape: ShapeRef);
-  setRoutingParameter(parameter: number, value: number): void;
-  setRoutingOption(option: number, value: boolean): void;
+  setRoutingParameter(parameter: RoutingParameter, value: number): void;
+  setRoutingOption(option: RoutingOption, value: boolean): void;
+
+  delete(): void;
 }
 
 declare interface PolyLine {
   size(): number;
-  get_ps(index: number): Point;
+  at(index: number): Point;
 }
 
 declare interface ConnEnd {
   new (point: Point): ConnEnd;
   new (shapeRef: ShapeRef, classId: number): ConnEnd;
   createConnEndFromJunctionRef(JunctionRef: JunctionRef, classId: number): ConnEnd;
+}
+
+declare interface Checkpoint {
+  new (point: Point): Checkpoint;
+  new (point: Point, ad: ConnDirFlags, dd: ConnDirFlags): Checkpoint;
+}
+
+declare interface CheckpointVector {
+  new (): CheckpointVector;
+  push_back(checkpoint: Checkpoint): void;
 }
 
 declare interface ConnRef {
@@ -39,6 +73,9 @@ declare interface ConnRef {
   setSourceEndpoint(srcPoint: ConnEnd): void;
   setDestEndpoint(dstPoint: ConnEnd): void;
   setRoutingType(type: number): void;
+  setRoutingCheckpoints(checkpoints: CheckpointVector): void;
+  routingCheckpoints(): CheckpointVector;
+
   // connRefPtr is raw pointer to the object, to get ConnRef object use:
   // `const connRef = Avoid.wrapPointer(connRefPtr, Avoid.ConnRef)`
   // more details: https://emscripten.org/docs/porting/connecting_cpp_and_javascript/WebIDL-Binder.html#pointers-and-comparisons
@@ -62,6 +99,7 @@ declare interface ShapeConnectionPin {
   directions(): ConnDirFlags;
   position(): Point;
   updatePosition(newPosition: Point): void;
+  delete(): void;
 }
 
 
@@ -101,6 +139,8 @@ export interface Avoid {
 
   ConnEnd: ConnEnd;
   ConnRef: ConnRef;
+  Checkpoint: Checkpoint;
+  CheckpointVector: CheckpointVector;
   Point: Point;
   Rectangle: Rectangle;
   Router: Router;
@@ -108,6 +148,9 @@ export interface Avoid {
   ShapeRef: ShapeRef;
   JunctionRef: JunctionRef;
   ShapeConnectionPin: ShapeConnectionPin;
+
+  RoutingParameter: Record<keyof typeof RoutingParameter, RoutingParameter>;
+  RoutingOption: Record<keyof typeof RoutingOption, RoutingOption>;
 
   destroy(obj: any): void;
   getPointer(obj: any): number;
