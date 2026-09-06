@@ -25,6 +25,7 @@ EMSCRIPTEN_BINDINGS(my_module) {
     .function("deleteShape", &Avoid::Router::deleteShape, allow_raw_pointers())
     .function("moveJunction_point", select_overload<void(Avoid::JunctionRef*, const Avoid::Point&)>(&Avoid::Router::moveJunction), allow_raw_pointers())
     .function("moveJunction_delta", select_overload<void(Avoid::JunctionRef*, double, double)>(&Avoid::Router::moveJunction), allow_raw_pointers())
+    .function("deleteJunction", &Avoid::Router::deleteJunction, allow_raw_pointers())
     .function("setRoutingParameter", &Avoid::Router::setRoutingParameter)
     .function("setRoutingOption", &Avoid::Router::setRoutingOption);
 
@@ -97,6 +98,13 @@ EMSCRIPTEN_BINDINGS(my_module) {
     .function("polygon", &Avoid::ShapeRef::polygon)
     .function("position", &Avoid::ShapeRef::position)
     .function("setNewPoly", &Avoid::ShapeRef::setNewPoly);
+
+    class_<Avoid::JunctionRef, emscripten::base<Avoid::Obstacle>>("JunctionRef")
+    .constructor<Avoid::Router*, Avoid::Point, unsigned long>()
+    .function("position", &Avoid::JunctionRef::position)
+    .function("setPositionFixed", &Avoid::JunctionRef::setPositionFixed)
+    .function("positionFixed", &Avoid::JunctionRef::positionFixed)
+    .function("recommendedPosition", &Avoid::JunctionRef::recommendedPosition);
 
     enum_<Avoid::ConnType>("ConnType")
     .value("ConnType_None", Avoid::ConnType_None)
