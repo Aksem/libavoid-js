@@ -71,7 +71,7 @@ def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Lite
   --rm \
   -v {str(libavoid_js_dir_path)}:/src -w /src/ \
   -u {os.getuid()}:{os.getgid()} \
-  emscripten/emsdk:4.0.7 \
+  emscripten/emsdk:4.0.23 \
   emcc {args} \
     -lembind \
     -fwasm-exceptions \
