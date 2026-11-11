@@ -6,6 +6,7 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
+      "browser": "./dist/index.js",
       "node": "./dist/index-node.mjs",
       "types": "./dist/libavoid.d.ts",
       "default": "./dist/index.js"
