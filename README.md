@@ -1,6 +1,6 @@
 # libavoid-js
 
-Libavoid port for js. This port is created mostly using [WebIDL Bindings](https://emscripten.org/docs/porting/connecting_cpp_and_javascript/WebIDL-Binder.html).
+Libavoid port for js.
 
 ## Usage
 
@@ -28,19 +28,17 @@ Library API Documentation is in `api_docs_build` directory, just open `index.htm
 
 ### Requirements
 
-- Git (to clone original libavoid library and build tools)
+- Git (to clone original libavoid library)
 - Docker (used to run emcc)
 - Python 3.5+ (used for tooling/build automation)
 
 ### Build commands
 
-1. `python3 ./tools/generate.py`
+1. `npm run full-rebuild`
 
     It will generate both release and debug versions of the library, also update documentation.
 
-2. `npm run build`
-
-    It will create a package with generated release version of the library.
+2. If you want only to rebuild JS package without regenerating bindings, you can use the following command: `npm run build`
 
 ### Debugging
 
