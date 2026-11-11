@@ -122,7 +122,9 @@ EMSCRIPTEN_BINDINGS(my_module) {
     .function("routingCheckpoints", &Avoid::ConnRef::routingCheckpoints)
     .function("displayRoute", &Avoid::ConnRef::displayRoute, allow_raw_pointers())
     .function("setHateCrossings", &Avoid::ConnRef::setHateCrossings)
-    .function("doesHateCrossings", &Avoid::ConnRef::doesHateCrossings);
+    .function("doesHateCrossings", &Avoid::ConnRef::doesHateCrossings)
+    .function("hasValidRoute", &Avoid::ConnRef::hasValidRoute)
+    .function("hasCrossingObstacles", &Avoid::ConnRef::hasCrossingObstacles);
 
     class_<Avoid::ConnEnd>("ConnEnd")
     .constructor<const Avoid::Point&>()
