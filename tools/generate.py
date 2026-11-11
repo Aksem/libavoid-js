@@ -71,7 +71,7 @@ def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Lite
   --rm \
   -v {str(libavoid_js_dir_path)}:/src -w /src/ \
   -u {os.getuid()}:{os.getgid()} \
-  emscripten/emsdk:4.0.23 \
+  emscripten/emsdk:5.0.7 \
   emcc {args} \
     -lembind \
     -fwasm-exceptions \
@@ -86,6 +86,7 @@ def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Lite
     -s EXIT_RUNTIME=1 \
     -s ALLOW_MEMORY_GROWTH=1 \
     -s ALLOW_TABLE_GROWTH=1 \
+    -s EXCEPTION_STACK_TRACES \
     -Ibuild/adaptagrams/cola/ \
     /src/embind/bindings.cpp \
     {compiler_sources} \
