@@ -38,6 +38,7 @@ declare interface Router {
   moveShape_poly(shape: ShapeRef, newPolygon: Polygon);
   moveShape_delta(shape: ShapeRef, xDiff: number, yDiff: number);
   deleteShape(shape: ShapeRef);
+  deleteJunction(junction: JunctionRef): void;
   setRoutingParameter(parameter: RoutingParameter, value: number): void;
   setRoutingOption(option: RoutingOption, value: boolean): void;
 
