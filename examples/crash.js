@@ -10,13 +10,13 @@ async function main() {
 
   const router = new Avoid.Router(Avoid.RouterFlag.OrthogonalRouting.value);
 
-  router.setRoutingParameter(Avoid.RoutingParameter.shapeBufferDistance.value, 30);
+  router.setRoutingParameter(Avoid.RoutingParameter.shapeBufferDistance, 0);
   router.setRoutingParameter(
-    Avoid.RoutingParameter.idealNudgingDistance.value,
-    10
+    Avoid.RoutingParameter.idealNudgingDistance,
+    4
   );
   router.setRoutingOption(
-    Avoid.RoutingOption.nudgeOrthogonalTouchingColinearSegments.value,
+    Avoid.RoutingOption.nudgeOrthogonalTouchingColinearSegments,
     false
   );
 
@@ -31,14 +31,14 @@ async function main() {
       and will make little difference.
       */
   router.setRoutingOption(
-    Avoid.RoutingOption.performUnifyingNudgingPreprocessingStep.value,
+    Avoid.RoutingOption.performUnifyingNudgingPreprocessingStep,
     true
   );
 
-  router.setRoutingOption(Avoid.RoutingOption.nudgeSharedPathsWithCommonEndPoint.value, true);
+  router.setRoutingOption(Avoid.RoutingOption.nudgeSharedPathsWithCommonEndPoint, true);
 
   router.setRoutingOption(
-    Avoid.RoutingOption.nudgeOrthogonalSegmentsConnectedToShapes.value,
+    Avoid.RoutingOption.nudgeOrthogonalSegmentsConnectedToShapes,
     true
   );
 
