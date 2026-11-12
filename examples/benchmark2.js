@@ -7,21 +7,22 @@ async function main() {
     await AvoidLib.load();
     const Avoid = AvoidLib.getInstance();
 
-    const router = new Avoid.Router(Avoid.RouterFlag.OrthogonalRouting.value);
+    const router = new Avoid.Router(Avoid.RouterFlag.OrthogonalRouting);
+    console.log('Router created:', router);
 
     // Set routing parameters
     // const routingParameters = [
-    //     [Avoid.RoutingParameter.shapeBufferDistance.value, 30],
-    //     [Avoid.RoutingParameter.idealNudgingDistance.value, 10]
+    //     [Avoid.RoutingParameter.shapeBufferDistance, 30],
+    //     [Avoid.RoutingParameter.idealNudgingDistance, 10]
     // ];
     // routingParameters.forEach(([param, value]) => router.setRoutingParameter(param, value));
 
     // // Set routing options
     // const routingOptions = [
-    //     [Avoid.RoutingOption.nudgeOrthogonalTouchingColinearSegments.value, false],
-    //     [Avoid.RoutingOption.performUnifyingNudgingPreprocessingStep.value, true],
-    //     [Avoid.RoutingOption.nudgeSharedPathsWithCommonEndPoint.value, true],
-    //     [Avoid.RoutingOption.nudgeOrthogonalSegmentsConnectedToShapes.value, true]
+    //     [Avoid.RoutingOption.nudgeOrthogonalTouchingColinearSegments, false],
+    //     [Avoid.RoutingOption.performUnifyingNudgingPreprocessingStep, true],
+    //     [Avoid.RoutingOption.nudgeSharedPathsWithCommonEndPoint, true],
+    //     [Avoid.RoutingOption.nudgeOrthogonalSegmentsConnectedToShapes, true]
     // ];
     // routingOptions.forEach(([option, value]) => router.setRoutingOption(option, value));
 
@@ -62,7 +63,6 @@ async function main() {
         return new Avoid.ShapeRef(router, rect);
     });
 
-
     function connCallback(connRef) {
         console.log(`Connector ${connRef.id()} needs rerouting!`);
         const route = connRef.displayRoute();
@@ -70,6 +70,7 @@ async function main() {
         console.log('----------');
         for (let i = 0; i < route.size(); i++) {
             console.log(`(${route.ps.get(i).x}, ${route.ps.get(i).y})`);
+            console.log(`->(${route.ps.get(i).x}, ${route.ps.get(i).y})`);
         }
         console.log('----------');
     }

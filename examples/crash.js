@@ -8,7 +8,7 @@ async function main() {
   await AvoidLib.load();
   const Avoid = AvoidLib.getInstance();
 
-  const router = new Avoid.Router(Avoid.RouterFlag.OrthogonalRouting.value);
+  const router = new Avoid.Router(Avoid.RouterFlag.OrthogonalRouting);
 
   router.setRoutingParameter(Avoid.RoutingParameter.shapeBufferDistance, 0);
   router.setRoutingParameter(
