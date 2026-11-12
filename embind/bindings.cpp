@@ -6,12 +6,15 @@ using namespace emscripten;
 
 
 void setConnRefCallback(Avoid::ConnRef& conn, emscripten::val jsCallback) {
-    auto thunk = [&conn, jsCallback](uintptr_t userData) {
-      jsCallback(conn);
-    };
-  
-    conn.setCallbackFunction(thunk, reinterpret_cast<uintptr_t>(&conn));
-  }
+    // Pass the ConnRef by pointer: passing it by value would make embind
+    // copy-construct a ConnRef (leaking it, and aborting on .delete()).
+    conn.setCallbackFunction(
+        [jsCallback](uintptr_t userData) {
+            auto* connRef = reinterpret_cast<Avoid::ConnRef*>(userData);
+            jsCallback(val(connRef, allow_raw_pointers()));
+        },
+        reinterpret_cast<uintptr_t>(&conn));
+}
 
 
 EMSCRIPTEN_BINDINGS(my_module) {
@@ -29,11 +32,11 @@ EMSCRIPTEN_BINDINGS(my_module) {
     .function("setRoutingParameter", &Avoid::Router::setRoutingParameter)
     .function("setRoutingOption", &Avoid::Router::setRoutingOption);
 
-    emscripten::enum_<Avoid::RouterFlag>("RouterFlag")
+    emscripten::enum_<Avoid::RouterFlag>("RouterFlag", enum_value_type::number)
     .value("PolyLineRouting", Avoid::RouterFlag::PolyLineRouting)
     .value("OrthogonalRouting", Avoid::RouterFlag::OrthogonalRouting);
 
-    emscripten::enum_<Avoid::RoutingOption>("RoutingOption")
+    emscripten::enum_<Avoid::RoutingOption>("RoutingOption", enum_value_type::number)
     .value("nudgeOrthogonalSegmentsConnectedToShapes", Avoid::RoutingOption::nudgeOrthogonalSegmentsConnectedToShapes)
     .value("improveHyperedgeRoutesMovingJunctions", Avoid::RoutingOption::improveHyperedgeRoutesMovingJunctions)
     .value("penaliseOrthogonalSharedPathsAtConnEnds", Avoid::RoutingOption::penaliseOrthogonalSharedPathsAtConnEnds)
@@ -43,7 +46,7 @@ EMSCRIPTEN_BINDINGS(my_module) {
     .value("nudgeSharedPathsWithCommonEndPoint", Avoid::RoutingOption::nudgeSharedPathsWithCommonEndPoint);
 
 
-    emscripten::enum_<Avoid::RoutingParameter>("RoutingParameter")
+    emscripten::enum_<Avoid::RoutingParameter>("RoutingParameter", enum_value_type::number)
     .value("segmentPenalty", Avoid::RoutingParameter::segmentPenalty)
     .value("anglePenalty", Avoid::RoutingParameter::anglePenalty)
     .value("crossingPenalty", Avoid::RoutingParameter::crossingPenalty)
@@ -63,7 +66,15 @@ EMSCRIPTEN_BINDINGS(my_module) {
     .property("id", &Avoid::Point::id)
     .property("vn", &Avoid::Point::vn);
 
-    register_vector<Avoid::Point>("vector<Avoid::Point>");
+    register_vector<Avoid::Point>("PointVector");
+
+    class_<Avoid::Box>("Box")
+    .constructor<>()
+    .property("min", &Avoid::Box::min)
+    .property("max", &Avoid::Box::max)
+    .function("length", &Avoid::Box::length)
+    .function("width", &Avoid::Box::width)
+    .function("height", &Avoid::Box::height);
 
     class_<Avoid::PolygonInterface>("PolygonInterface")
     .function("clear", &Avoid::PolygonInterface::clear)
@@ -90,7 +101,8 @@ EMSCRIPTEN_BINDINGS(my_module) {
         .function("id", &Avoid::Obstacle::id)
         .function("polygon", &Avoid::Obstacle::polygon)
         .function("position", &Avoid::Obstacle::position)
-        .function("setNewPoly", &Avoid::Obstacle::setNewPoly);
+        .function("setNewPoly", &Avoid::Obstacle::setNewPoly)
+        .function("routingBox", &Avoid::Obstacle::routingBox);
 
     class_<Avoid::ShapeRef, emscripten::base<Avoid::Obstacle>>("ShapeRef")
     .constructor<Avoid::Router*, Avoid::Polygon&>()
@@ -100,16 +112,27 @@ EMSCRIPTEN_BINDINGS(my_module) {
     .function("setNewPoly", &Avoid::ShapeRef::setNewPoly);
 
     class_<Avoid::JunctionRef, emscripten::base<Avoid::Obstacle>>("JunctionRef")
+    // Embind has no default arguments; the 2-arg overload uses the C++
+    // default id = 0, which makes libavoid assign a unique id.
+    .constructor<Avoid::Router*, Avoid::Point>()
     .constructor<Avoid::Router*, Avoid::Point, unsigned long>()
     .function("position", &Avoid::JunctionRef::position)
     .function("setPositionFixed", &Avoid::JunctionRef::setPositionFixed)
     .function("positionFixed", &Avoid::JunctionRef::positionFixed)
     .function("recommendedPosition", &Avoid::JunctionRef::recommendedPosition);
 
-    enum_<Avoid::ConnType>("ConnType")
+    enum_<Avoid::ConnType>("ConnType", enum_value_type::number)
     .value("ConnType_None", Avoid::ConnType_None)
     .value("ConnType_PolyLine", Avoid::ConnType_PolyLine)
     .value("ConnType_Orthogonal", Avoid::ConnType_Orthogonal);
+
+    enum_<Avoid::ConnDirFlag>("ConnDirFlag", enum_value_type::number)
+    .value("ConnDirNone", Avoid::ConnDirNone)
+    .value("ConnDirUp", Avoid::ConnDirUp)
+    .value("ConnDirDown", Avoid::ConnDirDown)
+    .value("ConnDirLeft", Avoid::ConnDirLeft)
+    .value("ConnDirRight", Avoid::ConnDirRight)
+    .value("ConnDirAll", Avoid::ConnDirAll);
 
     class_<Avoid::Checkpoint>("Checkpoint")
     .constructor<const Avoid::Point&>()
@@ -144,6 +167,11 @@ EMSCRIPTEN_BINDINGS(my_module) {
     .constructor<Avoid::ShapeRef*, unsigned long, double, double, double, Avoid::ConnDirFlags>()
     .constructor<Avoid::JunctionRef*, unsigned long, Avoid::ConnDirFlags>()
     .function("setConnectionCost", &Avoid::ShapeConnectionPin::setConnectionCost)
+    // Embind has no default arguments; the 0-arg overload uses the C++
+    // default (an empty Polygon), which means "the parent's current polygon".
+    .function("position", optional_override([](const Avoid::ShapeConnectionPin& self) {
+        return self.position();
+    }))
     .function("position", &Avoid::ShapeConnectionPin::position)
     .function("directions", &Avoid::ShapeConnectionPin::directions)
     .function("setExclusive", &Avoid::ShapeConnectionPin::setExclusive)
