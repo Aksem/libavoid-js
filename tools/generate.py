@@ -61,7 +61,8 @@ def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Lite
     #  -s DISABLE_EXCEPTION_CATCHING=0
     args += ' -gsource-map --source-map-base http://localhost:8080/ -s RUNTIME_LOGGING=1 -s ASSERTIONS=1'
   else:
-    args += '-O3 -s ASSERTIONS=1 -flto'  # -s DISABLE_EXCEPTION_CATCHING=0
+    # closure minifies the glue; keep it release-only so debug glue stays readable
+    args += '-O3 -s ASSERTIONS=1 -flto --closure 1'  # -s DISABLE_EXCEPTION_CATCHING=0
 
   libavoid_js_dir_path = Path(__file__).parent.parent.resolve()
   # list of parameters: https://emsettings.surma.technology/
@@ -71,11 +72,10 @@ def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Lite
   --rm \
   -v {str(libavoid_js_dir_path)}:/src -w /src/ \
   -u {os.getuid()}:{os.getgid()} \
-  emscripten/emsdk:6.0.13 \
+  emscripten/emsdk:7.0.0 \
   em++ {args} \
     -lembind \
     -fwasm-exceptions \
-    --closure 1 \
     -s LLD_REPORT_UNDEFINED \
     -s FILESYSTEM=0 \
     -s MODULARIZE=1 \
