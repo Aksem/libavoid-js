@@ -1,20 +1,5 @@
-// Type definitions for libavoid-js.
-//
 // These mirror the embind bindings in embind/bindings.cpp. Keep them in sync
 // when bindings change; test/types.test-d.ts type-checks typical usage.
-//
-// Memory management
-// -----------------
-// Every object created with `new` lives on the wasm heap and is NOT garbage
-// collected. Call `.delete()` on JS-owned objects when done with them.
-//
-// - JS-owned (call .delete()): Router, Point, Polygon, Rectangle, ConnEnd,
-//   Checkpoint, CheckpointVector, PointVector, and every Point / Polygon /
-//   vector *returned* by a method (they are returned as copies).
-// - Router-owned (never call .delete()): ShapeRef, ConnRef, JunctionRef and
-//   ShapeConnectionPin. They are freed by Router.deleteShape / deleteConnector
-//   / deleteJunction, or when the router itself is deleted. Their JS handles
-//   become dangling after that.
 
 declare const enumBrand: unique symbol;
 
@@ -42,29 +27,26 @@ export interface EmbindVector<T> extends EmbindObject {
 }
 
 /**
- * Value of an embind enum. Enum parameters must be passed as these objects:
- * a plain number (e.g. `RoutingParameter.shapeBufferDistance.value`) is
- * silently converted to the enum's 0 value.
+ * Value of the libavoid enum `Name`. At runtime it is a plain number (e.g.
+ * `Avoid.RoutingParameter.shapeBufferDistance === 6`); the brand only lets
+ * TypeScript catch values of the wrong enum. Methods with enum parameters
+ * throw a TypeError for non-numbers and a RangeError for numbers that are not
+ * a value of the enum.
  */
-export interface EnumValue<Name extends string> {
-  readonly value: number;
-  readonly [enumBrand]: Name;
-}
+export type EnumValue<Name extends string> = number & { readonly [enumBrand]: Name };
 
-type EmbindEnum<Name extends string, Keys extends string> = {
+type NumberEnum<Name extends string, Keys extends string> = {
   readonly [K in Keys]: EnumValue<Name>;
-} & {
-  readonly values: { readonly [value: number]: EnumValue<Name> };
 };
 
 // ---------------------------------------------------------------------------
 // Enums
 
 export type RouterFlagValue = EnumValue<"RouterFlag">;
-export type RouterFlagEnum = EmbindEnum<"RouterFlag", "PolyLineRouting" | "OrthogonalRouting">;
+export type RouterFlagEnum = NumberEnum<"RouterFlag", "PolyLineRouting" | "OrthogonalRouting">;
 
 export type RoutingParameterValue = EnumValue<"RoutingParameter">;
-export type RoutingParameterEnum = EmbindEnum<
+export type RoutingParameterEnum = NumberEnum<
   "RoutingParameter",
   | "segmentPenalty"
   | "anglePenalty"
@@ -78,7 +60,7 @@ export type RoutingParameterEnum = EmbindEnum<
 >;
 
 export type RoutingOptionValue = EnumValue<"RoutingOption">;
-export type RoutingOptionEnum = EmbindEnum<
+export type RoutingOptionEnum = NumberEnum<
   "RoutingOption",
   | "nudgeOrthogonalSegmentsConnectedToShapes"
   | "improveHyperedgeRoutesMovingJunctions"
@@ -90,15 +72,20 @@ export type RoutingOptionEnum = EmbindEnum<
 >;
 
 export type ConnTypeValue = EnumValue<"ConnType">;
-export type ConnTypeEnum = EmbindEnum<
+export type ConnTypeEnum = NumberEnum<
   "ConnType",
   "ConnType_None" | "ConnType_PolyLine" | "ConnType_Orthogonal"
 >;
 
+export type ConnDirFlagValue = EnumValue<"ConnDirFlag">;
+export type ConnDirFlagEnum = NumberEnum<
+  "ConnDirFlag",
+  "ConnDirNone" | "ConnDirUp" | "ConnDirDown" | "ConnDirLeft" | "ConnDirRight" | "ConnDirAll"
+>;
+
 /**
- * Bit flags (libavoid's ConnDirFlag), bound as a plain number. Combine with `|`:
- * ConnDirNone = 0, ConnDirUp = 1, ConnDirDown = 2, ConnDirLeft = 4,
- * ConnDirRight = 8, ConnDirAll = 15.
+ * Bitwise OR of ConnDirFlag values, e.g.
+ * `Avoid.ConnDirFlag.ConnDirUp | Avoid.ConnDirFlag.ConnDirDown`.
  */
 export type ConnDirFlags = number;
 
@@ -125,6 +112,29 @@ export interface PointVectorConstructor {
   readonly prototype: PointVector;
 }
 
+/**
+ * Axis-aligned bounding box, given by its top-left (`min`) and bottom-right
+ * (`max`) corners.
+ */
+export interface Box extends EmbindObject {
+  /**
+   * Top-left corner. The getter returns a copy (call .delete() on it), so
+   * `box.min.x = 1` has no effect: assign a whole Point instead.
+   */
+  min: Point;
+  /** Bottom-right corner. Same copy semantics as `min`. */
+  max: Point;
+  /** Extent along a dimension: 0 for x (width), any other value for y (height). */
+  length(dimension: number): number;
+  width(): number;
+  height(): number;
+}
+export interface BoxConstructor {
+  /** The corners' x/y are uninitialised: assign `min` and `max` before use. */
+  new (): Box;
+  readonly prototype: Box;
+}
+
 /** Abstract base of Polygon; cannot be constructed. */
 export interface PolygonInterface extends EmbindObject {
   clear(): void;
@@ -134,11 +144,8 @@ export interface PolygonInterface extends EmbindObject {
   /** Returns a copy of the point at `index`. */
   at(index: number): Point;
   boundingRectPolygon(): Polygon;
-  /**
-   * @deprecated Currently unusable: returns Avoid::Box, which is not bound,
-   * so the call always throws "unbound types".
-   */
-  offsetBoundingBox(offset: number): never;
+  /** Bounding box of the polygon, grown by `offset` on every side. */
+  offsetBoundingBox(offset: number): Box;
   offsetPolygon(offset: number): Polygon;
 }
 export interface PolygonInterfaceConstructor {
@@ -156,7 +163,6 @@ export interface PolygonConstructor {
   readonly prototype: Polygon;
 }
 
-/** In libavoid, PolyLine is a typedef for Polygon. */
 export type PolyLine = Polygon;
 
 export interface Rectangle extends Polygon {}
@@ -174,7 +180,6 @@ export interface Router extends EmbindObject {
   processTransaction(): boolean;
   printInfo(): void;
   deleteConnector(connector: ConnRef): void;
-  /** `firstMove` is libavoid's `first_move` flag; pass false normally. */
   moveShape_poly(shape: ShapeRef, newPolygon: Polygon, firstMove: boolean): void;
   moveShape_delta(shape: ShapeRef, xDiff: number, yDiff: number): void;
   deleteShape(shape: ShapeRef): void;
@@ -186,8 +191,8 @@ export interface Router extends EmbindObject {
 }
 export interface RouterConstructor {
   /**
-   * @param flags Bitwise OR of RouterFlag values, as numbers:
-   *   `new Avoid.Router(Avoid.RouterFlag.OrthogonalRouting.value)`.
+   * @param flags Bitwise OR of RouterFlag values, e.g.
+   *   `Avoid.RouterFlag.PolyLineRouting | Avoid.RouterFlag.OrthogonalRouting`.
    */
   new (flags: number): Router;
   readonly prototype: Router;
@@ -203,6 +208,11 @@ export interface Obstacle extends EmbindObject {
   polygon(): Polygon;
   position(): Point;
   setNewPoly(polygon: Polygon): void;
+  /**
+   * Bounding box of the obstacle's polygon grown by the router's
+   * shapeBufferDistance, i.e. the area connectors are routed around.
+   */
+  routingBox(): Box;
 }
 export interface ObstacleConstructor {
   readonly prototype: Obstacle;
@@ -223,7 +233,9 @@ export interface JunctionRef extends Obstacle {
   recommendedPosition(): Point;
 }
 export interface JunctionRefConstructor {
-  /** Pass id 0 to let libavoid assign one. */
+  /** libavoid assigns a unique id. */
+  new (router: Router, position: Point): JunctionRef;
+  /** @param id Unique object id; 0 lets libavoid assign one. */
   new (router: Router, position: Point, id: number): JunctionRef;
   readonly prototype: JunctionRef;
 }
@@ -256,9 +268,9 @@ export interface CheckpointVectorConstructor {
 /**
  * Called after the connector was re-routed during processTransaction.
  *
- * Note: the argument is currently a *copy* of the ConnRef (not an alias of
- * the handle you registered the callback on). Use it only to read the
- * connector (id(), displayRoute(), ...) and never call .delete() on it.
+ * The argument is a new handle to the same Router-owned C++ object as the
+ * ConnRef the callback was registered on (`connRef.isAliasOf(conn)` is true,
+ * but `connRef !== conn`). Like every ConnRef handle, never call .delete() on it.
  */
 export type ConnRefCallback = (connRef: ConnRef) => void;
 
@@ -289,7 +301,12 @@ export interface ConnRefConstructor {
 /** Owned by its shape or junction: never call .delete(). */
 export interface ShapeConnectionPin extends EmbindObject {
   setConnectionCost(cost: number): void;
-  /** Pass `new Avoid.Polygon()` to use the parent's current polygon. */
+  /** Position on the parent shape's current polygon, or the parent junction's position. */
+  position(): Point;
+  /**
+   * Position the pin would have if the parent shape's polygon were
+   * `newPolygon`. An empty polygon means the parent's current polygon.
+   */
   position(newPolygon: Polygon): Point;
   directions(): ConnDirFlags;
   setExclusive(exclusive: boolean): void;
@@ -327,14 +344,17 @@ export interface ShapeConnectionPinConstructor {
 
 /** The initialised wasm module returned by AvoidLib.getInstance(). */
 export interface Avoid {
+  Box: BoxConstructor;
   Checkpoint: CheckpointConstructor;
   CheckpointVector: CheckpointVectorConstructor;
   ConnEnd: ConnEndConstructor;
   ConnRef: ConnRefConstructor;
+  ConnDirFlag: ConnDirFlagEnum;
   ConnType: ConnTypeEnum;
   JunctionRef: JunctionRefConstructor;
   Obstacle: ObstacleConstructor;
   Point: PointConstructor;
+  PointVector: PointVectorConstructor;
   Polygon: PolygonConstructor;
   PolygonInterface: PolygonInterfaceConstructor;
   Rectangle: RectangleConstructor;
@@ -344,8 +364,6 @@ export interface Avoid {
   RoutingParameter: RoutingParameterEnum;
   ShapeConnectionPin: ShapeConnectionPinConstructor;
   ShapeRef: ShapeRefConstructor;
-  /** std::vector<Avoid::Point>; emscripten derives this name from "vector<Avoid::Point>". */
-  vector$Avoid$$Point$: PointVectorConstructor;
 }
 
 export interface AvoidLibType {
