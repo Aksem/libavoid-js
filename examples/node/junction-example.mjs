@@ -13,8 +13,9 @@ function printRoutes(conns) {
 
 function createScenario(Avoid, { fixedJunction = false } = {}) {
   const router = new Avoid.Router(Avoid.RouterFlag.OrthogonalRouting.value);
-  router.setRoutingParameter(Avoid.RoutingParameter.segmentPenalty.value, 50);
-  router.setRoutingParameter(Avoid.RoutingParameter.idealNudgingDistance.value, 25);
+  router.setRoutingParameter(Avoid.RoutingParameter.segmentPenalty, 50);
+  router.setRoutingParameter(Avoid.RoutingParameter.idealNudgingDistance, 25);
+  router.setRoutingParameter(Avoid.RoutingParameter.shapeBufferDistance, 40);
 
   const shape1 = new Avoid.ShapeRef(router,
     new Avoid.Rectangle(new Avoid.Point(100, 100), new Avoid.Point(200, 200)), 1);
