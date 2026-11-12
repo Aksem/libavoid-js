@@ -19,7 +19,7 @@ def execute_command(command, logger, path=None, env=None):
   exit_code = process.wait()
   output = output.decode('utf-8')
   error = error.decode('utf-8')
-  logger.info(f'Exit code: {exit_code}\nOutput: {output}')
+  logger.info(f'Exit code: {exit_code}\Stdout: {output}. Stderr: {error}')
   if exit_code != 0:
     raise Exception(f'Process end:\n Error: {error}')
   return (process, output, error)
