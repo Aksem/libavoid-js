@@ -546,6 +546,165 @@ async function initAvoidModule(moduleArg = {}) {
     throw e;
   };
   var __abort_js = () => abort("native code called abort()");
+  function readPointer(pointer) {
+    return this.fromWireType(HEAPU32[pointer >> 2]);
+  }
+  var runDestructors = (destructors) => {
+    while (destructors.length) {
+      var ptr = destructors.pop();
+      var del = destructors.pop();
+      del(ptr);
+    }
+  };
+  var structRegistrations = {};
+  var awaitingDependencies = {};
+  var registeredTypes = {};
+  class BindingError extends Error {
+    constructor(message) {
+      super(message);
+      this.name = "BindingError";
+    }
+  }
+  var throwBindingError = (message) => {
+    throw new BindingError(message);
+  };
+  var typeDependencies = {};
+  function sharedRegisterType(typeID, registeredInstance, options = {}) {
+    var name = registeredInstance.name;
+    if (!typeID) {
+      throwBindingError(`type "${name}" must have a positive integer typeid pointer`);
+    }
+    if (registeredTypes[typeID]) {
+      if (options.ignoreDuplicateRegistrations) {
+        return;
+      } else {
+        throwBindingError(`Cannot register type '${name}' twice`);
+      }
+    }
+    registeredTypes[typeID] = registeredInstance;
+    delete typeDependencies[typeID];
+    if (awaitingDependencies[typeID]) {
+      var callbacks = awaitingDependencies[typeID];
+      delete awaitingDependencies[typeID];
+      callbacks.forEach((cb) => cb());
+    }
+  }
+  function registerType(typeID, registeredInstance, options = {}) {
+    return sharedRegisterType(typeID, registeredInstance, options);
+  }
+  class InternalError extends Error {
+    constructor(message) {
+      super(message);
+      this.name = "InternalError";
+    }
+  }
+  var throwInternalError = (message) => {
+    throw new InternalError(message);
+  };
+  var whenDependentTypesAreResolved = (myTypes, dependentTypes, getTypeConverters) => {
+    myTypes.forEach((type) => typeDependencies[type] = dependentTypes);
+    function onComplete(typeConverters2) {
+      var myTypeConverters = getTypeConverters(typeConverters2);
+      if (myTypeConverters.length !== myTypes.length) {
+        throwInternalError("Mismatched type converter count");
+      }
+      for (var i = 0; i < myTypes.length; ++i) {
+        registerType(myTypes[i], myTypeConverters[i]);
+      }
+    }
+    var typeConverters = new Array(dependentTypes.length);
+    var unregisteredTypes = [];
+    var registered = 0;
+    for (let [i, dt] of dependentTypes.entries()) {
+      if (registeredTypes[dt]) {
+        typeConverters[i] = registeredTypes[dt];
+      } else {
+        unregisteredTypes.push(dt);
+        (awaitingDependencies[dt] ??= []).push(() => {
+          typeConverters[i] = registeredTypes[dt];
+          ++registered;
+          if (registered === unregisteredTypes.length) {
+            onComplete(typeConverters);
+          }
+        });
+      }
+    }
+    if (0 === unregisteredTypes.length) {
+      onComplete(typeConverters);
+    }
+  };
+  var zeroMemory = (ptr, size) => HEAPU8.fill(0, ptr, ptr + size);
+  var __embind_finalize_value_object = (structTypeID) => {
+    var reg = structRegistrations[structTypeID];
+    delete structRegistrations[structTypeID];
+    var rawConstructor = reg.rawConstructor;
+    var rawDestructor = reg.rawDestructor;
+    var valueSize = reg.valueSize;
+    var isTrivial = reg.isTrivial;
+    var fieldRecords = reg.fields;
+    var fieldTypeIDs = fieldRecords.map((field) => field.getterReturnTypeID).concat(fieldRecords.map((field) => field.setterArgumentTypeID));
+    whenDependentTypesAreResolved([structTypeID], fieldTypeIDs, (fieldTypes) => {
+      var fields = {};
+      for (var [i, field] of fieldRecords.entries()) {
+        const getterReturnType = fieldTypes[i];
+        const getter = field.getter;
+        const getterContext = field.getterContext;
+        const setterArgumentType = fieldTypes[i + fieldRecords.length];
+        const setter = field.setter;
+        const setterContext = field.setterContext;
+        var write;
+        if (setterArgumentType.destructorFunction === null && !setterArgumentType.argStackAlloc) {
+          write = (ptr, o) => setter(setterContext, ptr, setterArgumentType.toWireType(null, o));
+        } else {
+          write = (ptr, o) => {
+            var destructors = [];
+            setter(setterContext, ptr, setterArgumentType.toWireType(destructors, o));
+            runDestructors(destructors);
+          };
+        }
+        fields[field.fieldName] = {
+          read: (ptr) => getterReturnType.fromWireType(getter(getterContext, ptr)),
+          write,
+          optional: getterReturnType.optional
+        };
+      }
+      return [{
+        name: reg.name,
+        fromWireType: (ptr) => {
+          var rv = {};
+          for (var i2 in fields) {
+            rv[i2] = fields[i2].read(ptr);
+          }
+          rawDestructor(ptr);
+          return rv;
+        },
+        toWireType: (destructors, o) => {
+          for (var fieldName in fields) {
+            if (!(fieldName in o) && !fields[fieldName].optional) {
+              throw new TypeError(`Missing field: "${fieldName}"`);
+            }
+          }
+          var ptr;
+          if (isTrivial && !destructors) {
+            ptr = stackAlloc(valueSize);
+            zeroMemory(ptr, valueSize);
+          } else {
+            ptr = rawConstructor();
+            if (destructors) {
+              destructors.push(rawDestructor, ptr);
+            }
+          }
+          for (fieldName in fields) {
+            fields[fieldName].write(ptr, o[fieldName]);
+          }
+          return ptr;
+        },
+        readValueFromPointer: readPointer,
+        destructorFunction: isTrivial ? null : rawDestructor,
+        argStackAlloc: isTrivial
+      }];
+    });
+  };
   var AsciiToString = (ptr) => {
     var str = "";
     while (1) {
@@ -588,41 +747,6 @@ async function initAvoidModule(moduleArg = {}) {
         throw new TypeError(`invalid integer width (${width}): ${name}`);
     }
   };
-  var awaitingDependencies = {};
-  var registeredTypes = {};
-  class BindingError extends Error {
-    constructor(message) {
-      super(message);
-      this.name = "BindingError";
-    }
-  }
-  var throwBindingError = (message) => {
-    throw new BindingError(message);
-  };
-  var typeDependencies = {};
-  function sharedRegisterType(typeID, registeredInstance, options = {}) {
-    var name = registeredInstance.name;
-    if (!typeID) {
-      throwBindingError(`type "${name}" must have a positive integer typeid pointer`);
-    }
-    if (registeredTypes[typeID]) {
-      if (options.ignoreDuplicateRegistrations) {
-        return;
-      } else {
-        throwBindingError(`Cannot register type '${name}' twice`);
-      }
-    }
-    registeredTypes[typeID] = registeredInstance;
-    delete typeDependencies[typeID];
-    if (awaitingDependencies[typeID]) {
-      var callbacks = awaitingDependencies[typeID];
-      delete awaitingDependencies[typeID];
-      callbacks.forEach((cb) => cb());
-    }
-  }
-  function registerType(typeID, registeredInstance, options = {}) {
-    return sharedRegisterType(typeID, registeredInstance, options);
-  }
   var __embind_register_bigint = (typeID, name, size, minRange, maxRange) => {
     name = AsciiToString(name);
     const isUnsignedType = minRange === 0n;
@@ -695,15 +819,6 @@ async function initAvoidModule(moduleArg = {}) {
   var getInheritedInstance = (class_, ptr) => {
     ptr = getBasestPointer(class_, ptr);
     return registeredInstances[ptr];
-  };
-  class InternalError extends Error {
-    constructor(message) {
-      super(message);
-      this.name = "InternalError";
-    }
-  }
-  var throwInternalError = (message) => {
-    throw new InternalError(message);
   };
   var makeClassHandle = (prototype, record) => {
     if (!record.ptrType || !record.ptr) {
@@ -1075,9 +1190,6 @@ Originally allocated`);
     }
     return ptr;
   }
-  function readPointer(pointer) {
-    return this.fromWireType(HEAPU32[pointer >> 2]);
-  }
   var init_RegisteredPointer = () => {
     Object.assign(RegisteredPointer.prototype, {
       getPointee(ptr) {
@@ -1238,38 +1350,6 @@ Originally allocated`);
     }
     types.forEach(visit);
     throw new UnboundTypeError(`${message}: ` + unboundTypes.map(getTypeName).join([", "]));
-  };
-  var whenDependentTypesAreResolved = (myTypes, dependentTypes, getTypeConverters) => {
-    myTypes.forEach((type) => typeDependencies[type] = dependentTypes);
-    function onComplete(typeConverters2) {
-      var myTypeConverters = getTypeConverters(typeConverters2);
-      if (myTypeConverters.length !== myTypes.length) {
-        throwInternalError("Mismatched type converter count");
-      }
-      for (var i = 0; i < myTypes.length; ++i) {
-        registerType(myTypes[i], myTypeConverters[i]);
-      }
-    }
-    var typeConverters = new Array(dependentTypes.length);
-    var unregisteredTypes = [];
-    var registered = 0;
-    for (let [i, dt] of dependentTypes.entries()) {
-      if (registeredTypes[dt]) {
-        typeConverters[i] = registeredTypes[dt];
-      } else {
-        unregisteredTypes.push(dt);
-        (awaitingDependencies[dt] ??= []).push(() => {
-          typeConverters[i] = registeredTypes[dt];
-          ++registered;
-          if (registered === unregisteredTypes.length) {
-            onComplete(typeConverters);
-          }
-        });
-      }
-    }
-    if (0 === unregisteredTypes.length) {
-      onComplete(typeConverters);
-    }
   };
   var __embind_register_class = (typeID, pointerTypeID, constPointerTypeID, baseClassTypeID, getActualTypeSignature, getActualType, upcastSignature, upcast, downcastSignature, downcast, name, destructorSignature, rawDestructor) => {
     name = AsciiToString(name);
@@ -1458,13 +1538,6 @@ ${invokerFnBody}`;
     }
     return requiredArgCount;
   }
-  var runDestructors = (destructors) => {
-    while (destructors.length) {
-      var ptr = destructors.pop();
-      var del = destructors.pop();
-      del(ptr);
-    }
-  };
   function craftInvokerFunction(humanName, argTypes, classType, cppInvokerFunc, cppTargetFunc, isAsync) {
     var argCount = argTypes.length;
     if (argCount < 2) {
@@ -1503,67 +1576,12 @@ ${invokerFnBody}`;
     var invokerFn = invokerFactory(...closureArgs);
     return createNamedFunction(humanName, invokerFn);
   }
-  var getFunctionName = (signature) => {
-    signature = signature.trim();
-    const argsIndex = signature.indexOf("(");
-    if (argsIndex === -1) return signature;
-    assert(signature.endsWith(")"), "Parentheses for argument names should match.");
-    return signature.slice(0, argsIndex);
-  };
   var heap32VectorToArray = (count, firstElement) => {
     var array = [];
     for (var i = 0; i < count; i++) {
       array.push(HEAPU32[firstElement + i * 4 >> 2]);
     }
     return array;
-  };
-  var __embind_register_class_class_function = (classTypeID, methodName, argCount, rawArgTypesAddr, invokerSignature, rawInvoker, fn, isAsync, isNonnullReturn) => {
-    var argTypeIDs = heap32VectorToArray(argCount, rawArgTypesAddr);
-    methodName = AsciiToString(methodName);
-    methodName = getFunctionName(methodName);
-    rawInvoker = embind__requireFunction(invokerSignature, rawInvoker, isAsync);
-    whenDependentTypesAreResolved([], [classTypeID], (classType) => {
-      classType = classType[0];
-      var humanName = `${classType.name}.${methodName}`;
-      function unboundTypesHandler() {
-        throwUnboundTypeError(`Cannot call ${humanName} due to unbound types`, argTypeIDs);
-      }
-      if (methodName.startsWith("@@")) {
-        methodName = Symbol[methodName.substring(2)];
-      }
-      var proto = classType.registeredClass.constructor;
-      if (void 0 === proto[methodName]) {
-        unboundTypesHandler.argCount = argCount - 1;
-        proto[methodName] = unboundTypesHandler;
-      } else {
-        ensureOverloadTable(proto, methodName, humanName);
-        proto[methodName].overloadTable[argCount - 1] = unboundTypesHandler;
-      }
-      whenDependentTypesAreResolved([], argTypeIDs, (argTypes) => {
-        var invokerArgsArray = [
-          argTypes[0],
-          null
-          /* no class 'this'*/
-        ].concat(
-          argTypes.slice(1)
-          /* actual params */
-        );
-        var func = craftInvokerFunction(humanName, invokerArgsArray, null, rawInvoker, fn, isAsync);
-        if (void 0 === proto[methodName].overloadTable) {
-          func.argCount = argCount - 1;
-          proto[methodName] = func;
-        } else {
-          proto[methodName].overloadTable[argCount - 1] = func;
-        }
-        if (classType.registeredClass.__derivedClasses) {
-          for (const derivedClass of classType.registeredClass.__derivedClasses) {
-            derivedClass.constructor[methodName] ??= func;
-          }
-        }
-        return [];
-      });
-      return [];
-    });
   };
   var __embind_register_class_constructor = (classTypeID, argCount, rawArgTypesAddr, invokerSignature, invoker, rawConstructor) => {
     assert(argCount > 0);
@@ -1590,6 +1608,13 @@ ${invokerFnBody}`;
       });
       return [];
     });
+  };
+  var getFunctionName = (signature) => {
+    signature = signature.trim();
+    const argsIndex = signature.indexOf("(");
+    if (argsIndex === -1) return signature;
+    assert(signature.endsWith(")"), "Parentheses for argument names should match.");
+    return signature.slice(0, argsIndex);
   };
   var __embind_register_class_function = (classTypeID, methodName, argCount, rawArgTypesAddr, invokerSignature, rawInvoker, context, isPureVirtual, isAsync, isNonnullReturn) => {
     var argTypeIDs = heap32VectorToArray(argCount, rawArgTypesAddr);
@@ -1628,70 +1653,6 @@ ${invokerFnBody}`;
         }
         return [];
       });
-      return [];
-    });
-  };
-  var validateThis = (this_, classType, humanName) => {
-    if (!(this_ instanceof Object)) {
-      throwBindingError(`${humanName} with invalid "this": ${this_}`);
-    }
-    if (!(this_ instanceof classType.registeredClass.constructor)) {
-      throwBindingError(`${humanName} incompatible with "this" of type ${this_.constructor.name}`);
-    }
-    if (!this_.$$.ptr) {
-      throwBindingError(`cannot call emscripten binding method ${humanName} on deleted object`);
-    }
-    return upcastPointer(
-      this_.$$.ptr,
-      this_.$$.ptrType.registeredClass,
-      classType.registeredClass
-    );
-  };
-  var __embind_register_class_property = (classTypeID, fieldName, getterReturnTypeID, getterSignature, getter, getterContext, setterArgumentTypeID, setterSignature, setter, setterContext) => {
-    fieldName = AsciiToString(fieldName);
-    getter = embind__requireFunction(getterSignature, getter);
-    whenDependentTypesAreResolved([], [classTypeID], (classType) => {
-      classType = classType[0];
-      var humanName = `${classType.name}.${fieldName}`;
-      var desc = {
-        get() {
-          throwUnboundTypeError(`Cannot access ${humanName} due to unbound types`, [getterReturnTypeID, setterArgumentTypeID]);
-        },
-        enumerable: true,
-        configurable: true
-      };
-      if (setter) {
-        desc.set = () => throwUnboundTypeError(`Cannot access ${humanName} due to unbound types`, [getterReturnTypeID, setterArgumentTypeID]);
-      } else {
-        desc.set = (v) => throwBindingError(humanName + " is a read-only property");
-      }
-      Object.defineProperty(classType.registeredClass.instancePrototype, fieldName, desc);
-      whenDependentTypesAreResolved(
-        [],
-        setter ? [getterReturnTypeID, setterArgumentTypeID] : [getterReturnTypeID],
-        (types) => {
-          var getterReturnType = types[0];
-          var desc2 = {
-            get() {
-              var ptr = validateThis(this, classType, humanName + " getter");
-              return getterReturnType.fromWireType(getter(getterContext, ptr));
-            },
-            enumerable: true
-          };
-          if (setter) {
-            setter = embind__requireFunction(setterSignature, setter);
-            var setterArgumentType = types[1];
-            desc2.set = function(v) {
-              var ptr = validateThis(this, classType, humanName + " setter");
-              var destructors = [];
-              setter(setterContext, ptr, setterArgumentType.toWireType(destructors, v));
-              runDestructors(destructors);
-            };
-          }
-          Object.defineProperty(classType.registeredClass.instancePrototype, fieldName, desc2);
-          return [];
-        }
-      );
       return [];
     });
   };
@@ -1881,6 +1842,27 @@ ${invokerFnBody}`;
       // This type does not need a destructor
     });
   };
+  var __embind_register_function = (name, argCount, rawArgTypesAddr, signature, rawInvoker, fn, isAsync, isNonnullReturn) => {
+    var argTypeIDs = heap32VectorToArray(argCount, rawArgTypesAddr);
+    name = AsciiToString(name);
+    name = getFunctionName(name);
+    rawInvoker = embind__requireFunction(signature, rawInvoker, isAsync);
+    exposePublicSymbol(name, function() {
+      throwUnboundTypeError(`Cannot call ${name} due to unbound types`, argTypeIDs);
+    }, argCount - 1);
+    whenDependentTypesAreResolved([], argTypeIDs, (argTypes) => {
+      var invokerArgsArray = [
+        argTypes[0],
+        null
+        /* no class 'this'*/
+      ].concat(
+        argTypes.slice(1)
+        /* actual params */
+      );
+      replacePublicSymbol(name, craftInvokerFunction(name, invokerArgsArray, null, rawInvoker, fn, isAsync), argCount - 1);
+      return [];
+    });
+  };
   var __embind_register_integer = (typeID, name, size, minRange, maxRange) => {
     name = AsciiToString(name);
     const isUnsignedType = minRange === 0;
@@ -1903,63 +1885,6 @@ ${invokerFnBody}`;
       readValueFromPointer: integerReadValueFromPointer(name, size, minRange !== 0),
       destructorFunction: null
       // This type does not need a destructor
-    });
-  };
-  function getValue(ptr, type = "i8") {
-    if (type.endsWith("*")) type = "*";
-    switch (type) {
-      case "i1":
-        return HEAP8[ptr];
-      case "i8":
-        return HEAP8[ptr];
-      case "i16":
-        return HEAP16[ptr >> 1];
-      case "i32":
-        return HEAP32[ptr >> 2];
-      case "i64":
-        return HEAP64[ptr >> 3];
-      case "float":
-        return HEAPF32[ptr >> 2];
-      case "double":
-        return HEAPF64[ptr >> 3];
-      case "*":
-        return HEAPU32[ptr >> 2];
-      default:
-        abort(`invalid type for getValue: ${type}`);
-    }
-  }
-  var installIndexedIterator = (proto, sizeMethodName, getMethodName) => {
-    const makeIterator = (size, getValue2) => {
-      let index = 0;
-      return {
-        next() {
-          if (index >= size) {
-            return { done: true };
-          }
-          const current = index;
-          index++;
-          const value = getValue2(current);
-          return { value, done: false };
-        },
-        [Symbol.iterator]() {
-          return this;
-        }
-      };
-    };
-    if (!proto[Symbol.iterator]) {
-      proto[Symbol.iterator] = function() {
-        const size = this[sizeMethodName]();
-        return makeIterator(size, (i) => this[getMethodName](i));
-      };
-    }
-  };
-  var __embind_register_iterable = (classTypeID, elementTypeID, sizeMethodName, getMethodName) => {
-    sizeMethodName = AsciiToString(sizeMethodName);
-    getMethodName = AsciiToString(getMethodName);
-    whenDependentTypesAreResolved([], [classTypeID, elementTypeID], (types) => {
-      const classType = types[0];
-      installIndexedIterator(classType.registeredClass.instancePrototype, sizeMethodName, getMethodName);
-      return [];
     });
   };
   var __embind_register_memory_view = (typeID, dataTypeIndex, name) => {
@@ -1989,11 +1914,6 @@ ${invokerFnBody}`;
     }, {
       ignoreDuplicateRegistrations: true
     });
-  };
-  var EmValOptionalType = Object.assign({ optional: true }, EmValType);
-  ;
-  var __embind_register_optional = (optionalTypeID, typeID) => {
-    registerType(optionalTypeID, EmValOptionalType);
   };
   var lengthBytesUTF8 = (str) => {
     var len = 0;
@@ -2226,6 +2146,27 @@ ${invokerFnBody}`;
       }
     });
   };
+  var __embind_register_value_object = (typeID, name, constructorSignature, rawConstructor, destructorSignature, rawDestructor, valueSize, isTrivial) => {
+    structRegistrations[typeID] = {
+      name: AsciiToString(name),
+      rawConstructor: embind__requireFunction(constructorSignature, rawConstructor),
+      rawDestructor: embind__requireFunction(destructorSignature, rawDestructor),
+      valueSize,
+      isTrivial: !!isTrivial,
+      fields: []
+    };
+  };
+  var __embind_register_value_object_field = (structTypeID, fieldName, getterReturnTypeID, getterSignature, getter, getterContext, setterArgumentTypeID, setterSignature, setter, setterContext) => {
+    structRegistrations[structTypeID].fields.push({
+      fieldName: AsciiToString(fieldName),
+      getterReturnTypeID,
+      getter: embind__requireFunction(getterSignature, getter),
+      getterContext,
+      setterArgumentTypeID,
+      setter: embind__requireFunction(setterSignature, setter),
+      setterContext
+    });
+  };
   var __embind_register_void = (typeID, name) => {
     name = AsciiToString(name);
     registerType(typeID, {
@@ -2236,6 +2177,11 @@ ${invokerFnBody}`;
       // TODO: assert if anything else is given?
       toWireType: (destructors, o) => void 0
     });
+  };
+  var __emval_array_to_memory_view = (dst, src) => {
+    dst = Emval.toValue(dst);
+    src = Emval.toValue(src);
+    dst.set(src);
   };
   var emval_methodCallers = [];
   var emval_addMethodCaller = (caller) => {
@@ -2310,6 +2256,18 @@ ${functionBody}
     var functionName = `methodCaller<(${argTypes.map((t) => t.name)}) => ${retType.name}>`;
     return emval_addMethodCaller(createNamedFunction(functionName, invokerFunction));
   };
+  var __emval_get_global = (name) => {
+    if (!name) {
+      return Emval.toHandle(globalThis);
+    }
+    name = getStringOrSymbol(name);
+    return Emval.toHandle(globalThis[name]);
+  };
+  var __emval_get_property = (handle, key) => {
+    handle = Emval.toValue(handle);
+    key = Emval.toValue(key);
+    return Emval.toHandle(handle[key]);
+  };
   var __emval_incref = (handle) => {
     if (handle > EMVAL_LAST_RESERVED_HANDLE) {
       emval_handles[handle + 1] += 1;
@@ -2318,6 +2276,7 @@ ${functionBody}
   var __emval_invoke = (caller, handle, methodName, destructorsRef, args) => {
     return emval_methodCallers[caller](handle, methodName, destructorsRef, args);
   };
+  var __emval_new_cstring = (v) => Emval.toHandle(getStringOrSymbol(v));
   var __emval_run_destructors = (handle) => {
     var destructors = Emval.toValue(handle);
     runDestructors(destructors);
@@ -2553,7 +2512,6 @@ ${functionBody}
     "convertU32PairToI53",
     "getTempRet0",
     "setTempRet0",
-    "zeroMemory",
     "exitJS",
     "withStackSave",
     "strError",
@@ -2598,6 +2556,7 @@ ${functionBody}
     "addFunction",
     "removeFunction",
     "setValue",
+    "getValue",
     "intArrayFromString",
     "intArrayToString",
     "stringToAscii",
@@ -2709,7 +2668,9 @@ ${functionBody}
     "PureVirtualError",
     "registerInheritedInstance",
     "unregisterInheritedInstance",
+    "installIndexedIterator",
     "setDelayFunction",
+    "validateThis",
     "count_emval_handles",
     "isCppExceptionObject"
   ];
@@ -2741,6 +2702,7 @@ ${functionBody}
     "stackAlloc",
     "createNamedFunction",
     "ptrToString",
+    "zeroMemory",
     "getHeapMax",
     "growMemory",
     "ENV",
@@ -2760,7 +2722,6 @@ ${functionBody}
     "addOnPostRun",
     "freeTableIndexes",
     "functionsInTableMap",
-    "getValue",
     "PATH",
     "PATH_FS",
     "UTF8Decoder",
@@ -2860,7 +2821,6 @@ ${functionBody}
     "floatReadValueFromPointer",
     "assertIntegerRange",
     "readPointer",
-    "installIndexedIterator",
     "runDestructors",
     "craftInvokerFunction",
     "embind__requireFunction",
@@ -2886,7 +2846,6 @@ ${functionBody}
     "shallowCopyInternalPointer",
     "downcastPointer",
     "upcastPointer",
-    "validateThis",
     "makeLegalFunctionName",
     "emval_freelist",
     "emval_exception_decrefs",
@@ -3001,19 +2960,17 @@ ${functionBody}
     /** @export */
     _abort_js: __abort_js,
     /** @export */
+    _embind_finalize_value_object: __embind_finalize_value_object,
+    /** @export */
     _embind_register_bigint: __embind_register_bigint,
     /** @export */
     _embind_register_bool: __embind_register_bool,
     /** @export */
     _embind_register_class: __embind_register_class,
     /** @export */
-    _embind_register_class_class_function: __embind_register_class_class_function,
-    /** @export */
     _embind_register_class_constructor: __embind_register_class_constructor,
     /** @export */
     _embind_register_class_function: __embind_register_class_function,
-    /** @export */
-    _embind_register_class_property: __embind_register_class_property,
     /** @export */
     _embind_register_emval: __embind_register_emval,
     /** @export */
@@ -3023,27 +2980,37 @@ ${functionBody}
     /** @export */
     _embind_register_float: __embind_register_float,
     /** @export */
+    _embind_register_function: __embind_register_function,
+    /** @export */
     _embind_register_integer: __embind_register_integer,
     /** @export */
-    _embind_register_iterable: __embind_register_iterable,
-    /** @export */
     _embind_register_memory_view: __embind_register_memory_view,
-    /** @export */
-    _embind_register_optional: __embind_register_optional,
     /** @export */
     _embind_register_std_string: __embind_register_std_string,
     /** @export */
     _embind_register_std_wstring: __embind_register_std_wstring,
     /** @export */
+    _embind_register_value_object: __embind_register_value_object,
+    /** @export */
+    _embind_register_value_object_field: __embind_register_value_object_field,
+    /** @export */
     _embind_register_void: __embind_register_void,
+    /** @export */
+    _emval_array_to_memory_view: __emval_array_to_memory_view,
     /** @export */
     _emval_create_invoker: __emval_create_invoker,
     /** @export */
     _emval_decref: __emval_decref,
     /** @export */
+    _emval_get_global: __emval_get_global,
+    /** @export */
+    _emval_get_property: __emval_get_property,
+    /** @export */
     _emval_incref: __emval_incref,
     /** @export */
     _emval_invoke: __emval_invoke,
+    /** @export */
+    _emval_new_cstring: __emval_new_cstring,
     /** @export */
     _emval_run_destructors: __emval_run_destructors,
     /** @export */
@@ -3103,15 +3070,246 @@ ${functionBody}
 }
 var libavoid_default = initAvoidModule;
 
-// src/common.js
+// src/geometry.js
+var Point = class {
+  /**
+   * @param {number} x
+   * @param {number} y
+   */
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+  /**
+   * Without `epsilon`: exact comparison, like libavoid's `Point::operator==`.
+   * With `epsilon`: true if both coordinates differ by less than `epsilon`,
+   * like libavoid's `Point::equals(rhs, epsilon)`.
+   * @param {PointLike} other
+   * @param {number} [epsilon]
+   * @returns {boolean}
+   */
+  equals(other, epsilon) {
+    if (epsilon === void 0) {
+      return this.x === other.x && this.y === other.y;
+    }
+    return Math.abs(this.x - other.x) < epsilon && Math.abs(this.y - other.y) < epsilon;
+  }
+};
+var Rect = class {
+  /**
+   * @param {number} x
+   * @param {number} y
+   * @param {number} width
+   * @param {number} height
+   */
+  constructor(x, y, width, height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+  }
+  // As in DOMRect, the edges also hold for a negative width/height.
+  get left() {
+    return Math.min(this.x, this.x + this.width);
+  }
+  get top() {
+    return Math.min(this.y, this.y + this.height);
+  }
+  get right() {
+    return Math.max(this.x, this.x + this.width);
+  }
+  get bottom() {
+    return Math.max(this.y, this.y + this.height);
+  }
+};
+function pointsFromCoords(coords) {
+  const points = new Array(coords.length >> 1);
+  for (let i = 0; i < points.length; i++) {
+    points[i] = new Point(coords[2 * i], coords[2 * i + 1]);
+  }
+  return points;
+}
+function coordsFromPoints(points, context) {
+  if (!Array.isArray(points)) {
+    throw new TypeError(`${context}: expected an array of points, got ${describe(points)}`);
+  }
+  const coords = new Array(points.length * 2);
+  for (let i = 0; i < points.length; i++) {
+    const p = points[i];
+    if (typeof p !== "object" || p === null) {
+      throw new TypeError(`${context}: point ${i} must be an object with x and y, got ${describe(p)}`);
+    }
+    coords[2 * i] = finite(p.x, `point ${i}.x`, context);
+    coords[2 * i + 1] = finite(p.y, `point ${i}.y`, context);
+  }
+  return coords;
+}
+function rectFromBox({ min, max }) {
+  return new Rect(min.x, min.y, max.x - min.x, max.y - min.y);
+}
+function finite(value, name, context) {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    throw new TypeError(`${context}: ${name} must be a finite number, got ${describe(value)}`);
+  }
+  return value;
+}
+function describe(value) {
+  if (value === null) return "null";
+  if (typeof value === "number" || typeof value === "boolean") return String(value);
+  if (typeof value === "string") return JSON.stringify(value);
+  if (Array.isArray(value)) return "an array";
+  return typeof value;
+}
+
+// src/api.js
+var CONN_DIR_ALL = 15;
+var MAX_UINT32 = 4294967295;
+var MAX_PIN_CLASS_ID = 2147483647 - 1;
 var ENUM_PARAMETERS = [
   ["Router", "setRoutingParameter", "RoutingParameter"],
   ["Router", "setRoutingOption", "RoutingOption"],
   ["ConnRef", "setRoutingType", "ConnType"]
 ];
+function installApi(avoid) {
+  if (!avoid.Router) return;
+  avoid.Point = Point;
+  avoid.Rect = Rect;
+  installEnumArgumentChecks(avoid);
+  const ownership = createOwnership();
+  installRouter(avoid, ownership);
+  installObstacles(avoid, ownership);
+  installConnRef(avoid, ownership);
+  installPin(avoid, ownership);
+  installPolygonUtilities(avoid);
+  for (const name of ["Obstacle", "ShapeRef", "JunctionRef", "ConnRef", "ShapeConnectionPin"]) {
+    guardDeletedUse(avoid[name].prototype, name, ownership);
+  }
+}
+function createOwnership() {
+  const removed = /* @__PURE__ */ new WeakSet();
+  const children = /* @__PURE__ */ new WeakMap();
+  const owners = /* @__PURE__ */ new WeakMap();
+  return {
+    add(owner, child) {
+      let set = children.get(owner);
+      if (!set) children.set(owner, set = /* @__PURE__ */ new Set());
+      set.add(child);
+      owners.set(child, owner);
+      return child;
+    },
+    ownerOf(handle) {
+      return owners.get(handle);
+    },
+    isRemoved(handle) {
+      return removed.has(handle);
+    },
+    /** Marks `handle` and everything it owns as removed. */
+    remove(handle) {
+      removed.add(handle);
+      const owned = children.get(handle);
+      children.delete(handle);
+      if (owned) for (const child of owned) this.remove(child);
+      const owner = owners.get(handle);
+      owners.delete(handle);
+      children.get(owner)?.delete(handle);
+    }
+  };
+}
+function guardDeletedUse(proto, className, ownership) {
+  const skip = /* @__PURE__ */ new Set(["constructor", "delete", "isDeleted", "isAliasOf", "clone", "deleteLater"]);
+  for (const name of Object.getOwnPropertyNames(proto)) {
+    if (skip.has(name) || name.startsWith("_")) continue;
+    const fn = Object.getOwnPropertyDescriptor(proto, name).value;
+    if (typeof fn !== "function") continue;
+    proto[name] = function(...args) {
+      if (ownership.isRemoved(this)) {
+        throw new Error(`${this.constructor?.name || className}.${name}: the object was already deleted`);
+      }
+      return fn.apply(this, args);
+    };
+  }
+}
+function requireHandle(value, Cls, ownership, name, context) {
+  if (!(value instanceof Cls)) {
+    throw new TypeError(`${context}: ${name} must be a ${Cls.name}, got ${describeValue(value)}`);
+  }
+  if (ownership.isRemoved(value) || value.isDeleted()) {
+    throw new Error(`${context}: ${name} was already deleted`);
+  }
+  return value;
+}
+function requireOwnedBy(handle, owner, ownership, name, context) {
+  if (ownership.ownerOf(handle) !== owner) {
+    throw new Error(`${context}: ${name} belongs to a different Router`);
+  }
+}
+function notCloneable(className) {
+  return function() {
+    throw new TypeError(`${className}.clone: not supported, the object is owned by its router`);
+  };
+}
+function describeValue(value) {
+  if (value === null) return "null";
+  if (typeof value === "string") return JSON.stringify(value);
+  if (typeof value === "number" || typeof value === "boolean") return String(value);
+  if (Array.isArray(value)) return "an array";
+  if (typeof value === "object") {
+    const name = value.constructor?.name;
+    return name && name !== "Object" ? `a ${name}` : "an object";
+  }
+  return typeof value;
+}
+function requireObject(value, name, context) {
+  if (typeof value !== "object" || value === null) {
+    throw new TypeError(`${context}: ${name} must be an object, got ${describeValue(value)}`);
+  }
+  return value;
+}
+function integerIn(value, min, max, name, context) {
+  if (!Number.isInteger(value) || value < min || value > max) {
+    throw new RangeError(`${context}: ${name} must be an integer from ${min} to ${max}, got ${describeValue(value)}`);
+  }
+  return value;
+}
+function optionalBoolean(value, fallback, name, context) {
+  if (value === void 0) return fallback;
+  if (typeof value !== "boolean") {
+    throw new TypeError(`${context}: ${name} must be a boolean, got ${describeValue(value)}`);
+  }
+  return value;
+}
+function directionsOf(value, name, context) {
+  return value === void 0 ? CONN_DIR_ALL : integerIn(value, 0, CONN_DIR_ALL, name, context);
+}
+function idOption(options, context) {
+  if (options === void 0) return 0;
+  requireObject(options, "options", context);
+  return options.id === void 0 ? 0 : integerIn(options.id, 0, MAX_UINT32, "options.id", context);
+}
+function pointArgs(point, name, context) {
+  requireObject(point, name, context);
+  return [finite(point.x, `${name}.x`, context), finite(point.y, `${name}.y`, context)];
+}
+function rectArgs(rect, name, context) {
+  requireObject(rect, name, context);
+  return [
+    finite(rect.x, `${name}.x`, context),
+    finite(rect.y, `${name}.y`, context),
+    finite(rect.width, `${name}.width`, context),
+    finite(rect.height, `${name}.height`, context)
+  ];
+}
+function polygonCoords(points, minPoints, context) {
+  const coords = coordsFromPoints(points, context);
+  if (points.length < minPoints) {
+    throw new RangeError(
+      `${context}: expected at least ${minPoints} point${minPoints === 1 ? "" : "s"}, got ${points.length}`
+    );
+  }
+  return coords;
+}
 function installEnumArgumentChecks(avoid) {
   for (const [className, methodName, enumName] of ENUM_PARAMETERS) {
-    if (!avoid[className] || !avoid[enumName]) continue;
     const proto = avoid[className].prototype;
     const original = proto[methodName];
     const validValues = new Set(Object.values(avoid[enumName]));
@@ -3127,7 +3325,338 @@ function installEnumArgumentChecks(avoid) {
       return original.call(this, value, ...rest);
     };
   }
+  const setRoutingParameter = avoid.Router.prototype.setRoutingParameter;
+  avoid.Router.prototype.setRoutingParameter = function(parameter, value) {
+    finite(value, "value", "Router.setRoutingParameter");
+    return setRoutingParameter.call(this, parameter, value);
+  };
 }
+function installRouter(avoid, ownership) {
+  const { Router, ShapeRef, JunctionRef, ConnRef } = avoid;
+  const proto = Router.prototype;
+  const raw = {
+    delete: proto.delete,
+    processTransaction: proto.processTransaction,
+    deleteShape: proto.deleteShape,
+    deleteJunction: proto.deleteJunction,
+    deleteConnector: proto.deleteConnector
+  };
+  const owned = (router, handle, Cls, name, context) => {
+    requireHandle(handle, Cls, ownership, name, context);
+    requireOwnedBy(handle, router, ownership, name, context);
+    return handle;
+  };
+  const pendingAdds = /* @__PURE__ */ new WeakMap();
+  const markPending = (router, handle) => {
+    let pending = pendingAdds.get(router);
+    if (!pending) pendingAdds.set(router, pending = /* @__PURE__ */ new Set());
+    pending.add(handle);
+    return handle;
+  };
+  const pointCounts = /* @__PURE__ */ new WeakMap();
+  const requirePointCount = (shape, count, context) => {
+    const expected = pointCounts.get(shape);
+    if (count !== expected) {
+      throw new RangeError(
+        `${context}: a shape keeps its number of points (libavoid); this shape has ${expected}, got ${count}. Delete it and add a new shape instead.`
+      );
+    }
+  };
+  const requireNotPending = (router, handle, name, context) => {
+    if (pendingAdds.get(router)?.has(handle)) {
+      throw new Error(
+        `${context}: the ${name} was added in the current transaction; call processTransaction() before deleting it`
+      );
+    }
+  };
+  Object.assign(proto, {
+    processTransaction() {
+      const changed = raw.processTransaction.call(this);
+      pendingAdds.delete(this);
+      return changed;
+    },
+    addShape(shape, options) {
+      const context = "Router.addShape";
+      const id = idOption(options, context);
+      const created = Array.isArray(shape) ? this._addShapePoly(polygonCoords(shape, 3, context), id) : this._addShapeRect(...rectArgs(shape, "shape", context), id);
+      pointCounts.set(created, Array.isArray(shape) ? shape.length : 4);
+      return markPending(this, ownership.add(this, created));
+    },
+    moveShape(shape, rectOrPointsOrDx, dy) {
+      const context = "Router.moveShape";
+      owned(this, shape, ShapeRef, "shape", context);
+      if (typeof rectOrPointsOrDx === "number") {
+        this._moveShapeDelta(shape, finite(rectOrPointsOrDx, "dx", context), finite(dy, "dy", context));
+      } else if (Array.isArray(rectOrPointsOrDx)) {
+        const coords = polygonCoords(rectOrPointsOrDx, 3, context);
+        requirePointCount(shape, rectOrPointsOrDx.length, context);
+        this._moveShapePoly(shape, coords);
+      } else {
+        const rect = rectArgs(rectOrPointsOrDx, "rect", context);
+        requirePointCount(shape, 4, context);
+        this._moveShapeRect(shape, ...rect);
+      }
+    },
+    deleteShape(shape) {
+      const context = "Router.deleteShape";
+      owned(this, shape, ShapeRef, "shape", context);
+      requireNotPending(this, shape, "shape", context);
+      raw.deleteShape.call(this, shape);
+      ownership.remove(shape);
+    },
+    addJunction(position, options) {
+      const context = "Router.addJunction";
+      const id = idOption(options, context);
+      return markPending(this, ownership.add(this, this._addJunction(...pointArgs(position, "position", context), id)));
+    },
+    moveJunction(junction, pointOrDx, dy) {
+      const context = "Router.moveJunction";
+      owned(this, junction, JunctionRef, "junction", context);
+      if (typeof pointOrDx === "number") {
+        this._moveJunctionBy(junction, finite(pointOrDx, "dx", context), finite(dy, "dy", context));
+      } else {
+        this._moveJunctionTo(junction, ...pointArgs(pointOrDx, "position", context));
+      }
+    },
+    deleteJunction(junction) {
+      const context = "Router.deleteJunction";
+      owned(this, junction, JunctionRef, "junction", context);
+      requireNotPending(this, junction, "junction", context);
+      raw.deleteJunction.call(this, junction);
+      ownership.remove(junction);
+    },
+    addConnector(source, destination, options) {
+      const context = "Router.addConnector";
+      const src = connEndOf(avoid, ownership, this, source, "source", context);
+      const dst = connEndOf(avoid, ownership, this, destination, "destination", context);
+      const id = idOption(options, context);
+      const conn = ownership.add(this, this._addConnector(id));
+      src(conn, true);
+      dst(conn, false);
+      return conn;
+    },
+    deleteConnector(connector) {
+      raw.deleteConnector.call(this, owned(this, connector, ConnRef, "connector", "Router.deleteConnector"));
+      ownership.remove(connector);
+    }
+  });
+  function deleteRouter() {
+    if (!this.isDeleted()) {
+      ownership.remove(this);
+      pendingAdds.delete(this);
+    }
+    raw.delete.call(this);
+  }
+  proto.delete = deleteRouter;
+  proto[Symbol.dispose] = deleteRouter;
+}
+function connEndOf(avoid, ownership, router, end, name, context) {
+  const { ShapeRef, JunctionRef } = avoid;
+  if (end instanceof ShapeRef) {
+    throw new TypeError(`${context}: ${name} must be {shape, pin}, not a ShapeRef (pass the pin class id as well)`);
+  }
+  if (end instanceof JunctionRef) {
+    throw new TypeError(`${context}: ${name} must be {junction}, not a JunctionRef`);
+  }
+  requireObject(end, name, context);
+  if ("shape" in end) {
+    const shape = requireHandle(end.shape, ShapeRef, ownership, `${name}.shape`, context);
+    requireOwnedBy(shape, router, ownership, `${name}.shape`, context);
+    const pin = integerIn(end.pin, 1, MAX_PIN_CLASS_ID, `${name}.pin`, context);
+    return (conn, isSource) => conn._setEndPin(isSource, shape, pin);
+  }
+  if ("junction" in end) {
+    const junction = requireHandle(end.junction, JunctionRef, ownership, `${name}.junction`, context);
+    requireOwnedBy(junction, router, ownership, `${name}.junction`, context);
+    return (conn, isSource) => conn._setEndJunction(isSource, junction);
+  }
+  if ("x" in end || "y" in end) {
+    const [x, y] = pointArgs(end, name, context);
+    const directions = directionsOf(end.directions, `${name}.directions`, context);
+    return (conn, isSource) => conn._setEndPoint(isSource, x, y, directions);
+  }
+  throw new TypeError(`${context}: ${name} must be {x, y}, {shape, pin} or {junction}`);
+}
+function installObstacles(avoid, ownership) {
+  const { Obstacle, ShapeRef, JunctionRef } = avoid;
+  Object.assign(Obstacle.prototype, {
+    polygon() {
+      return pointsFromCoords(this._polygon());
+    },
+    position() {
+      const { x, y } = this._position();
+      return new Point(x, y);
+    },
+    routingBox() {
+      return rectFromBox(this._routingBox());
+    }
+  });
+  Object.assign(ShapeRef.prototype, {
+    addPin(pin) {
+      const context = "ShapeRef.addPin";
+      requireObject(pin, "pin", context);
+      return ownership.add(
+        this,
+        this._addPin(
+          integerIn(pin.classId, 1, MAX_PIN_CLASS_ID, "pin.classId", context),
+          finite(pin.x, "pin.x", context),
+          finite(pin.y, "pin.y", context),
+          optionalBoolean(pin.proportional, true, "pin.proportional", context),
+          pin.insideOffset === void 0 ? 0 : finite(pin.insideOffset, "pin.insideOffset", context),
+          directionsOf(pin.directions, "pin.directions", context)
+        )
+      );
+    }
+  });
+  Object.assign(JunctionRef.prototype, {
+    addPin(pin) {
+      const context = "JunctionRef.addPin";
+      requireObject(pin, "pin", context);
+      return ownership.add(
+        this,
+        this._addPin(
+          integerIn(pin.classId, 1, MAX_PIN_CLASS_ID, "pin.classId", context),
+          directionsOf(pin.directions, "pin.directions", context)
+        )
+      );
+    },
+    recommendedPosition() {
+      const { x, y } = this._recommendedPosition();
+      return new Point(x, y);
+    }
+  });
+  installRouterOwnedDelete(ShapeRef, "deleteShape", ownership);
+  installRouterOwnedDelete(JunctionRef, "deleteJunction", ownership);
+}
+function installRouterOwnedDelete(Cls, routerMethod, ownership) {
+  const className = Cls.name;
+  function remove() {
+    if (ownership.isRemoved(this)) {
+      throw new Error(`${className}.delete: the object was already deleted`);
+    }
+    ownership.ownerOf(this)[routerMethod](this);
+  }
+  Object.assign(Cls.prototype, {
+    delete: remove,
+    [Symbol.dispose]: remove,
+    isDeleted() {
+      return ownership.isRemoved(this);
+    },
+    clone: notCloneable(className)
+  });
+}
+function installConnRef(avoid, ownership) {
+  const { ConnRef } = avoid;
+  const context = (method) => `ConnRef.${method}`;
+  Object.assign(ConnRef.prototype, {
+    setSource(end) {
+      connEndOf(avoid, ownership, ownership.ownerOf(this), end, "source", context("setSource"))(this, true);
+    },
+    setDest(end) {
+      connEndOf(avoid, ownership, ownership.ownerOf(this), end, "destination", context("setDest"))(this, false);
+    },
+    displayRoute() {
+      return pointsFromCoords(this._displayRoute());
+    },
+    setRoutingCheckpoints(checkpoints) {
+      const ctx = context("setRoutingCheckpoints");
+      if (!Array.isArray(checkpoints)) {
+        throw new TypeError(`${ctx}: expected an array of checkpoints, got ${describeValue(checkpoints)}`);
+      }
+      const packed = new Array(checkpoints.length * 4);
+      checkpoints.forEach((cp, i) => {
+        const name = `checkpoint ${i}`;
+        [packed[4 * i], packed[4 * i + 1]] = pointArgs(cp, name, ctx);
+        packed[4 * i + 2] = directionsOf(cp.arrival, `${name}.arrival`, ctx);
+        packed[4 * i + 3] = directionsOf(cp.departure, `${name}.departure`, ctx);
+      });
+      this._setCheckpoints(packed);
+    },
+    routingCheckpoints() {
+      const packed = this._checkpoints();
+      const checkpoints = new Array(packed.length / 4);
+      for (let i = 0; i < checkpoints.length; i++) {
+        checkpoints[i] = {
+          x: packed[4 * i],
+          y: packed[4 * i + 1],
+          arrival: packed[4 * i + 2],
+          departure: packed[4 * i + 3]
+        };
+      }
+      return checkpoints;
+    },
+    setCallback(callback) {
+      if (typeof callback !== "function") {
+        throw new TypeError(`${context("setCallback")}: callback must be a function, got ${describeValue(callback)}`);
+      }
+      this._setCallback(() => callback(this));
+    }
+  });
+  installRouterOwnedDelete(ConnRef, "deleteConnector", ownership);
+}
+function installPin(avoid, ownership) {
+  const { ShapeConnectionPin } = avoid;
+  const proto = ShapeConnectionPin.prototype;
+  const rawDelete = proto.delete;
+  const rawIsDeleted = proto.isDeleted;
+  const rawSetConnectionCost = proto.setConnectionCost;
+  function deletePin() {
+    if (ownership.isRemoved(this)) {
+      throw new Error("ShapeConnectionPin.delete: the object was already deleted");
+    }
+    rawDelete.call(this);
+    ownership.remove(this);
+  }
+  Object.assign(proto, {
+    position() {
+      const { x, y } = this._position();
+      return new Point(x, y);
+    },
+    // libavoid asserts (and the module aborts) on a negative cost.
+    setConnectionCost(cost) {
+      const context = "ShapeConnectionPin.setConnectionCost";
+      if (finite(cost, "cost", context) < 0) {
+        throw new RangeError(`${context}: cost must be >= 0, got ${cost}`);
+      }
+      rawSetConnectionCost.call(this, cost);
+    },
+    updatePosition(position) {
+      const context = "ShapeConnectionPin.updatePosition";
+      if (ownership.ownerOf(this) instanceof avoid.JunctionRef) {
+        throw new TypeError(`${context}: not supported for a junction's pin, it is always at the junction's position`);
+      }
+      this._updatePosition(...pointArgs(position, "position", context));
+    },
+    delete: deletePin,
+    [Symbol.dispose]: deletePin,
+    isDeleted() {
+      return ownership.isRemoved(this) || rawIsDeleted.call(this);
+    },
+    clone: notCloneable("ShapeConnectionPin")
+  });
+}
+function installPolygonUtilities(avoid) {
+  const raw = {
+    offsetPolygon: avoid._offsetPolygon,
+    boundingRectPolygon: avoid._boundingRectPolygon,
+    offsetBoundingBox: avoid._offsetBoundingBox
+  };
+  avoid.offsetPolygon = (points, offset) => {
+    const context = "offsetPolygon";
+    const coords = polygonCoords(points, 1, context);
+    return pointsFromCoords(raw.offsetPolygon(coords, finite(offset, "offset", context)));
+  };
+  avoid.boundingRectPolygon = (points) => {
+    return pointsFromCoords(raw.boundingRectPolygon(polygonCoords(points, 1, "boundingRectPolygon")));
+  };
+  avoid.offsetBoundingBox = (points, offset) => {
+    const context = "offsetBoundingBox";
+    const coords = polygonCoords(points, 1, context);
+    return rectFromBox(raw.offsetBoundingBox(coords, finite(offset, "offset", context)));
+  };
+}
+
+// src/common.js
 var createAvoidLibObj = (initAvoid) => {
   return {
     avoidLib: void 0,
@@ -3139,7 +3668,7 @@ var createAvoidLibObj = (initAvoid) => {
         };
         var locateFile = locateFile2;
         const avoidLib = await initAvoid({ "locateFile": locateFile2 });
-        installEnumArgumentChecks(avoidLib);
+        installApi(avoidLib);
         this.avoidLib = avoidLib;
       } else {
         console.log("Avoid library is already initialized");
@@ -3157,5 +3686,7 @@ var createAvoidLibObj = (initAvoid) => {
 // examples/debug-src/index.js
 var AvoidLib = createAvoidLibObj(libavoid_default);
 export {
-  AvoidLib
+  AvoidLib,
+  Point,
+  Rect
 };

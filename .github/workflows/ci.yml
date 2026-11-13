@@ -65,3 +65,23 @@ jobs:
 
       - name: Test (node + chromium)
         run: npm test
+
+  LeakCheck:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.11.6
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.6
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install
+        run: npm ci
+
+      - name: Leak check
+        run: npm run leakcheck

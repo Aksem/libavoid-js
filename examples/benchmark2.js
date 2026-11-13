@@ -55,34 +55,25 @@ async function main() {
         // you can continue with more...
     ];
 
-    // Create shapes
-    const shapeRefs = rectangles.map(({ x, y }) => {
-        const topLeft = new Avoid.Point(x, y);
-        const bottomRight = new Avoid.Point(x + w, y + h);
-        const rect = new Avoid.Rectangle(topLeft, bottomRight);
-        return new Avoid.ShapeRef(router, rect);
-    });
+    // Create shapes (top-left corner plus size)
+    const shapeRefs = rectangles.map(({ x, y }) => router.addShape({ x, y, width: w, height: h }));
 
     function connCallback(connRef) {
         console.log(`Connector ${connRef.id()} needs rerouting!`);
         const route = connRef.displayRoute();
-        console.log('New path: ', route, route.size());
+        console.log('New path: ', route, route.length);
         console.log('----------');
-        for (let i = 0; i < route.size(); i++) {
-            console.log(`(${route.ps.get(i).x}, ${route.ps.get(i).y})`);
-            console.log(`->(${route.ps.get(i).x}, ${route.ps.get(i).y})`);
+        for (const { x, y } of route) {
+            console.log(`(${x}, ${y})`);
         }
         console.log('----------');
     }
 
     function connectShapes(shape1, shape2) {
-        const shapeConnectionPinSrc1 = new Avoid.ShapeConnectionPin(shape1, 1, 0.5, 0.5, true, 0, 15);
-        shapeConnectionPinSrc1.setExclusive(false);
-        const connRefSrcConnEnd = new Avoid.ConnEnd(shape1, 1);
-        const shapeConnectionPinDest1 = new Avoid.ShapeConnectionPin(shape2, 1, 0.5, 0.5, true, 0, 15);
-        shapeConnectionPinDest1.setExclusive(false);
-        const connRefDestConnEnd = new Avoid.ConnEnd(shape2, 1);
-        const connRef = new Avoid.ConnRef(router, connRefSrcConnEnd, connRefDestConnEnd);
+        // A new centre pin per connection on both shapes, as in the original benchmark.
+        shape1.addPin({ classId: 1, x: 0.5, y: 0.5 }).setExclusive(false);
+        shape2.addPin({ classId: 1, x: 0.5, y: 0.5 }).setExclusive(false);
+        const connRef = router.addConnector({ shape: shape1, pin: 1 }, { shape: shape2, pin: 1 });
         connRef.setCallback(connCallback);
         return connRef;
     }

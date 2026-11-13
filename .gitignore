@@ -2,3 +2,5 @@ node_modules
 __pycache__
 
 build
+.vitest
+api_docs_build
