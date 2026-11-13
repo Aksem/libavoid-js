@@ -6,9 +6,9 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "browser": "./dist/index.js",
       "node": "./dist/index-node.mjs",
-      "types": "./dist/libavoid.d.ts",
       "default": "./dist/index.js"
     }
   },
@@ -20,7 +20,12 @@
     "build": "node build.js",
     "full-rebuild": "python tools/generate.py && npm run build",
     "api-docs": "jsdoc -c jsdoc.conf.js -d ./api_docs_build/ build/generated_debug/glue.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run",
+    "test:node": "vitest run --project node",
+    "test:browser": "vitest run --project browser",
+    "test:watch": "vitest",
+    "bench": "vitest bench --project 'node (bench)' --reporter verbose",
+    "bench:browser": "vitest bench --project 'browser (bench)' --reporter verbose"
   },
   "repository": {
     "type": "git",
@@ -33,9 +38,13 @@
   },
   "homepage": "https://github.com/Aksem/libavoid-js",
   "devDependencies": {
+    "@vitest/browser-playwright": "^5.1.0",
     "docdash": "^1.2.0",
-    "esbuild": "^0.17.15",
+    "esbuild": "^0.28.2",
     "esbuild-plugin-copy": "^2.1.1",
-    "jsdoc": "^3.6.6"
+    "jsdoc": "^3.6.6",
+    "playwright": "^1.65.0",
+    "typescript": "^5.9.3",
+    "vitest": "^5.1.0"
   }
 }
