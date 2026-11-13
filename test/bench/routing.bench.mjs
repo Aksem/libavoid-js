@@ -21,19 +21,14 @@ const SHAPES = [
 function buildScene(Avoid, shapeCount, connsPerPair) {
   const router = new Avoid.Router(Avoid.RouterFlag.OrthogonalRouting);
   const shapes = SHAPES.slice(0, shapeCount).map(([x, y]) => {
-    const rect = new Avoid.Rectangle(
-      new Avoid.Point(x, y),
-      new Avoid.Point(x + SHAPE_SIZE, y + SHAPE_SIZE),
-    );
-    const shape = new Avoid.ShapeRef(router, rect);
-    const pin = new Avoid.ShapeConnectionPin(shape, 1, 0.5, 0.5, true, 0, Avoid.ConnDirFlag.ConnDirAll);
-    pin.setExclusive(false);
+    const shape = router.addShape({ x, y, width: SHAPE_SIZE, height: SHAPE_SIZE });
+    shape.addPin({ classId: 1, x: 0.5, y: 0.5 }).setExclusive(false);
     return shape;
   });
   for (const a of shapes) {
     for (const b of shapes) {
       for (let k = 0; k < connsPerPair; k++) {
-        new Avoid.ConnRef(router, new Avoid.ConnEnd(a, 1), new Avoid.ConnEnd(b, 1));
+        router.addConnector({ shape: a, pin: 1 }, { shape: b, pin: 1 });
       }
     }
   }

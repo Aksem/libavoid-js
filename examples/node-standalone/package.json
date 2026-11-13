@@ -9,6 +9,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "libavoid-js": "^0.4.2"
+    "libavoid-js": "^0.5.0"
   }
 }

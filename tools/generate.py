@@ -1,3 +1,4 @@
+import argparse
 import logging
 import os
 from pathlib import Path
@@ -25,19 +26,17 @@ SOURCE_FILES = [
   'graph',
   'router'
 ]
-ADAPTAGRAMS_VERSION = "1.0.8"
+ADAPTAGRAMS_VERSION = "1.0.9"
 
 logging.basicConfig()
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 
-def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Literal["web"] | Literal["node"] = "web"):
-  try:
-    os.mkdir(dist_dir_name)
-  except FileExistsError:
-    ...
-
+def compiler_sources():
+  """
+  Space-separated libavoid sources to compile, relative to the repository root.
+  """
   compiler_sources = ''
   for source_file in SOURCE_FILES:
     compiler_sources += f' ./build/adaptagrams/cola/libavoid/{source_file}.cpp'
@@ -55,6 +54,14 @@ def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Lite
     './build/adaptagrams/cola/libavoid/scanline.cpp',
     './build/adaptagrams/cola/libavoid/vpsc.cpp',
   ])
+  return compiler_sources
+
+
+def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Literal["web"] | Literal["node"] = "web"):
+  try:
+    os.mkdir(dist_dir_name)
+  except FileExistsError:
+    ...
 
   args = ''
   if debug:
@@ -89,7 +96,7 @@ def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Lite
     -s EXCEPTION_STACK_TRACES \
     -Ibuild/adaptagrams/cola/ \
     /src/embind/bindings.cpp \
-    {compiler_sources} \
+    {compiler_sources()} \
     -o /src/build/{dist_dir_name}/libavoid.js
   """, logger)
   # -s CLOSURE_WARNINGS=error .. will show all warnings and errors, but also of emcc
@@ -107,10 +114,51 @@ def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Lite
   # -s EXPORTED_FUNCTIONS=['_malloc'] \
 
 
+def compile_sanitizer(dist_dir_name='dist_sanitizer'):
+  """
+  Maintainer-only build with AddressSanitizer + LeakSanitizer for
+  `npm run leakcheck` (tools/leakcheck/). Node only, unoptimised enough for
+  readable reports; exports __lsan_do_recoverable_leak_check so JS can run a
+  leak check after a scenario. Not shipped.
+  """
+  try:
+    os.mkdir(dist_dir_name)
+  except FileExistsError:
+    ...
+  libavoid_js_dir_path = Path(__file__).parent.parent.resolve()
+  execute_command(f"""
+  docker run \
+  --rm \
+  -v {str(libavoid_js_dir_path)}:/src -w /src/ \
+  -u {os.getuid()}:{os.getgid()} \
+  emscripten/emsdk:7.0.0 \
+  em++ -O1 -g -fsanitize=address \
+    -lembind \
+    -fwasm-exceptions \
+    -s FILESYSTEM=0 \
+    -s MODULARIZE=1 \
+    -s EXPORT_ES6=1 \
+    -s EXPORT_NAME="'initAvoidModule'" \
+    -s ENVIRONMENT=node \
+    -s ALLOW_MEMORY_GROWTH=1 \
+    -s ALLOW_TABLE_GROWTH=1 \
+    -s EXPORTED_FUNCTIONS=___lsan_do_recoverable_leak_check,_malloc,_free \
+    -Ibuild/adaptagrams/cola/ \
+    /src/embind/bindings.cpp \
+    {compiler_sources()} \
+    -o /src/build/{dist_dir_name}/libavoid.mjs
+  """, logger)
+
+
 def main():
   """
   Run emcc compiler
   """
+  parser = argparse.ArgumentParser(description='Build the libavoid-js wasm modules.')
+  parser.add_argument('--sanitizer', action='store_true',
+                      help='only build the AddressSanitizer variant into build/dist_sanitizer (for npm run leakcheck)')
+  options = parser.parse_args()
+
   # build directory
   try:
     os.mkdir('build')
@@ -122,6 +170,11 @@ def main():
   adaptagrams_sources_path = Path('./adaptagrams')
   if adaptagrams_sources_path.exists() != True or adaptagrams_sources_path.is_dir() != True:
     execute_command(f'git clone https://github.com/Aksem/adaptagrams.git -b v{ADAPTAGRAMS_VERSION}', logger)
+
+  if options.sanitizer:
+    logger.info('Build sanitizer version')
+    compile_sanitizer()
+    return
 
   # remove old build data if exists
   logger.info('Remove old builds if they exist')

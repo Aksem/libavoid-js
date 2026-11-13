@@ -907,6 +907,182 @@ async function createWasm() {
     };
   var __abort_js = () =>
       abort('native code called abort()');
+  /** @suppress {globalThis} */
+  function readPointer(pointer) {
+      return this.fromWireType(HEAPU32[((pointer)>>2)]);
+    }
+  var runDestructors = (destructors) => {
+      while (destructors.length) {
+        var ptr = destructors.pop();
+        var del = destructors.pop();
+        del(ptr);
+      }
+    };
+  var structRegistrations = {
+  };
+  var awaitingDependencies = {
+  };
+  var registeredTypes = {
+  };
+  class BindingError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = 'BindingError';
+      }
+    }
+  var throwBindingError = (message) => { throw new BindingError(message); };
+  var typeDependencies = {
+  };
+  /** @param {Object=} options */
+  function sharedRegisterType(typeID, registeredInstance, options = {}) {
+      var name = registeredInstance.name;
+      if (!typeID) {
+        throwBindingError(`type "${name}" must have a positive integer typeid pointer`);
+      }
+      if (registeredTypes[typeID]) {
+        if (options.ignoreDuplicateRegistrations) {
+          return;
+        } else {
+          throwBindingError(`Cannot register type '${name}' twice`);
+        }
+      }
+  
+      registeredTypes[typeID] = registeredInstance;
+      delete typeDependencies[typeID];
+  
+      if (awaitingDependencies[typeID]) {
+        var callbacks = awaitingDependencies[typeID];
+        delete awaitingDependencies[typeID];
+        callbacks.forEach((cb) => cb());
+      }
+    }
+  /** @param {Object=} options */
+  function registerType(typeID, registeredInstance, options = {}) {
+      return sharedRegisterType(typeID, registeredInstance, options);
+    }
+  class InternalError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = 'InternalError';
+      }
+    }
+  var throwInternalError = (message) => { throw new InternalError(message); };
+  var whenDependentTypesAreResolved = (myTypes, dependentTypes, getTypeConverters) => {
+      myTypes.forEach((type) => typeDependencies[type] = dependentTypes);
+  
+      function onComplete(typeConverters) {
+        var myTypeConverters = getTypeConverters(typeConverters);
+        if (myTypeConverters.length !== myTypes.length) {
+          throwInternalError('Mismatched type converter count');
+        }
+        for (var i = 0; i < myTypes.length; ++i) {
+          registerType(myTypes[i], myTypeConverters[i]);
+        }
+      }
+  
+      var typeConverters = new Array(dependentTypes.length);
+      var unregisteredTypes = [];
+      var registered = 0;
+      for (let [i, dt] of dependentTypes.entries()) {
+        if (registeredTypes[dt]) {
+          typeConverters[i] = registeredTypes[dt];
+        } else {
+          unregisteredTypes.push(dt);
+          (awaitingDependencies[dt] ??= []).push(() => {
+            typeConverters[i] = registeredTypes[dt];
+            ++registered;
+            if (registered === unregisteredTypes.length) {
+              onComplete(typeConverters);
+            }
+          });
+        }
+      }
+      if (0 === unregisteredTypes.length) {
+        onComplete(typeConverters);
+      }
+    };
+  var zeroMemory = (ptr, size) => HEAPU8.fill(0, ptr, ptr + size);
+  var __embind_finalize_value_object = (structTypeID) => {
+      var reg = structRegistrations[structTypeID];
+      delete structRegistrations[structTypeID];
+  
+      var rawConstructor = reg.rawConstructor;
+      var rawDestructor = reg.rawDestructor;
+      var valueSize = reg.valueSize;
+      var isTrivial = reg.isTrivial;
+      var fieldRecords = reg.fields;
+      var fieldTypeIDs = fieldRecords.map((field) => field.getterReturnTypeID).
+                concat(fieldRecords.map((field) => field.setterArgumentTypeID));
+      whenDependentTypesAreResolved([structTypeID], fieldTypeIDs, (fieldTypes) => {
+        var fields = {};
+        for (var [i, field] of fieldRecords.entries()) {
+          const getterReturnType = fieldTypes[i];
+          const getter = field.getter;
+          const getterContext = field.getterContext;
+          const setterArgumentType = fieldTypes[i + fieldRecords.length];
+          const setter = field.setter;
+          const setterContext = field.setterContext;
+          var write;
+          if (setterArgumentType.destructorFunction === null && !setterArgumentType.argStackAlloc) {
+            // See the matching element-write logic in _embind_finalize_value_array.
+            write = (ptr, o) => setter(setterContext, ptr, setterArgumentType.toWireType(null, o));
+          } else {
+            write = (ptr, o) => {
+              var destructors = [];
+              setter(setterContext, ptr, setterArgumentType.toWireType(destructors, o));
+              runDestructors(destructors);
+            };
+          }
+          fields[field.fieldName] = {
+            read: (ptr) => getterReturnType.fromWireType(getter(getterContext, ptr)),
+            write,
+            optional: getterReturnType.optional,
+          };
+        }
+  
+        return [{
+          name: reg.name,
+          fromWireType: (ptr) => {
+            var rv = {};
+            for (var i in fields) {
+              rv[i] = fields[i].read(ptr);
+            }
+            rawDestructor(ptr);
+            return rv;
+          },
+          toWireType: (destructors, o) => {
+            // todo: Here we have an opportunity for -O3 level "unsafe" optimizations:
+            // assume all fields are present without checking.
+            for (var fieldName in fields) {
+              if (!(fieldName in o) && !fields[fieldName].optional) {
+                throw new TypeError(`Missing field: "${fieldName}"`);
+              }
+            }
+            var ptr;
+            if (isTrivial && !destructors) {
+              // See the matching branch in _embind_finalize_value_array: the
+              // invoker manages a stack frame, so the temporary lives on the
+              // wasm stack with no allocation and no destructor bookkeeping;
+              // zero-filled to match the heap path's value-initialization.
+              ptr = stackAlloc(valueSize);
+              zeroMemory(ptr, valueSize);
+            } else {
+              ptr = rawConstructor();
+              if (destructors) {
+                destructors.push(rawDestructor, ptr);
+              }
+            }
+            for (fieldName in fields) {
+              fields[fieldName].write(ptr, o[fieldName]);
+            }
+            return ptr;
+          },
+          readValueFromPointer: readPointer,
+          destructorFunction: isTrivial ? null : rawDestructor,
+          argStackAlloc: isTrivial,
+        }];
+      });
+    };
   var AsciiToString = (ptr) => {
       var str = '';
       while (1) {
@@ -958,46 +1134,6 @@ async function createWasm() {
           throw new TypeError(`invalid integer width (${width}): ${name}`);
       }
     };
-  var awaitingDependencies = {
-  };
-  var registeredTypes = {
-  };
-  class BindingError extends Error {
-      constructor(message) {
-        super(message);
-        this.name = 'BindingError';
-      }
-    }
-  var throwBindingError = (message) => { throw new BindingError(message); };
-  var typeDependencies = {
-  };
-  /** @param {Object=} options */
-  function sharedRegisterType(typeID, registeredInstance, options = {}) {
-      var name = registeredInstance.name;
-      if (!typeID) {
-        throwBindingError(`type "${name}" must have a positive integer typeid pointer`);
-      }
-      if (registeredTypes[typeID]) {
-        if (options.ignoreDuplicateRegistrations) {
-          return;
-        } else {
-          throwBindingError(`Cannot register type '${name}' twice`);
-        }
-      }
-  
-      registeredTypes[typeID] = registeredInstance;
-      delete typeDependencies[typeID];
-  
-      if (awaitingDependencies[typeID]) {
-        var callbacks = awaitingDependencies[typeID];
-        delete awaitingDependencies[typeID];
-        callbacks.forEach((cb) => cb());
-      }
-    }
-  /** @param {Object=} options */
-  function registerType(typeID, registeredInstance, options = {}) {
-      return sharedRegisterType(typeID, registeredInstance, options);
-    }
   /** @suppress {globalThis} */
   var __embind_register_bigint = (typeID, name, size, minRange, maxRange) => {
       name = AsciiToString(name);
@@ -1080,13 +1216,6 @@ async function createWasm() {
       ptr = getBasestPointer(class_, ptr);
       return registeredInstances[ptr];
     };
-  class InternalError extends Error {
-      constructor(message) {
-        super(message);
-        this.name = 'InternalError';
-      }
-    }
-  var throwInternalError = (message) => { throw new InternalError(message); };
   var makeClassHandle = (prototype, record) => {
       if (!record.ptrType || !record.ptr) {
         throwInternalError('makeClassHandle requires ptr and ptrType');
@@ -1511,10 +1640,6 @@ Originally allocated`); // `.stack` will add "at ..." after this sentence
       }
       return ptr;
     }
-  /** @suppress {globalThis} */
-  function readPointer(pointer) {
-      return this.fromWireType(HEAPU32[((pointer)>>2)]);
-    }
   var init_RegisteredPointer = () => {
       Object.assign(RegisteredPointer.prototype, {
         getPointee(ptr) {
@@ -1722,40 +1847,6 @@ Originally allocated`); // `.stack` will add "at ..." after this sentence
       types.forEach(visit);
   
       throw new UnboundTypeError(`${message}: ` + unboundTypes.map(getTypeName).join([', ']));
-    };
-  var whenDependentTypesAreResolved = (myTypes, dependentTypes, getTypeConverters) => {
-      myTypes.forEach((type) => typeDependencies[type] = dependentTypes);
-  
-      function onComplete(typeConverters) {
-        var myTypeConverters = getTypeConverters(typeConverters);
-        if (myTypeConverters.length !== myTypes.length) {
-          throwInternalError('Mismatched type converter count');
-        }
-        for (var i = 0; i < myTypes.length; ++i) {
-          registerType(myTypes[i], myTypeConverters[i]);
-        }
-      }
-  
-      var typeConverters = new Array(dependentTypes.length);
-      var unregisteredTypes = [];
-      var registered = 0;
-      for (let [i, dt] of dependentTypes.entries()) {
-        if (registeredTypes[dt]) {
-          typeConverters[i] = registeredTypes[dt];
-        } else {
-          unregisteredTypes.push(dt);
-          (awaitingDependencies[dt] ??= []).push(() => {
-            typeConverters[i] = registeredTypes[dt];
-            ++registered;
-            if (registered === unregisteredTypes.length) {
-              onComplete(typeConverters);
-            }
-          });
-        }
-      }
-      if (0 === unregisteredTypes.length) {
-        onComplete(typeConverters);
-      }
     };
   var __embind_register_class = (typeID,
                              pointerTypeID,
@@ -1984,13 +2075,6 @@ Originally allocated`); // `.stack` will add "at ..." after this sentence
       }
       return requiredArgCount;
     }
-  var runDestructors = (destructors) => {
-      while (destructors.length) {
-        var ptr = destructors.pop();
-        var del = destructors.pop();
-        del(ptr);
-      }
-    };
   function craftInvokerFunction(humanName, argTypes, classType, cppInvokerFunc, cppTargetFunc, /** boolean= */ isAsync) {
       // humanName: a human-readable string name for the function to be generated.
       // argTypes: An array that contains the embind type objects for all types in the function signature.
@@ -2059,13 +2143,6 @@ Originally allocated`); // `.stack` will add "at ..." after this sentence
       var invokerFn = invokerFactory(...closureArgs);
       return createNamedFunction(humanName, invokerFn);
     }
-  var getFunctionName = (signature) => {
-      signature = signature.trim();
-      const argsIndex = signature.indexOf('(');
-      if (argsIndex === -1) return signature;
-      assert(signature.endsWith(')'), 'Parentheses for argument names should match.');
-      return signature.slice(0, argsIndex);
-    };
   var heap32VectorToArray = (count, firstElement) => {
       var array = [];
       for (var i = 0; i < count; i++) {
@@ -2074,68 +2151,6 @@ Originally allocated`); // `.stack` will add "at ..." after this sentence
         array.push(HEAPU32[(((firstElement)+(i * 4))>>2)]);
       }
       return array;
-    };
-  var __embind_register_class_class_function = (classTypeID,
-                                            methodName,
-                                            argCount,
-                                            rawArgTypesAddr,
-                                            invokerSignature,
-                                            rawInvoker,
-                                            fn,
-                                            isAsync,
-                                            isNonnullReturn) => {
-      var argTypeIDs = heap32VectorToArray(argCount, rawArgTypesAddr);
-      methodName = AsciiToString(methodName);
-      methodName = getFunctionName(methodName);
-      rawInvoker = embind__requireFunction(invokerSignature, rawInvoker, isAsync);
-      whenDependentTypesAreResolved([], [classTypeID], (classType) => {
-        classType = classType[0];
-        var humanName = `${classType.name}.${methodName}`;
-  
-        function unboundTypesHandler() {
-          throwUnboundTypeError(`Cannot call ${humanName} due to unbound types`, argTypeIDs);
-        }
-  
-        if (methodName.startsWith('@@')) {
-          methodName = Symbol[methodName.substring(2)];
-        }
-  
-        var proto = classType.registeredClass.constructor;
-        if (undefined === proto[methodName]) {
-          // This is the first function to be registered with this name.
-          unboundTypesHandler.argCount = argCount-1;
-          proto[methodName] = unboundTypesHandler;
-        } else {
-          // There was an existing function with the same name registered. Set up
-          // a function overload routing table.
-          ensureOverloadTable(proto, methodName, humanName);
-          proto[methodName].overloadTable[argCount-1] = unboundTypesHandler;
-        }
-  
-        whenDependentTypesAreResolved([], argTypeIDs, (argTypes) => {
-          // Replace the initial unbound-types-handler stub with the proper
-          // function. If multiple overloads are registered, the function handlers
-          // go into an overload table.
-          var invokerArgsArray = [argTypes[0] /* return value */, null /* no class 'this'*/].concat(argTypes.slice(1) /* actual params */);
-          var func = craftInvokerFunction(humanName, invokerArgsArray, null /* no class 'this'*/, rawInvoker, fn, isAsync);
-          if (undefined === proto[methodName].overloadTable) {
-            func.argCount = argCount-1;
-            proto[methodName] = func;
-          } else {
-            proto[methodName].overloadTable[argCount-1] = func;
-          }
-  
-          if (classType.registeredClass.__derivedClasses) {
-            for (const derivedClass of classType.registeredClass.__derivedClasses) {
-              // TODO: Add support for overloads
-              derivedClass.constructor[methodName] ??= func;
-            }
-          }
-  
-          return [];
-        });
-        return [];
-      });
     };
   var __embind_register_class_constructor = (
       classTypeID,
@@ -2173,6 +2188,13 @@ Originally allocated`); // `.stack` will add "at ..." after this sentence
         });
         return [];
       });
+    };
+  var getFunctionName = (signature) => {
+      signature = signature.trim();
+      const argsIndex = signature.indexOf('(');
+      if (argsIndex === -1) return signature;
+      assert(signature.endsWith(')'), 'Parentheses for argument names should match.');
+      return signature.slice(0, argsIndex);
     };
   var __embind_register_class_function = (classTypeID,
                                       methodName,
@@ -2237,84 +2259,6 @@ Originally allocated`); // `.stack` will add "at ..." after this sentence
   
           return [];
         });
-        return [];
-      });
-    };
-  var validateThis = (this_, classType, humanName) => {
-      if (!(this_ instanceof Object)) {
-        throwBindingError(`${humanName} with invalid "this": ${this_}`);
-      }
-      if (!(this_ instanceof classType.registeredClass.constructor)) {
-        throwBindingError(`${humanName} incompatible with "this" of type ${this_.constructor.name}`);
-      }
-      if (!this_.$$.ptr) {
-        throwBindingError(`cannot call emscripten binding method ${humanName} on deleted object`);
-      }
-  
-      // todo: kill this
-      return upcastPointer(this_.$$.ptr,
-                           this_.$$.ptrType.registeredClass,
-                           classType.registeredClass);
-    };
-  var __embind_register_class_property = (classTypeID,
-                                      fieldName,
-                                      getterReturnTypeID,
-                                      getterSignature,
-                                      getter,
-                                      getterContext,
-                                      setterArgumentTypeID,
-                                      setterSignature,
-                                      setter,
-                                      setterContext) => {
-      fieldName = AsciiToString(fieldName);
-      getter = embind__requireFunction(getterSignature, getter);
-  
-      whenDependentTypesAreResolved([], [classTypeID], (classType) => {
-        classType = classType[0];
-        var humanName = `${classType.name}.${fieldName}`;
-        var desc = {
-          get() {
-            throwUnboundTypeError(`Cannot access ${humanName} due to unbound types`, [getterReturnTypeID, setterArgumentTypeID]);
-          },
-          enumerable: true,
-          configurable: true
-        };
-        if (setter) {
-          desc.set = () => throwUnboundTypeError(`Cannot access ${humanName} due to unbound types`, [getterReturnTypeID, setterArgumentTypeID]);
-        } else {
-          desc.set = (v) => throwBindingError(humanName + ' is a read-only property');
-        }
-  
-        Object.defineProperty(classType.registeredClass.instancePrototype, fieldName, desc);
-  
-        whenDependentTypesAreResolved(
-          [],
-          (setter ? [getterReturnTypeID, setterArgumentTypeID] : [getterReturnTypeID]),
-        (types) => {
-          var getterReturnType = types[0];
-          var desc = {
-            get() {
-              var ptr = validateThis(this, classType, humanName + ' getter');
-              return getterReturnType.fromWireType(getter(getterContext, ptr));
-            },
-            enumerable: true
-          };
-  
-          if (setter) {
-            setter = embind__requireFunction(setterSignature, setter);
-            var setterArgumentType = types[1];
-            desc.set = function(v) {
-              var ptr = validateThis(this, classType, humanName + ' setter');
-              var destructors = [];
-              setter(setterContext, ptr, setterArgumentType.toWireType(destructors, v));
-              runDestructors(destructors);
-            };
-          }
-  
-          Object.defineProperty(classType.registeredClass.instancePrototype, fieldName, desc);
-          return [];
-        });
-  
         return [];
       });
     };
@@ -2507,6 +2451,23 @@ Originally allocated`); // `.stack` will add "at ..." after this sentence
         destructorFunction: null, // This type does not need a destructor
       });
     };
+  var __embind_register_function = (name, argCount, rawArgTypesAddr, signature, rawInvoker, fn, isAsync, isNonnullReturn) => {
+      var argTypeIDs = heap32VectorToArray(argCount, rawArgTypesAddr);
+      name = AsciiToString(name);
+      name = getFunctionName(name);
+  
+      rawInvoker = embind__requireFunction(signature, rawInvoker, isAsync);
+  
+      exposePublicSymbol(name, function() {
+        throwUnboundTypeError(`Cannot call ${name} due to unbound types`, argTypeIDs);
+      }, argCount - 1);
+  
+      whenDependentTypesAreResolved([], argTypeIDs, (argTypes) => {
+        var invokerArgsArray = [argTypes[0] /* return value */, null /* no class 'this'*/].concat(argTypes.slice(1) /* actual params */);
+        replacePublicSymbol(name, craftInvokerFunction(name, invokerArgsArray, null /* no class 'this'*/, rawInvoker, fn, isAsync), argCount - 1);
+        return [];
+      });
+    };
   /** @suppress {globalThis} */
   var __embind_register_integer = (typeID, name, size, minRange, maxRange) => {
       name = AsciiToString(name);
@@ -2534,60 +2495,6 @@ Originally allocated`); // `.stack` will add "at ..." after this sentence
         },
         readValueFromPointer: integerReadValueFromPointer(name, size, minRange !== 0),
         destructorFunction: null, // This type does not need a destructor
-      });
-    };
-  
-    /**
-   * @param {number} ptr
-   * @param {string} type
-   */
-  function getValue(ptr, type = 'i8') {
-    if (type.endsWith('*')) type = '*';
-    switch (type) {
-      case 'i1': return HEAP8[ptr];
-      case 'i8': return HEAP8[ptr];
-      case 'i16': return HEAP16[((ptr)>>1)];
-      case 'i32': return HEAP32[((ptr)>>2)];
-      case 'i64': return HEAP64[((ptr)>>3)];
-      case 'float': return HEAPF32[((ptr)>>2)];
-      case 'double': return HEAPF64[((ptr)>>3)];
-      case '*': return HEAPU32[((ptr)>>2)];
-      default: abort(`invalid type for getValue: ${type}`);
-    }
-  }
-  var installIndexedIterator = (proto, sizeMethodName, getMethodName) => {
-      const makeIterator = (size, getValue) => {
-        let index = 0;
-        return {
-          next() {
-            if (index >= size) {
-              return { done: true };
-            }
-            const current = index;
-            index++;
-            const value = getValue(current);
-            return { value, done: false };
-          },
-          [Symbol.iterator]() {
-            return this;
-          },
-        };
-      };
-  
-      if (!proto[Symbol.iterator]) {
-        proto[Symbol.iterator] = function() {
-          const size = this[sizeMethodName]();
-          return makeIterator(size, (i) => this[getMethodName](i));
-        };
-      }
-    };
-  var __embind_register_iterable = (classTypeID, elementTypeID, sizeMethodName, getMethodName) => {
-      sizeMethodName = AsciiToString(sizeMethodName);
-      getMethodName = AsciiToString(getMethodName);
-      whenDependentTypesAreResolved([], [classTypeID, elementTypeID], (types) => {
-        const classType = types[0];
-        installIndexedIterator(classType.registeredClass.instancePrototype, sizeMethodName, getMethodName);
-        return [];
       });
     };
   var __embind_register_memory_view = (typeID, dataTypeIndex, name) => {
@@ -2620,10 +2527,6 @@ Originally allocated`); // `.stack` will add "at ..." after this sentence
       }, {
         ignoreDuplicateRegistrations: true,
       });
-    };
-  var EmValOptionalType = Object.assign({optional: true}, EmValType);;
-  var __embind_register_optional = (optionalTypeID, typeID) => {
-      registerType(optionalTypeID, EmValOptionalType);
     };
   var lengthBytesUTF8 = (str) => {
       var len = 0;
@@ -2904,6 +2807,47 @@ Originally allocated`); // `.stack` will add "at ..." after this sentence
         }
       });
     };
+  var __embind_register_value_object = (
+      typeID,
+      name,
+      constructorSignature,
+      rawConstructor,
+      destructorSignature,
+      rawDestructor,
+      valueSize,
+      isTrivial
+    ) => {
+      structRegistrations[typeID] = {
+        name: AsciiToString(name),
+        rawConstructor: embind__requireFunction(constructorSignature, rawConstructor),
+        rawDestructor: embind__requireFunction(destructorSignature, rawDestructor),
+        valueSize,
+        isTrivial: !!isTrivial,
+        fields: [],
+      };
+    };
+  var __embind_register_value_object_field = (
+      structTypeID,
+      fieldName,
+      getterReturnTypeID,
+      getterSignature,
+      getter,
+      getterContext,
+      setterArgumentTypeID,
+      setterSignature,
+      setter,
+      setterContext
+    ) => {
+      structRegistrations[structTypeID].fields.push({
+        fieldName: AsciiToString(fieldName),
+        getterReturnTypeID,
+        getter: embind__requireFunction(getterSignature, getter),
+        getterContext,
+        setterArgumentTypeID,
+        setter: embind__requireFunction(setterSignature, setter),
+        setterContext,
+      });
+    };
   var __embind_register_void = (typeID, name) => {
       name = AsciiToString(name);
       registerType(typeID, {
@@ -2913,6 +2857,11 @@ Originally allocated`); // `.stack` will add "at ..." after this sentence
         // TODO: assert if anything else is given?
         toWireType: (destructors, o) => undefined,
       });
+    };
+  var __emval_array_to_memory_view = (dst, src) => {
+      dst = Emval.toValue(dst);
+      src = Emval.toValue(src);
+      dst.set(src);
     };
   var emval_methodCallers = [];
   var emval_addMethodCaller = (caller) => {
@@ -2991,6 +2940,18 @@ ${functionBody}
       return emval_addMethodCaller(createNamedFunction(functionName, invokerFunction));
     };
 
+  var __emval_get_global = (name) => {
+      if (!name) {
+        return Emval.toHandle(globalThis);
+      }
+      name = getStringOrSymbol(name);
+      return Emval.toHandle(globalThis[name]);
+    };
+  var __emval_get_property = (handle, key) => {
+      handle = Emval.toValue(handle);
+      key = Emval.toValue(key);
+      return Emval.toHandle(handle[key]);
+    };
   var __emval_incref = (handle) => {
       if (handle > EMVAL_LAST_RESERVED_HANDLE) {
         emval_handles[handle + 1] += 1;
@@ -2999,6 +2960,7 @@ ${functionBody}
   var __emval_invoke = (caller, handle, methodName, destructorsRef, args) => {
       return emval_methodCallers[caller](handle, methodName, destructorsRef, args);
     };
+  var __emval_new_cstring = (v) => Emval.toHandle(getStringOrSymbol(v));
   var __emval_run_destructors = (handle) => {
       var destructors = Emval.toValue(handle);
       runDestructors(destructors);
@@ -3324,7 +3286,6 @@ Module['FS_createPreloadedFile'] = FS.createPreloadedFile;
   'convertU32PairToI53',
   'getTempRet0',
   'setTempRet0',
-  'zeroMemory',
   'exitJS',
   'withStackSave',
   'strError',
@@ -3369,6 +3330,7 @@ Module['FS_createPreloadedFile'] = FS.createPreloadedFile;
   'addFunction',
   'removeFunction',
   'setValue',
+  'getValue',
   'intArrayFromString',
   'intArrayToString',
   'stringToAscii',
@@ -3480,7 +3442,9 @@ Module['FS_createPreloadedFile'] = FS.createPreloadedFile;
   'PureVirtualError',
   'registerInheritedInstance',
   'unregisterInheritedInstance',
+  'installIndexedIterator',
   'setDelayFunction',
+  'validateThis',
   'count_emval_handles',
   'isCppExceptionObject',
 ];
@@ -3513,6 +3477,7 @@ missingLibrarySymbols.forEach(missingLibrarySymbol)
   'stackAlloc',
   'createNamedFunction',
   'ptrToString',
+  'zeroMemory',
   'getHeapMax',
   'growMemory',
   'ENV',
@@ -3532,7 +3497,6 @@ missingLibrarySymbols.forEach(missingLibrarySymbol)
   'addOnPostRun',
   'freeTableIndexes',
   'functionsInTableMap',
-  'getValue',
   'PATH',
   'PATH_FS',
   'UTF8Decoder',
@@ -3632,7 +3596,6 @@ missingLibrarySymbols.forEach(missingLibrarySymbol)
   'floatReadValueFromPointer',
   'assertIntegerRange',
   'readPointer',
-  'installIndexedIterator',
   'runDestructors',
   'craftInvokerFunction',
   'embind__requireFunction',
@@ -3658,7 +3621,6 @@ missingLibrarySymbols.forEach(missingLibrarySymbol)
   'shallowCopyInternalPointer',
   'downcastPointer',
   'upcastPointer',
-  'validateThis',
   'makeLegalFunctionName',
   'emval_freelist',
   'emval_exception_decrefs',
@@ -3784,19 +3746,17 @@ var wasmImports = {
   /** @export */
   _abort_js: __abort_js,
   /** @export */
+  _embind_finalize_value_object: __embind_finalize_value_object,
+  /** @export */
   _embind_register_bigint: __embind_register_bigint,
   /** @export */
   _embind_register_bool: __embind_register_bool,
   /** @export */
   _embind_register_class: __embind_register_class,
   /** @export */
-  _embind_register_class_class_function: __embind_register_class_class_function,
-  /** @export */
   _embind_register_class_constructor: __embind_register_class_constructor,
   /** @export */
   _embind_register_class_function: __embind_register_class_function,
-  /** @export */
-  _embind_register_class_property: __embind_register_class_property,
   /** @export */
   _embind_register_emval: __embind_register_emval,
   /** @export */
@@ -3806,27 +3766,37 @@ var wasmImports = {
   /** @export */
   _embind_register_float: __embind_register_float,
   /** @export */
+  _embind_register_function: __embind_register_function,
+  /** @export */
   _embind_register_integer: __embind_register_integer,
   /** @export */
-  _embind_register_iterable: __embind_register_iterable,
-  /** @export */
   _embind_register_memory_view: __embind_register_memory_view,
-  /** @export */
-  _embind_register_optional: __embind_register_optional,
   /** @export */
   _embind_register_std_string: __embind_register_std_string,
   /** @export */
   _embind_register_std_wstring: __embind_register_std_wstring,
   /** @export */
+  _embind_register_value_object: __embind_register_value_object,
+  /** @export */
+  _embind_register_value_object_field: __embind_register_value_object_field,
+  /** @export */
   _embind_register_void: __embind_register_void,
+  /** @export */
+  _emval_array_to_memory_view: __emval_array_to_memory_view,
   /** @export */
   _emval_create_invoker: __emval_create_invoker,
   /** @export */
   _emval_decref: __emval_decref,
   /** @export */
+  _emval_get_global: __emval_get_global,
+  /** @export */
+  _emval_get_property: __emval_get_property,
+  /** @export */
   _emval_incref: __emval_incref,
   /** @export */
   _emval_invoke: __emval_invoke,
+  /** @export */
+  _emval_new_cstring: __emval_new_cstring,
   /** @export */
   _emval_run_destructors: __emval_run_destructors,
   /** @export */

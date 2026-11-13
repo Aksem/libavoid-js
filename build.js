@@ -20,6 +20,8 @@ for (const build of builds) {
       bundle: true,
       sourcemap: true,
       minify: true,
+      // Keep class names (Point, Rect) readable in logs and errors.
+      keepNames: true,
       splitting: build.format === "esm",
       format: build.format,
       platform: build.platform,

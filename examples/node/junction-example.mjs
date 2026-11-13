@@ -2,42 +2,30 @@ import { AvoidLib } from '../dist/index-node.mjs';
 
 function printRoutes(conns) {
   for (const [name, conn] of conns) {
-    const route = conn.displayRoute();
-    const points = [];
-    for (let i = 0; i < route.size(); i++) {
-      points.push(`(${route.at(i).x}, ${route.at(i).y})`);
-    }
+    const points = conn.displayRoute().map(({ x, y }) => `(${x}, ${y})`);
     console.log(`  ${name} route:`, points.join(' -> '));
   }
 }
 
 function createScenario(Avoid, { fixedJunction = false } = {}) {
-  const router = new Avoid.Router(Avoid.RouterFlag.OrthogonalRouting.value);
+  const router = new Avoid.Router(Avoid.RouterFlag.OrthogonalRouting);
   router.setRoutingParameter(Avoid.RoutingParameter.segmentPenalty, 50);
   router.setRoutingParameter(Avoid.RoutingParameter.idealNudgingDistance, 25);
   router.setRoutingParameter(Avoid.RoutingParameter.shapeBufferDistance, 40);
 
-  const shape1 = new Avoid.ShapeRef(router,
-    new Avoid.Rectangle(new Avoid.Point(100, 100), new Avoid.Point(200, 200)), 1);
-  const shape2 = new Avoid.ShapeRef(router,
-    new Avoid.Rectangle(new Avoid.Point(400, 100), new Avoid.Point(500, 200)), 2);
-  const shape3 = new Avoid.ShapeRef(router,
-    new Avoid.Rectangle(new Avoid.Point(400, 300), new Avoid.Point(500, 400)), 3);
+  // Shapes: top-left corner plus size.
+  router.addShape({ x: 100, y: 100, width: 100, height: 100 }, { id: 1 });
+  router.addShape({ x: 400, y: 100, width: 100, height: 100 }, { id: 2 });
+  router.addShape({ x: 400, y: 300, width: 100, height: 100 }, { id: 3 });
 
-  const junction = new Avoid.JunctionRef(router, new Avoid.Point(300, 200), 100);
+  const junction = router.addJunction({ x: 300, y: 200 }, { id: 100 });
   if (fixedJunction) {
     junction.setPositionFixed(true);
   }
 
-  const conn1 = new Avoid.ConnRef(router,
-    new Avoid.ConnEnd(new Avoid.Point(150, 150)),
-    Avoid.ConnEnd.createConnEndFromJunctionRef(junction), 201);
-  const conn2 = new Avoid.ConnRef(router,
-    Avoid.ConnEnd.createConnEndFromJunctionRef(junction),
-    new Avoid.ConnEnd(new Avoid.Point(450, 150)), 202);
-  const conn3 = new Avoid.ConnRef(router,
-    Avoid.ConnEnd.createConnEndFromJunctionRef(junction),
-    new Avoid.ConnEnd(new Avoid.Point(450, 350)), 203);
+  const conn1 = router.addConnector({ x: 150, y: 150 }, { junction }, { id: 201 });
+  const conn2 = router.addConnector({ junction }, { x: 450, y: 150 }, { id: 202 });
+  const conn3 = router.addConnector({ junction }, { x: 450, y: 350 }, { id: 203 });
 
   router.processTransaction();
 
@@ -48,12 +36,7 @@ function createScenario(Avoid, { fixedJunction = false } = {}) {
   console.log(`  Position fixed: ${junction.positionFixed()}`);
   printRoutes([['conn1', conn1], ['conn2', conn2], ['conn3', conn3]]);
 
-  // Cleanup
-  router.deleteConnector(conn1);
-  router.deleteConnector(conn2);
-  router.deleteConnector(conn3);
-  router.deleteJunction(junction);
-  router.processTransaction();
+  // Cleanup: deleting the router frees the shapes, junction and connectors.
   router.delete();
 }
 
