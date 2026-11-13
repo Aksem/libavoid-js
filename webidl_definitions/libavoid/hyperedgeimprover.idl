@@ -1,9 +1,0 @@
-// TODO: typedefs
-
-[Prefix="Avoid::"]
-interface HyperedgeImprover {
-  void HyperedgeImprover();
-
-  void clear();
-  void setRouter(Router router);
-};

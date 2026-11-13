@@ -1,14 +1,14 @@
 {
   "name": "libavoid-js",
-  "version": "0.4.5",
+  "version": "0.5.0-beta.5",
   "description": "JS port of libavoid library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "browser": "./dist/index.js",
       "node": "./dist/index-node.mjs",
-      "types": "./dist/libavoid.d.ts",
       "default": "./dist/index.js"
     }
   },
@@ -18,8 +18,16 @@
   ],
   "scripts": {
     "build": "node build.js",
-    "api-docs": "jsdoc -c jsdoc.conf.js -d ./api_docs_build/ build/generated_debug/glue.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "full-rebuild": "python tools/generate.py && npm run build",
+    "api-docs": "typedoc",
+    "test": "vitest run",
+    "test:node": "vitest run --project node",
+    "test:browser": "vitest run --project browser",
+    "test:watch": "vitest",
+    "bench": "vitest bench --project 'node (bench)' --reporter verbose",
+    "bench:browser": "vitest bench --project 'browser (bench)' --reporter verbose",
+    "build:sanitizer": "python tools/generate.py --sanitizer",
+    "leakcheck": "npm run build:sanitizer && node tools/leakcheck/run.mjs"
   },
   "repository": {
     "type": "git",
@@ -32,9 +40,12 @@
   },
   "homepage": "https://github.com/Aksem/libavoid-js",
   "devDependencies": {
-    "docdash": "^1.2.0",
-    "esbuild": "^0.17.15",
+    "@vitest/browser-playwright": "^5.1.0",
+    "esbuild": "^0.28.2",
     "esbuild-plugin-copy": "^2.1.1",
-    "jsdoc": "^3.6.6"
+    "playwright": "^1.65.0",
+    "typedoc": "^0.28.20",
+    "typescript": "^5.9.3",
+    "vitest": "^5.1.0"
   }
 }

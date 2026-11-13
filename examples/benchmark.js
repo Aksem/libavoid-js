@@ -1,431 +1,200 @@
-import { AvoidLib } from './dist/index.mjs';
+// Benchmark scene recorded from a real diagram (libavoid debug output).
+import { AvoidLib } from './dist/index.js';
 
 let Avoid;
 
 function prepareRouter() {
   const router = new Avoid.Router(
-    Avoid.PolyLineRouting | Avoid.OrthogonalRouting
+    Avoid.RouterFlag.PolyLineRouting | Avoid.RouterFlag.OrthogonalRouting
   );
-  router.setRoutingParameter(Avoid.segmentPenalty, 50);
-  router.setRoutingParameter(Avoid.anglePenalty, 0);
-  router.setRoutingParameter(Avoid.crossingPenalty, 200);
-  router.setRoutingParameter(Avoid.clusterCrossingPenalty, 4000);
-  router.setRoutingParameter(Avoid.fixedSharedPathPenalty, 110);
-  router.setRoutingParameter(Avoid.idealNudgingDistance, 25);
+  router.setRoutingParameter(Avoid.RoutingParameter.segmentPenalty, 50);
+  router.setRoutingParameter(Avoid.RoutingParameter.anglePenalty, 0);
+  router.setRoutingParameter(Avoid.RoutingParameter.crossingPenalty, 200);
+  router.setRoutingParameter(Avoid.RoutingParameter.clusterCrossingPenalty, 4000);
+  router.setRoutingParameter(Avoid.RoutingParameter.fixedSharedPathPenalty, 110);
+  router.setRoutingParameter(Avoid.RoutingParameter.idealNudgingDistance, 25);
 
-  const poly219926511 = new Avoid.Polygon(4);
-  poly219926511.set_ps(0, new Avoid.Point(50760, 51240));
-  poly219926511.set_ps(1, new Avoid.Point(50760, 51260));
-  poly219926511.set_ps(2, new Avoid.Point(50740, 51260));
-  poly219926511.set_ps(3, new Avoid.Point(50740, 51240));
-  const shapeRef219926511 = new Avoid.ShapeRef(
-    router,
-    poly219926511,
-    219926511
-  );
-  const pin1 = new Avoid.ShapeConnectionPin(
-    shapeRef219926511,
-    2147483646,
-    0.5,
-    0.5,
-    true,
-    0,
-    4
-  );
+  const poly219926511 = [{ x: 50760, y: 51240 }, { x: 50760, y: 51260 }, { x: 50740, y: 51260 }, { x: 50740, y: 51240 }];
+  const shapeRef219926511 = router.addShape(poly219926511, { id: 219926511 });
+  const pin1 = shapeRef219926511.addPin({ classId: 2147483646, x: 0.5, y: 0.5, proportional: true, insideOffset: 0, directions: 4 });
   pin1.setExclusive(false);
-  const pin2 = new Avoid.ShapeConnectionPin(
-    shapeRef219926511,
-    2147483646,
-    0.5,
-    0.5,
-    true,
-    0,
-    1
-  );
+  const pin2 = shapeRef219926511.addPin({ classId: 2147483646, x: 0.5, y: 0.5, proportional: true, insideOffset: 0, directions: 1 });
   pin2.setExclusive(false);
-  const pin3 = new Avoid.ShapeConnectionPin(
-    shapeRef219926511,
-    2147483646,
-    0.5,
-    0.5,
-    true,
-    0,
-    8
-  );
+  const pin3 = shapeRef219926511.addPin({ classId: 2147483646, x: 0.5, y: 0.5, proportional: true, insideOffset: 0, directions: 8 });
   pin3.setExclusive(false);
-  const pin4 = new Avoid.ShapeConnectionPin(
-    shapeRef219926511,
-    2147483646,
-    0.5,
-    0.5,
-    true,
-    0,
-    2
-  );
+  const pin4 = shapeRef219926511.addPin({ classId: 2147483646, x: 0.5, y: 0.5, proportional: true, insideOffset: 0, directions: 2 });
   pin4.setExclusive(false);
 
-  const poly878674 = new Avoid.Polygon(4);
-  poly878674.set_ps(0, new Avoid.Point(51454, 51200));
-  poly878674.set_ps(1, new Avoid.Point(51454, 51285));
-  poly878674.set_ps(2, new Avoid.Point(51396, 51285));
-  poly878674.set_ps(3, new Avoid.Point(51396, 51200));
-  new Avoid.ShapeRef(router, poly878674, 878674);
+  const poly878674 = [{ x: 51454, y: 51200 }, { x: 51454, y: 51285 }, { x: 51396, y: 51285 }, { x: 51396, y: 51200 }];
+  router.addShape(poly878674, { id: 878674 });
 
-  const poly286906544 = new Avoid.Polygon(4);
-  poly286906544.set_ps(0, new Avoid.Point(50704, 51250));
-  poly286906544.set_ps(1, new Avoid.Point(50704, 51335));
-  poly286906544.set_ps(2, new Avoid.Point(50646, 51335));
-  poly286906544.set_ps(3, new Avoid.Point(50646, 51250));
-  new Avoid.ShapeRef(router, poly286906544, 286906544);
+  const poly286906544 = [{ x: 50704, y: 51250 }, { x: 50704, y: 51335 }, { x: 50646, y: 51335 }, { x: 50646, y: 51250 }];
+  router.addShape(poly286906544, { id: 286906544 });
 
-  const poly170813081 = new Avoid.Polygon(4);
-  poly170813081.set_ps(0, new Avoid.Point(51104, 51090));
-  poly170813081.set_ps(1, new Avoid.Point(51104, 51175));
-  poly170813081.set_ps(2, new Avoid.Point(51046, 51175));
-  poly170813081.set_ps(3, new Avoid.Point(51046, 51090));
-  new Avoid.ShapeRef(router, poly170813081, 170813081);
+  const poly170813081 = [{ x: 51104, y: 51090 }, { x: 51104, y: 51175 }, { x: 51046, y: 51175 }, { x: 51046, y: 51090 }];
+  router.addShape(poly170813081, { id: 170813081 });
 
-  const poly342721632 = new Avoid.Polygon(4);
-  poly342721632.set_ps(0, new Avoid.Point(51910, 50946));
-  poly342721632.set_ps(1, new Avoid.Point(51910, 51004));
-  poly342721632.set_ps(2, new Avoid.Point(51825, 51004));
-  poly342721632.set_ps(3, new Avoid.Point(51825, 50946));
-  new Avoid.ShapeRef(router, poly342721632, 342721632);
+  const poly342721632 = [{ x: 51910, y: 50946 }, { x: 51910, y: 51004 }, { x: 51825, y: 51004 }, { x: 51825, y: 50946 }];
+  router.addShape(poly342721632, { id: 342721632 });
 
-  const poly223927132 = new Avoid.Polygon(4);
-  poly223927132.set_ps(0, new Avoid.Point(51510, 51190));
-  poly223927132.set_ps(1, new Avoid.Point(51510, 51210));
-  poly223927132.set_ps(2, new Avoid.Point(51490, 51210));
-  poly223927132.set_ps(3, new Avoid.Point(51490, 51190));
-  const shapeRef223927132 = new Avoid.ShapeRef(
-    router,
-    poly223927132,
-    223927132
-  );
-  const pin1s = new Avoid.ShapeConnectionPin(
-    shapeRef223927132,
-    2147483646,
-    0.5,
-    0.5,
-    true,
-    0,
-    4
-  );
+  const poly223927132 = [{ x: 51510, y: 51190 }, { x: 51510, y: 51210 }, { x: 51490, y: 51210 }, { x: 51490, y: 51190 }];
+  const shapeRef223927132 = router.addShape(poly223927132, { id: 223927132 });
+  const pin1s = shapeRef223927132.addPin({ classId: 2147483646, x: 0.5, y: 0.5, proportional: true, insideOffset: 0, directions: 4 });
   pin1s.setExclusive(false);
-  const pin2s = new Avoid.ShapeConnectionPin(
-    shapeRef223927132,
-    2147483646,
-    0.5,
-    0.5,
-    true,
-    0,
-    1
-  );
+  const pin2s = shapeRef223927132.addPin({ classId: 2147483646, x: 0.5, y: 0.5, proportional: true, insideOffset: 0, directions: 1 });
   pin2s.setExclusive(false);
-  const pin3s = new Avoid.ShapeConnectionPin(
-    shapeRef223927132,
-    2147483646,
-    0.5,
-    0.5,
-    true,
-    0,
-    8
-  );
+  const pin3s = shapeRef223927132.addPin({ classId: 2147483646, x: 0.5, y: 0.5, proportional: true, insideOffset: 0, directions: 8 });
   pin3s.setExclusive(false);
-  const pin4s = new Avoid.ShapeConnectionPin(
-    shapeRef223927132,
-    2147483646,
-    0.5,
-    0.5,
-    true,
-    0,
-    2
-  );
+  const pin4s = shapeRef223927132.addPin({ classId: 2147483646, x: 0.5, y: 0.5, proportional: true, insideOffset: 0, directions: 2 });
   pin4s.setExclusive(false);
 
-  const poly11057158 = new Avoid.Polygon(4);
-  poly11057158.set_ps(0, new Avoid.Point(51679, 51200));
-  poly11057158.set_ps(1, new Avoid.Point(51679, 51285));
-  poly11057158.set_ps(2, new Avoid.Point(51621, 51285));
-  poly11057158.set_ps(3, new Avoid.Point(51621, 51200));
-  new Avoid.ShapeRef(router, poly11057158, 11057158);
+  const poly11057158 = [{ x: 51679, y: 51200 }, { x: 51679, y: 51285 }, { x: 51621, y: 51285 }, { x: 51621, y: 51200 }];
+  router.addShape(poly11057158, { id: 11057158 });
 
-  const poly322446045 = new Avoid.Polygon(4);
-  poly322446045.set_ps(0, new Avoid.Point(50779, 51240));
-  poly322446045.set_ps(1, new Avoid.Point(50779, 51335));
-  poly322446045.set_ps(2, new Avoid.Point(50721, 51335));
-  poly322446045.set_ps(3, new Avoid.Point(50721, 51240));
-  new Avoid.ShapeRef(router, poly322446045, 322446045);
+  const poly322446045 = [{ x: 50779, y: 51240 }, { x: 50779, y: 51335 }, { x: 50721, y: 51335 }, { x: 50721, y: 51240 }];
+  router.addShape(poly322446045, { id: 322446045 });
 
-  const poly767565928 = new Avoid.Polygon(4);
-  poly767565928.set_ps(0, new Avoid.Point(51004, 50741));
-  poly767565928.set_ps(1, new Avoid.Point(51004, 50826));
-  poly767565928.set_ps(2, new Avoid.Point(50946, 50826));
-  poly767565928.set_ps(3, new Avoid.Point(50946, 50741));
-  new Avoid.ShapeRef(router, poly767565928, 767565928);
+  const poly767565928 = [{ x: 51004, y: 50741 }, { x: 51004, y: 50826 }, { x: 50946, y: 50826 }, { x: 50946, y: 50741 }];
+  router.addShape(poly767565928, { id: 767565928 });
 
-  const poly280939374 = new Avoid.Polygon(4);
-  poly280939374.set_ps(0, new Avoid.Point(51085, 50971));
-  poly280939374.set_ps(1, new Avoid.Point(51085, 51029));
-  poly280939374.set_ps(2, new Avoid.Point(51000, 51029));
-  poly280939374.set_ps(3, new Avoid.Point(51000, 50971));
-  new Avoid.ShapeRef(router, poly280939374, 280939374);
+  const poly280939374 = [{ x: 51085, y: 50971 }, { x: 51085, y: 51029 }, { x: 51000, y: 51029 }, { x: 51000, y: 50971 }];
+  router.addShape(poly280939374, { id: 280939374 });
 
-  const poly630623707 = new Avoid.Polygon(4);
-  poly630623707.set_ps(0, new Avoid.Point(51279, 50925));
-  poly630623707.set_ps(1, new Avoid.Point(51279, 51010));
-  poly630623707.set_ps(2, new Avoid.Point(51221, 51010));
-  poly630623707.set_ps(3, new Avoid.Point(51221, 50925));
-  new Avoid.ShapeRef(router, poly630623707, 630623707);
+  const poly630623707 = [{ x: 51279, y: 50925 }, { x: 51279, y: 51010 }, { x: 51221, y: 51010 }, { x: 51221, y: 50925 }];
+  router.addShape(poly630623707, { id: 630623707 });
 
-  const poly28160455 = new Avoid.Polygon(4);
-  poly28160455.set_ps(0, new Avoid.Point(50879, 51250));
-  poly28160455.set_ps(1, new Avoid.Point(50879, 51335));
-  poly28160455.set_ps(2, new Avoid.Point(50821, 51335));
-  poly28160455.set_ps(3, new Avoid.Point(50821, 51250));
-  new Avoid.ShapeRef(router, poly28160455, 28160455);
+  const poly28160455 = [{ x: 50879, y: 51250 }, { x: 50879, y: 51335 }, { x: 50821, y: 51335 }, { x: 50821, y: 51250 }];
+  router.addShape(poly28160455, { id: 28160455 });
 
-  const poly525890448 = new Avoid.Polygon(4);
-  poly525890448.set_ps(0, new Avoid.Point(51174, 50721));
-  poly525890448.set_ps(1, new Avoid.Point(51174, 50779));
-  poly525890448.set_ps(2, new Avoid.Point(51089, 50779));
-  poly525890448.set_ps(3, new Avoid.Point(51089, 50721));
-  new Avoid.ShapeRef(router, poly525890448, 525890448);
+  const poly525890448 = [{ x: 51174, y: 50721 }, { x: 51174, y: 50779 }, { x: 51089, y: 50779 }, { x: 51089, y: 50721 }];
+  router.addShape(poly525890448, { id: 525890448 });
 
-  const poly157182552 = new Avoid.Polygon(4);
-  poly157182552.set_ps(0, new Avoid.Point(51529, 51190));
-  poly157182552.set_ps(1, new Avoid.Point(51529, 51285));
-  poly157182552.set_ps(2, new Avoid.Point(51471, 51285));
-  poly157182552.set_ps(3, new Avoid.Point(51471, 51190));
-  new Avoid.ShapeRef(router, poly157182552, 157182552);
+  const poly157182552 = [{ x: 51529, y: 51190 }, { x: 51529, y: 51285 }, { x: 51471, y: 51285 }, { x: 51471, y: 51190 }];
+  router.addShape(poly157182552, { id: 157182552 });
 
-  const poly799637520 = new Avoid.Polygon(4);
-  poly799637520.set_ps(0, new Avoid.Point(50625, 50896));
-  poly799637520.set_ps(1, new Avoid.Point(50625, 50954));
-  poly799637520.set_ps(2, new Avoid.Point(50540, 50954));
-  poly799637520.set_ps(3, new Avoid.Point(50540, 50896));
-  new Avoid.ShapeRef(router, poly799637520, 799637520);
+  const poly799637520 = [{ x: 50625, y: 50896 }, { x: 50625, y: 50954 }, { x: 50540, y: 50954 }, { x: 50540, y: 50896 }];
+  router.addShape(poly799637520, { id: 799637520 });
 
-  const poly60349320 = new Avoid.Polygon(4);
-  poly60349320.set_ps(0, new Avoid.Point(50904, 51025));
-  poly60349320.set_ps(1, new Avoid.Point(50904, 51110));
-  poly60349320.set_ps(2, new Avoid.Point(50846, 51110));
-  poly60349320.set_ps(3, new Avoid.Point(50846, 51025));
-  new Avoid.ShapeRef(router, poly60349320, 60349320);
+  const poly60349320 = [{ x: 50904, y: 51025 }, { x: 50904, y: 51110 }, { x: 50846, y: 51110 }, { x: 50846, y: 51025 }];
+  router.addShape(poly60349320, { id: 60349320 });
 
-  const poly119851894 = new Avoid.Polygon(4);
-  poly119851894.set_ps(0, new Avoid.Point(51179, 51225));
-  poly119851894.set_ps(1, new Avoid.Point(51179, 51310));
-  poly119851894.set_ps(2, new Avoid.Point(51121, 51310));
-  poly119851894.set_ps(3, new Avoid.Point(51121, 51225));
-  new Avoid.ShapeRef(router, poly119851894, 119851894);
+  const poly119851894 = [{ x: 51179, y: 51225 }, { x: 51179, y: 51310 }, { x: 51121, y: 51310 }, { x: 51121, y: 51225 }];
+  router.addShape(poly119851894, { id: 119851894 });
 
-  const poly233164275 = new Avoid.Polygon(4);
-  poly233164275.set_ps(0, new Avoid.Point(51604, 51200));
-  poly233164275.set_ps(1, new Avoid.Point(51604, 51285));
-  poly233164275.set_ps(2, new Avoid.Point(51546, 51285));
-  poly233164275.set_ps(3, new Avoid.Point(51546, 51200));
-  new Avoid.ShapeRef(router, poly233164275, 233164275);
+  const poly233164275 = [{ x: 51604, y: 51200 }, { x: 51604, y: 51285 }, { x: 51546, y: 51285 }, { x: 51546, y: 51200 }];
+  router.addShape(poly233164275, { id: 233164275 });
 
-  const poly807558175 = new Avoid.Polygon(4);
-  poly807558175.set_ps(0, new Avoid.Point(51604, 51000));
-  poly807558175.set_ps(1, new Avoid.Point(51604, 51085));
-  poly807558175.set_ps(2, new Avoid.Point(51546, 51085));
-  poly807558175.set_ps(3, new Avoid.Point(51546, 51000));
-  new Avoid.ShapeRef(router, poly807558175, 807558175);
+  const poly807558175 = [{ x: 51604, y: 51000 }, { x: 51604, y: 51085 }, { x: 51546, y: 51085 }, { x: 51546, y: 51000 }];
+  router.addShape(poly807558175, { id: 807558175 });
 
-  const poly108859552 = new Avoid.Polygon(4);
-  poly108859552.set_ps(0, new Avoid.Point(51560, 50721));
-  poly108859552.set_ps(1, new Avoid.Point(51560, 50779));
-  poly108859552.set_ps(2, new Avoid.Point(51475, 50779));
-  poly108859552.set_ps(3, new Avoid.Point(51475, 50721));
-  new Avoid.ShapeRef(router, poly108859552, 108859552);
+  const poly108859552 = [{ x: 51560, y: 50721 }, { x: 51560, y: 50779 }, { x: 51475, y: 50779 }, { x: 51475, y: 50721 }];
+  router.addShape(poly108859552, { id: 108859552 });
 
-  const poly404900496 = new Avoid.Polygon(4);
-  poly404900496.set_ps(0, new Avoid.Point(51525, 50946));
-  poly404900496.set_ps(1, new Avoid.Point(51525, 51004));
-  poly404900496.set_ps(2, new Avoid.Point(51440, 51004));
-  poly404900496.set_ps(3, new Avoid.Point(51440, 50946));
-  new Avoid.ShapeRef(router, poly404900496, 404900496);
+  const poly404900496 = [{ x: 51525, y: 50946 }, { x: 51525, y: 51004 }, { x: 51440, y: 51004 }, { x: 51440, y: 50946 }];
+  router.addShape(poly404900496, { id: 404900496 });
 
-  const poly620445000 = new Avoid.Polygon(4);
-  poly620445000.set_ps(0, new Avoid.Point(51029, 51225));
-  poly620445000.set_ps(1, new Avoid.Point(51029, 51310));
-  poly620445000.set_ps(2, new Avoid.Point(50971, 51310));
-  poly620445000.set_ps(3, new Avoid.Point(50971, 51225));
-  new Avoid.ShapeRef(router, poly620445000, 620445000);
+  const poly620445000 = [{ x: 51029, y: 51225 }, { x: 51029, y: 51310 }, { x: 50971, y: 51310 }, { x: 50971, y: 51225 }];
+  router.addShape(poly620445000, { id: 620445000 });
 
-  const srcPt450684531 = new Avoid.ConnEnd(new Avoid.Point(51165, 50750));
-  const dstPt450684531 = new Avoid.ConnEnd(shapeRef223927132, 2147483646);
-  const connRef450684531 = new Avoid.ConnRef(
-    router,
-    srcPt450684531,
-    dstPt450684531
-  );
-  connRef450684531.setRoutingType(2);
+  const srcPt450684531 = { x: 51165, y: 50750 };
+  const dstPt450684531 = { shape: shapeRef223927132, pin: 2147483646 };
+  const connRef450684531 = router.addConnector(srcPt450684531, dstPt450684531);
+  connRef450684531.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-  const srcPt135371350 = new Avoid.ConnEnd(shapeRef223927132, 2147483646);
-  const dstPt135371350 = new Avoid.ConnEnd(new Avoid.Point(51250, 50935));
-  const connRef135371350 = new Avoid.ConnRef(
-    router,
-    srcPt135371350,
-    dstPt135371350
-  );
-  connRef135371350.setRoutingType(2);
+  const srcPt135371350 = { shape: shapeRef223927132, pin: 2147483646 };
+  const dstPt135371350 = { x: 51250, y: 50935 };
+  const connRef135371350 = router.addConnector(srcPt135371350, dstPt135371350);
+  connRef135371350.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-  const srcPt143333770 = new Avoid.ConnEnd(new Avoid.Point(51485, 50750));
-  const dstPt143333770 = new Avoid.ConnEnd(shapeRef223927132, 2147483646);
-  const connRef143333770 = new Avoid.ConnRef(
-    router,
-    srcPt143333770,
-    dstPt143333770
-  );
-  connRef143333770.setRoutingType(2);
+  const srcPt143333770 = { x: 51485, y: 50750 };
+  const dstPt143333770 = { shape: shapeRef223927132, pin: 2147483646 };
+  const connRef143333770 = router.addConnector(srcPt143333770, dstPt143333770);
+  connRef143333770.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-  const srcPt102966575 = new Avoid.ConnEnd(new Avoid.Point(50615, 50925));
-  const dstPt102966575 = new Avoid.ConnEnd(shapeRef223927132, 2147483646);
-  const connRef102966575 = new Avoid.ConnRef(
-    router,
-    srcPt102966575,
-    dstPt102966575
-  );
-  connRef102966575.setRoutingType(2);
+  const srcPt102966575 = { x: 50615, y: 50925 };
+  const dstPt102966575 = { shape: shapeRef223927132, pin: 2147483646 };
+  const connRef102966575 = router.addConnector(srcPt102966575, dstPt102966575);
+  connRef102966575.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-  const srcPt68998920 = new Avoid.ConnEnd(shapeRef223927132, 2147483646);
-  const dstPt68998920 = new Avoid.ConnEnd(new Avoid.Point(50975, 50815));
-  const connRef68998920 = new Avoid.ConnRef(
-    router,
-    srcPt68998920,
-    dstPt68998920
-  );
-  connRef68998920.setRoutingType(2);
+  const srcPt68998920 = { shape: shapeRef223927132, pin: 2147483646 };
+  const dstPt68998920 = { x: 50975, y: 50815 };
+  const connRef68998920 = router.addConnector(srcPt68998920, dstPt68998920);
+  connRef68998920.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-  const srcPt1625709 = new Avoid.ConnEnd(shapeRef223927132, 2147483646);
-  const dstPt1625709 = new Avoid.ConnEnd(new Avoid.Point(50875, 51035));
-  const connRef1625709 = new Avoid.ConnRef(router, srcPt1625709, dstPt1625709);
-  connRef1625709.setRoutingType(2);
+  const srcPt1625709 = { shape: shapeRef223927132, pin: 2147483646 };
+  const dstPt1625709 = { x: 50875, y: 51035 };
+  const connRef1625709 = router.addConnector(srcPt1625709, dstPt1625709);
+  connRef1625709.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-  const srcPt34178450 = new Avoid.ConnEnd(shapeRef223927132, 2147483646);
-  const dstPt34178450 = new Avoid.ConnEnd(new Avoid.Point(51010, 51000));
-  const connRef34178450 = new Avoid.ConnRef(
-    router,
-    srcPt34178450,
-    dstPt34178450
-  );
-  connRef34178450.setRoutingType(2);
+  const srcPt34178450 = { shape: shapeRef223927132, pin: 2147483646 };
+  const dstPt34178450 = { x: 51010, y: 51000 };
+  const connRef34178450 = router.addConnector(srcPt34178450, dstPt34178450);
+  connRef34178450.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-  const srcPt7982176 = new Avoid.ConnEnd(new Avoid.Point(50675, 51260));
-  const dstPt7982176 = new Avoid.ConnEnd(shapeRef219926511, 2147483646);
-  const connRef7982176 = new Avoid.ConnRef(router, srcPt7982176, dstPt7982176);
-  connRef7982176.setRoutingType(2);
+  const srcPt7982176 = { x: 50675, y: 51260 };
+  const dstPt7982176 = { shape: shapeRef219926511, pin: 2147483646 };
+  const connRef7982176 = router.addConnector(srcPt7982176, dstPt7982176);
+  connRef7982176.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-  const srcPt197177982 = new Avoid.ConnEnd(new Avoid.Point(50750, 51250));
-  const dstPt197177982 = new Avoid.ConnEnd(new Avoid.Point(50750, 51260));
-  const connRef197177982 = new Avoid.ConnRef(
-    router,
-    srcPt197177982,
-    dstPt197177982
-  );
-  connRef197177982.setRoutingType(2);
+  const srcPt197177982 = { x: 50750, y: 51250 };
+  const dstPt197177982 = { x: 50750, y: 51260 };
+  const connRef197177982 = router.addConnector(srcPt197177982, dstPt197177982);
+  connRef197177982.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-  const srcPt398066432 = new Avoid.ConnEnd(shapeRef219926511, 2147483646);
-  const dstPt398066432 = new Avoid.ConnEnd(new Avoid.Point(50850, 51260));
-  const connRef398066432 = new Avoid.ConnRef(
-    router,
-    srcPt398066432,
-    dstPt398066432
-  );
-  connRef398066432.setRoutingType(2);
+  const srcPt398066432 = { shape: shapeRef219926511, pin: 2147483646 };
+  const dstPt398066432 = { x: 50850, y: 51260 };
+  const connRef398066432 = router.addConnector(srcPt398066432, dstPt398066432);
+  connRef398066432.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-  const srcPt314512308 = new Avoid.ConnEnd(new Avoid.Point(51000, 51235));
-  const dstPt314512308 = new Avoid.ConnEnd(shapeRef219926511, 2147483646);
-  const connRef314512308 = new Avoid.ConnRef(
-    router,
-    srcPt314512308,
-    dstPt314512308
-  );
-  connRef314512308.setRoutingType(2);
+  const srcPt314512308 = { x: 51000, y: 51235 };
+  const dstPt314512308 = { shape: shapeRef219926511, pin: 2147483646 };
+  const connRef314512308 = router.addConnector(srcPt314512308, dstPt314512308);
+  connRef314512308.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-  const srcPt182776308 = new Avoid.ConnEnd(new Avoid.Point(51075, 51225));
-  const dstPt182776308 = new Avoid.ConnEnd(new Avoid.Point(51075, 51165));
-  const connRef182776308 = new Avoid.ConnRef(
-    router,
-    srcPt182776308,
-    dstPt182776308
-  );
-  connRef182776308.setRoutingType(2);
+  const srcPt182776308 = { x: 51075, y: 51225 };
+  const dstPt182776308 = { x: 51075, y: 51165 };
+  const connRef182776308 = router.addConnector(srcPt182776308, dstPt182776308);
+  connRef182776308.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-  const srcPt96504835 = new Avoid.ConnEnd(new Avoid.Point(51150, 51235));
-  const dstPt96504835 = new Avoid.ConnEnd(shapeRef219926511, 2147483646);
-  const connRef96504835 = new Avoid.ConnRef(
-    router,
-    srcPt96504835,
-    dstPt96504835
-  );
-  connRef96504835.setRoutingType(2);
+  const srcPt96504835 = { x: 51150, y: 51235 };
+  const dstPt96504835 = { shape: shapeRef219926511, pin: 2147483646 };
+  const connRef96504835 = router.addConnector(srcPt96504835, dstPt96504835);
+  connRef96504835.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-  const srcPt118099300 = new Avoid.ConnEnd(new Avoid.Point(51425, 51210));
-  const dstPt118099300 = new Avoid.ConnEnd(shapeRef223927132, 2147483646);
-  const connRef118099300 = new Avoid.ConnRef(
-    router,
-    srcPt118099300,
-    dstPt118099300
-  );
-  connRef118099300.setRoutingType(2);
+  const srcPt118099300 = { x: 51425, y: 51210 };
+  const dstPt118099300 = { shape: shapeRef223927132, pin: 2147483646 };
+  const connRef118099300 = router.addConnector(srcPt118099300, dstPt118099300);
+  connRef118099300.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-  const srcPt176080410 = new Avoid.ConnEnd(shapeRef223927132, 2147483646);
-  const dstPt176080410 = new Avoid.ConnEnd(new Avoid.Point(51575, 51210));
-  const connRef176080410 = new Avoid.ConnRef(
-    router,
-    srcPt176080410,
-    dstPt176080410
-  );
-  connRef176080410.setRoutingType(2);
+  const srcPt176080410 = { shape: shapeRef223927132, pin: 2147483646 };
+  const dstPt176080410 = { x: 51575, y: 51210 };
+  const connRef176080410 = router.addConnector(srcPt176080410, dstPt176080410);
+  connRef176080410.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-  const srcPt426666001 = new Avoid.ConnEnd(new Avoid.Point(51500, 51210));
-  const dstPt426666001 = new Avoid.ConnEnd(new Avoid.Point(51500, 51200));
-  const connRef426666001 = new Avoid.ConnRef(
-    router,
-    srcPt426666001,
-    dstPt426666001
-  );
-  connRef426666001.setRoutingType(2);
+  const srcPt426666001 = { x: 51500, y: 51210 };
+  const dstPt426666001 = { x: 51500, y: 51200 };
+  const connRef426666001 = router.addConnector(srcPt426666001, dstPt426666001);
+  connRef426666001.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-  const srcPt795762792 = new Avoid.ConnEnd(new Avoid.Point(51650, 51210));
-  const dstPt795762792 = new Avoid.ConnEnd(shapeRef223927132, 2147483646);
-  const connRef795762792 = new Avoid.ConnRef(
-    router,
-    srcPt795762792,
-    dstPt795762792
-  );
-  connRef795762792.setRoutingType(2);
+  const srcPt795762792 = { x: 51650, y: 51210 };
+  const dstPt795762792 = { shape: shapeRef223927132, pin: 2147483646 };
+  const connRef795762792 = router.addConnector(srcPt795762792, dstPt795762792);
+  connRef795762792.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-  const srcPt467016913 = new Avoid.ConnEnd(shapeRef219926511);
-  const dstPt467016913 = new Avoid.ConnEnd(new Avoid.Point(51575, 51010));
-  const connRef467016913 = new Avoid.ConnRef(
-    router,
-    srcPt467016913,
-    dstPt467016913
-  );
-  connRef467016913.setRoutingType(2);
+  const srcPt467016913 = { shape: shapeRef219926511, pin: 2147483646 } /* was ConnEnd(shapeRef) without a pin class */;
+  const dstPt467016913 = { x: 51575, y: 51010 };
+  const connRef467016913 = router.addConnector(srcPt467016913, dstPt467016913);
+  connRef467016913.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-  const srcPt45740440 = new Avoid.ConnEnd(new Avoid.Point(51835, 50975));
-  const dstPt45740440 = new Avoid.ConnEnd(shapeRef219926511, 2147483646);
-  const connRef45740440 = new Avoid.ConnRef(
-    router,
-    srcPt45740440,
-    dstPt45740440
-  );
-  connRef45740440.setRoutingType(2);
+  const srcPt45740440 = { x: 51835, y: 50975 };
+  const dstPt45740440 = { shape: shapeRef219926511, pin: 2147483646 };
+  const connRef45740440 = router.addConnector(srcPt45740440, dstPt45740440);
+  connRef45740440.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-  const srcPt985644192 = new Avoid.ConnEnd(new Avoid.Point(51515, 50975));
-  const dstPt985644192 = new Avoid.ConnEnd(shapeRef219926511, 2147483646);
-  const connRef985644192 = new Avoid.ConnRef(
-    router,
-    srcPt985644192,
-    dstPt985644192
-  );
-  connRef985644192.setRoutingType(2);
+  const srcPt985644192 = { x: 51515, y: 50975 };
+  const dstPt985644192 = { shape: shapeRef219926511, pin: 2147483646 };
+  const connRef985644192 = router.addConnector(srcPt985644192, dstPt985644192);
+  connRef985644192.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
   return [router, shapeRef219926511];
 }
@@ -433,7 +202,7 @@ function prepareRouter() {
 function route() {
   const [router] = prepareRouter();
   router.processTransaction();
-  Avoid.destroy(router);
+  router.delete();
 }
 
 /* Test 1: full router creation & routing */
@@ -478,7 +247,7 @@ async function test_2() {
     router.moveShape(shape, -120, -200);
     router.processTransaction();
   }
-  Avoid.destroy(router);
+  router.delete();
 
   const mean =
     measurements.reduce((acc, val) => acc + val, 0) / measurements.length;
@@ -499,7 +268,7 @@ async function test_3() {
     measurements.push(endTime - startTime);
     console.log("Test 3, measurement", measurements[i]);
   }
-  Avoid.destroy(router);
+  router.delete();
 
   const mean =
     measurements.reduce((acc, val) => acc + val, 0) / measurements.length;
