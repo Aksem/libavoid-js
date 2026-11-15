@@ -191,9 +191,6 @@ export const scenarios = {
 
   junctionPins: {
     title: "several pins on one junction",
-    known:
-      "adaptagrams: ShapeConnectionPin(JunctionRef*, ...) leaves m_unique_id uninitialised, " +
-      "so the junction's pin set can drop a pin that is then never deleted",
     run(Avoid) {
       const router = new Avoid.Router(Avoid.RouterFlag.OrthogonalRouting);
       const junction = router.addJunction({ x: 0, y: 0 });
