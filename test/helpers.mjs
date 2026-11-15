@@ -1,26 +1,15 @@
 // Shared helpers for libavoid-js tests.
-//
-// Every binding test runs against each build in BUILDS. The list depends on
-// where the tests run:
-//  - Node ("node" vitest project):
-//    - "src":  src/index-node.mjs -> src/generated/libavoid.mjs (raw emscripten output)
-//    - "dist": dist/index-node.mjs (the esbuild bundle that is published to npm)
-//  - Browser ("browser" vitest project, Chromium):
-//    - "src":  src/index.js -> src/generated/libavoid.js
-//    - "dist": dist/index.js
-// Run `npm run build` before testing so that dist/ matches src/generated/.
+import { test } from "vitest";
 
 export const IS_BROWSER = typeof window !== "undefined" && typeof document !== "undefined";
 
+// Binding tests run against the published bundle, the one users get from npm:
+//  - Node ("node" vitest project): dist/index-node.mjs
+//  - Browser ("browser" vitest project, Chromium): dist/index.js
+// test/global-setup.mjs rebuilds dist/ before the run.
 export const BUILDS = IS_BROWSER
-  ? [
-      { name: "src", load: () => import("../src/index.js") },
-      { name: "dist", load: () => import("../dist/index.js") },
-    ]
-  : [
-      { name: "src", load: () => import("../src/index-node.mjs") },
-      { name: "dist", load: () => import("../dist/index-node.mjs") },
-    ];
+  ? [{ name: "dist", load: () => import("../dist/index.js") }]
+  : [{ name: "dist", load: () => import("../dist/index-node.mjs") }];
 
 export async function loadAvoid(build) {
   const { AvoidLib } = await build.load();
@@ -30,14 +19,48 @@ export async function loadAvoid(build) {
   return AvoidLib.getInstance();
 }
 
-/** Converts an Avoid Polygon / PolyLine into a plain array of [x, y]. */
-export function toPoints(polygon) {
-  const points = [];
-  for (let i = 0; i < polygon.size(); i++) {
-    const p = polygon.at(i);
-    points.push([p.x, p.y]);
-  }
-  return points;
+/**
+ * `it` for binding tests of one build, with per-test fixtures:
+ *
+ * - `Avoid`: the loaded module.
+ * - `newRouter(flags = Avoid.RouterFlag.PolyLineRouting)`: `new
+ *   Avoid.Router(flags)`, taking the same flags as the public API. Every
+ *   router a test creates is deleted after the test, also when an assertion
+ *   fails.
+ *
+ * Nothing is shared between tests, so they stay independent even if run
+ * concurrently. Usage:
+ *
+ *   describe.each(BUILDS)("$name build: ...", (build) => {
+ *     const it = bindingTest(build);
+ *     it("...", ({ Avoid, newRouter }) => {
+ *       const router = newRouter(Avoid.RouterFlag.OrthogonalRouting);
+ *     });
+ *   });
+ */
+export function bindingTest(build) {
+  return test.extend({
+    // eslint-disable-next-line no-empty-pattern -- Vitest requires a destructuring pattern.
+    Avoid: async ({}, use) => {
+      await use(await loadAvoid(build));
+    },
+    newRouter: async ({ Avoid }, use) => {
+      const routers = [];
+      await use((flags = Avoid.RouterFlag.PolyLineRouting) => {
+        const router = new Avoid.Router(flags);
+        routers.push(router);
+        return router;
+      });
+      for (const router of routers) {
+        if (!router.isDeleted()) router.delete();
+      }
+    },
+  });
+}
+
+/** Converts Point[] (e.g. a route or polygon) into a plain array of [x, y]. */
+export function toPoints(points) {
+  return points.map((p) => [p.x, p.y]);
 }
 
 /** Plain [x, y][] of the connector's current display route. */
@@ -59,59 +82,29 @@ export function isOrthogonal(points) {
   );
 }
 
+/** A RectLike for addShape/moveShape from two corners, plus its bounds. */
+export function makeRect(minX, minY, maxX, maxY) {
+  return {
+    rect: { x: minX, y: minY, width: maxX - minX, height: maxY - minY },
+    bounds: { minX, minY, maxX, maxY },
+  };
+}
+
 /**
- * True if the segment passes through the open interior of the axis-aligned
- * rectangle (touching the border is allowed). Liang-Barsky clipping.
+ * The highest pin class id allowed: libavoid's CONNECTIONPIN_CENTRE
+ * (INT_MAX - 1).
+ * One above it, INT_MAX, is CONNECTIONPIN_UNSET and is rejected.
  */
-export function segmentCrossesRectInterior([[x1, y1], [x2, y2]], rect) {
-  const { minX, minY, maxX, maxY } = rect;
-  const eps = 1e-9;
-  const dx = x2 - x1;
-  const dy = y2 - y1;
-  let t0 = 0;
-  let t1 = 1;
-  const clips = [
-    [-dx, x1 - (minX + eps)],
-    [dx, maxX - eps - x1],
-    [-dy, y1 - (minY + eps)],
-    [dy, maxY - eps - y1],
-  ];
-  for (const [p, q] of clips) {
-    if (p === 0) {
-      if (q < 0) return false;
-    } else {
-      const t = q / p;
-      if (p < 0) t0 = Math.max(t0, t);
-      else t1 = Math.min(t1, t);
-      if (t0 > t1) return false;
-    }
-  }
-  return true;
-}
+export const MAX_PIN_CLASS_ID = 2 ** 31 - 2;
 
-export function routeCrossesRect(points, rect) {
-  return segmentsOf(points).some((s) => segmentCrossesRectInterior(s, rect));
-}
-
-/** Smallest distance from any point of an axis-aligned segment to a rect. */
-export function orthogonalSegmentDistanceToRect([[x1, y1], [x2, y2]], rect) {
-  const gap = (lo, hi, rMin, rMax) =>
-    Math.max(0, rMin - hi, lo - rMax);
-  const dx = gap(Math.min(x1, x2), Math.max(x1, x2), rect.minX, rect.maxX);
-  const dy = gap(Math.min(y1, y2), Math.max(y1, y2), rect.minY, rect.maxY);
-  return Math.hypot(dx, dy);
-}
-
-/** Creates an Avoid.Rectangle and returns it with its plain bounds. */
-export function makeRect(Avoid, minX, minY, maxX, maxY) {
-  const poly = new Avoid.Rectangle(
-    new Avoid.Point(minX, minY),
-    new Avoid.Point(maxX, maxY),
-  );
-  return { poly, bounds: { minX, minY, maxX, maxY } };
-}
-
-export function pointEnd(Avoid, x, y) {
-  return new Avoid.ConnEnd(new Avoid.Point(x, y));
-}
-
+/**
+ * Invalid `AddOptions`, the `options` argument of addShape, addJunction and
+ * addConnector, as `[name, options, ErrorType]` rows for `it.for`. Each method
+ * runs the table in its own test.
+ */
+export const INVALID_ADD_OPTIONS = [
+  ["a negative id", { id: -1 }, RangeError],
+  ["a fractional id", { id: 1.5 }, RangeError],
+  ["an id above 2^32 - 1", { id: 2 ** 32 }, RangeError],
+  ["options that are not an object", 42, TypeError],
+];

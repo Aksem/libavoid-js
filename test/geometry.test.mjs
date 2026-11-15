@@ -1,127 +1,86 @@
-import { describe, expect, it } from "vitest";
-import { BUILDS, loadAvoid, toPoints } from "./helpers.mjs";
+// Geometry that goes through wasm: shape polygons, routingBox and the polygon
+// utilities. The pure-JS Point / Rect classes are covered by
+// geometry-values.test.mjs.
+import { describe, expect } from "vitest";
+import { BUILDS, bindingTest, makeRect, toPoints } from "./helpers.mjs";
 
 const sortPoints = (points) => [...points].sort(([ax, ay], [bx, by]) => ax - bx || ay - by);
+const TRIANGLE = [{ x: 0, y: 0 }, { x: 10, y: 2 }, { x: 4, y: 8 }];
 
-describe.each(BUILDS)("$name build: geometry types", (build) => {
-  it("Point: constructors, properties and equality", async () => {
-    const Avoid = await loadAvoid(build);
-    const origin = new Avoid.Point();
-    const p = new Avoid.Point(1.5, -2.25);
-    expect([p.x, p.y]).toEqual([1.5, -2.25]);
+describe.each(BUILDS)("$name build: geometry", (build) => {
+  const it = bindingTest(build);
 
-    p.x = 10;
-    p.y = 20;
-    expect([p.x, p.y]).toEqual([10, 20]);
-
-    expect(p.equal(new Avoid.Point(10, 20))).toBe(true);
-    expect(p.equal(new Avoid.Point(10, 21))).toBe(false);
-    expect(origin.equal(new Avoid.Point(0, 0))).toBe(true);
-
-    p.delete();
-    origin.delete();
-    expect(p.isDeleted()).toBe(true);
+  it("a rect shape's polygon starts at the top-right corner, clockwise", ({ Avoid, newRouter }) => {
+    const router = newRouter(Avoid.RouterFlag.OrthogonalRouting);
+    const shape = router.addShape({ x: 100, y: 100, width: 20, height: 10 });
+    const polygon = shape.polygon();
+    expect(polygon[0]).toBeInstanceOf(Avoid.Point);
+    expect(toPoints(polygon)).toEqual([[120, 100], [120, 110], [100, 110], [100, 100]]);
+    expect(shape.position()).toEqual(new Avoid.Point(110, 105));
   });
 
-  it("Polygon: size, setPoint, at and ps", async () => {
-    const Avoid = await loadAvoid(build);
-    const poly = new Avoid.Polygon(3);
-    expect(poly.size()).toBe(3);
-    expect(poly.empty()).toBe(false);
-
-    poly.setPoint(0, new Avoid.Point(1, 1));
-    poly.setPoint(1, new Avoid.Point(2.5, 1.5));
-    poly.setPoint(2, new Avoid.Point(1.5, 2.5));
-    expect(toPoints(poly)).toEqual([[1, 1], [2.5, 1.5], [1.5, 2.5]]);
-
-    const ps = poly.ps;
-    expect(ps.size()).toBe(3);
-    expect([ps.get(1).x, ps.get(1).y]).toEqual([2.5, 1.5]);
-    ps.delete();
-
-    expect(new Avoid.Polygon().empty()).toBe(true);
-    poly.delete();
+  it("a negative size spans the same rectangle (libavoid normalises the corners)", ({ newRouter }) => {
+    const shape = newRouter().addShape({ x: 30, y: 40, width: -20, height: -35 });
+    expect(sortPoints(toPoints(shape.polygon()))).toEqual([[10, 5], [10, 40], [30, 5], [30, 40]]);
   });
 
-  it("PointVector: is the type of ps and can replace a polygon's points", async () => {
-    const Avoid = await loadAvoid(build);
-    const poly = new Avoid.Polygon(1);
-    const current = poly.ps;
-    expect(current).toBeInstanceOf(Avoid.PointVector);
-    current.delete();
-
-    const vec = new Avoid.PointVector();
-    vec.push_back(new Avoid.Point(3, 4));
-    vec.push_back(new Avoid.Point(5, 6));
-    poly.ps = vec;
-    expect(toPoints(poly)).toEqual([[3, 4], [5, 6]]);
-
-    vec.delete();
-    poly.delete();
+  it("a polygon shape keeps its points in order", ({ Avoid, newRouter }) => {
+    const router = newRouter();
+    const shape = router.addShape(TRIANGLE);
+    expect(shape.polygon()).toEqual(TRIANGLE.map(({ x, y }) => new Avoid.Point(x, y)));
   });
 
-  it("Rectangle from two corners", async () => {
-    const Avoid = await loadAvoid(build);
-    // Corners given in "wrong" order: libavoid normalises them.
-    const rect = new Avoid.Rectangle(new Avoid.Point(10, 40), new Avoid.Point(30, 5));
-    expect(rect.size()).toBe(4);
-    expect(sortPoints(toPoints(rect))).toEqual([[10, 5], [10, 40], [30, 5], [30, 40]]);
-    rect.delete();
+  it("shape.routingBox(): shape bounds grown by shapeBufferDistance, as a Rect", ({ Avoid, newRouter }) => {
+    // Catches the {min, max} box converted as if it were (x, y, width, height).
+    const router = newRouter(Avoid.RouterFlag.OrthogonalRouting);
+    router.setRoutingParameter(Avoid.RoutingParameter.shapeBufferDistance, 5);
+    const shape = router.addShape(makeRect(40, -10, 60, 20).rect);
+
+    const box = shape.routingBox();
+    expect(box).toBeInstanceOf(Avoid.Rect);
+    expect(box).toEqual(new Avoid.Rect(35, -15, 30, 40));
+    expect([box.right, box.bottom]).toEqual([65, 25]);
   });
 
-  it("Rectangle from centre, width and height", async () => {
-    const Avoid = await loadAvoid(build);
-    const rect = new Avoid.Rectangle(new Avoid.Point(50, 50), 20, 10);
-    expect(sortPoints(toPoints(rect))).toEqual([[40, 45], [40, 55], [60, 45], [60, 55]]);
-    rect.delete();
+  it("junction.routingBox(): a Rect centred on the junction", ({ Avoid, newRouter }) => {
+    const router = newRouter(Avoid.RouterFlag.OrthogonalRouting);
+    const junction = router.addJunction({ x: 30, y: 70 });
+
+    // The box size is libavoid's; only its type and centre come from the binding.
+    const box = junction.routingBox();
+    expect(box).toBeInstanceOf(Avoid.Rect);
+    expect([box.x + box.width / 2, box.y + box.height / 2]).toEqual([30, 70]);
   });
 
-  it("PolygonInterface helpers return polygons", async () => {
-    const Avoid = await loadAvoid(build);
-    const tri = new Avoid.Polygon(3);
-    tri.setPoint(0, new Avoid.Point(0, 0));
-    tri.setPoint(1, new Avoid.Point(10, 2));
-    tri.setPoint(2, new Avoid.Point(4, 8));
-
-    const bbox = tri.boundingRectPolygon();
+  it("boundingRectPolygon", ({ Avoid }) => {
+    const bbox = Avoid.boundingRectPolygon(TRIANGLE);
+    expect(bbox[0]).toBeInstanceOf(Avoid.Point);
     expect(sortPoints(toPoints(bbox))).toEqual([[0, 0], [0, 8], [10, 0], [10, 8]]);
-
-    for (const p of [tri, bbox]) p.delete();
   });
 
-  it("offsetBoundingBox returns a Box grown by the offset", async () => {
-    const Avoid = await loadAvoid(build);
-    const tri = new Avoid.Polygon(3);
-    tri.setPoint(0, new Avoid.Point(0, 0));
-    tri.setPoint(1, new Avoid.Point(10, 2));
-    tri.setPoint(2, new Avoid.Point(4, 8));
-
-    const box = tri.offsetBoundingBox(1);
-    expect(box).toBeInstanceOf(Avoid.Box);
-    const [min, max] = [box.min, box.max];
-    expect([min.x, min.y, max.x, max.y]).toEqual([-1, -1, 11, 9]);
-    expect([box.width(), box.height()]).toEqual([12, 10]);
-    expect([box.length(0), box.length(1)]).toEqual([12, 10]);
-
-    const unpadded = tri.offsetBoundingBox(0);
-    expect([unpadded.width(), unpadded.height()]).toEqual([10, 8]);
-
-    for (const o of [tri, box, min, max, unpadded]) o.delete();
+  it("offsetBoundingBox returns a Rect grown by the offset", ({ Avoid }) => {
+    const box = Avoid.offsetBoundingBox(TRIANGLE, 1);
+    expect(box).toBeInstanceOf(Avoid.Rect);
+    expect(box).toEqual(new Avoid.Rect(-1, -1, 12, 10));
+    expect([box.right, box.bottom]).toEqual([11, 9]);
+    expect(Avoid.offsetBoundingBox(TRIANGLE, 0)).toEqual(new Avoid.Rect(0, 0, 10, 8));
   });
 
-  it("Box: construct and assign corners", async () => {
-    const Avoid = await loadAvoid(build);
-    const box = new Avoid.Box();
-    const [tl, br] = [new Avoid.Point(2, 3), new Avoid.Point(7, 13)];
-    box.min = tl;
-    box.max = br;
-    expect([box.width(), box.height()]).toEqual([5, 10]);
+  it("offsetPolygon grows a polygon", ({ Avoid }) => {
+    const square = [{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }, { x: 0, y: 10 }];
+    expect(Avoid.offsetPolygon(square, 0)).toEqual(square.map(({ x, y }) => new Avoid.Point(x, y)));
+    const grown = Avoid.offsetPolygon(square, 2);
+    expect(grown.length).toBeGreaterThanOrEqual(4);
+    const box = Avoid.offsetBoundingBox(grown, 0);
+    // libavoid offsets outwards for its winding order; either way the size changes by 2 * 2.
+    expect(Math.abs(box.width - 10)).toBeCloseTo(4);
+    expect(Math.abs(box.height - 10)).toBeCloseTo(4);
+  });
 
-    // The getter returns a copy, so mutating it leaves the box unchanged.
-    const minCopy = box.min;
-    minCopy.x = 100;
-    expect(box.width()).toBe(5);
-
-    for (const o of [box, tl, br, minCopy]) o.delete();
+  it("polygon utilities reject an empty point list", ({ Avoid }) => {
+    expect(() => Avoid.offsetBoundingBox([], 0)).toThrow(/offsetBoundingBox: expected at least 1 point, got 0/);
+    expect(() => Avoid.boundingRectPolygon([])).toThrow(RangeError);
+    expect(() => Avoid.offsetPolygon([], 1)).toThrow(RangeError);
+    expect(() => Avoid.offsetPolygon(TRIANGLE, NaN)).toThrow(/offset must be a finite number/);
   });
 });

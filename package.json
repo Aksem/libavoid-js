@@ -2,6 +2,7 @@
   "name": "libavoid-js",
   "version": "0.5.0-beta.5",
   "description": "JS port of libavoid library",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
@@ -17,7 +18,7 @@
     "typings/"
   ],
   "scripts": {
-    "build": "node build.js",
+    "build": "node build.cjs",
     "full-rebuild": "python tools/generate.py && npm run build",
     "api-docs": "typedoc",
     "test": "vitest run",

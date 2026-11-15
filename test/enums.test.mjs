@@ -1,41 +1,16 @@
-// Enums are exposed as plain numbers (embind enum_value_type::number). Their
-// values must match the C++ definitions in libavoid (router.h, connector.h,
-// connend.h), because users and serialized data rely on them.
-import { describe, expect, it } from "vitest";
-import { BUILDS, loadAvoid, makeRect, pointEnd, routeOf } from "./helpers.mjs";
+// Enums are exposed as plain objects of numbers. embind/bindings.cpp binds
+// each name directly to its C++ constant, so the values cannot drift from
+// libavoid by themselves. The snapshot below still pins them because it
+// catches:
+//  - a name bound to the wrong constant (a copy-paste slip in bindings.cpp),
+//  - keys that are missing, extra or misspelt compared to typings/libavoid.d.ts,
+//  - values changed upstream when libavoid is updated. Users may pass or store
+//    the plain numbers, so that is a breaking change: update the snapshot with
+//    `vitest -u` only together with a CHANGELOG entry.
+import { describe, expect } from "vitest";
+import { BUILDS, bindingTest, makeRect, routeOf } from "./helpers.mjs";
 
-const EXPECTED = {
-  RouterFlag: { PolyLineRouting: 1, OrthogonalRouting: 2 },
-  ConnType: { ConnType_None: 0, ConnType_PolyLine: 1, ConnType_Orthogonal: 2 },
-  ConnDirFlag: {
-    ConnDirNone: 0,
-    ConnDirUp: 1,
-    ConnDirDown: 2,
-    ConnDirLeft: 4,
-    ConnDirRight: 8,
-    ConnDirAll: 15,
-  },
-  RoutingParameter: {
-    segmentPenalty: 0,
-    anglePenalty: 1,
-    crossingPenalty: 2,
-    clusterCrossingPenalty: 3,
-    fixedSharedPathPenalty: 4,
-    portDirectionPenalty: 5,
-    shapeBufferDistance: 6,
-    idealNudgingDistance: 7,
-    reverseDirectionPenalty: 8,
-  },
-  RoutingOption: {
-    nudgeOrthogonalSegmentsConnectedToShapes: 0,
-    improveHyperedgeRoutesMovingJunctions: 1,
-    penaliseOrthogonalSharedPathsAtConnEnds: 2,
-    nudgeOrthogonalTouchingColinearSegments: 3,
-    performUnifyingNudgingPreprocessingStep: 4,
-    improveHyperedgeRoutesMovingAddingAndDeletingJunctions: 5,
-    nudgeSharedPathsWithCommonEndPoint: 6,
-  },
-};
+const ENUM_NAMES = ["RouterFlag", "ConnType", "ConnDirFlag", "RoutingParameter", "RoutingOption"];
 
 // Values that are not numbers at all: rejected with a TypeError.
 const NOT_NUMBERS = [
@@ -47,128 +22,142 @@ const NOT_NUMBERS = [
 ];
 
 describe.each(BUILDS)("$name build: enums", (build) => {
-  it.each(Object.entries(EXPECTED))("%s is a plain object of the C++ values", async (enumName, values) => {
-    const Avoid = await loadAvoid(build);
-    expect({ ...Avoid[enumName] }).toEqual(values);
+  const it = bindingTest(build);
+
+  it("enum names and values are unchanged", ({ Avoid }) => {
+    const enums = Object.fromEntries(ENUM_NAMES.map((name) => [name, { ...Avoid[name] }]));
+    expect(enums).toMatchInlineSnapshot(`
+      {
+        "ConnDirFlag": {
+          "ConnDirAll": 15,
+          "ConnDirDown": 2,
+          "ConnDirLeft": 4,
+          "ConnDirNone": 0,
+          "ConnDirRight": 8,
+          "ConnDirUp": 1,
+        },
+        "ConnType": {
+          "ConnType_None": 0,
+          "ConnType_Orthogonal": 2,
+          "ConnType_PolyLine": 1,
+        },
+        "RouterFlag": {
+          "OrthogonalRouting": 2,
+          "PolyLineRouting": 1,
+        },
+        "RoutingOption": {
+          "improveHyperedgeRoutesMovingAddingAndDeletingJunctions": 5,
+          "improveHyperedgeRoutesMovingJunctions": 1,
+          "nudgeOrthogonalSegmentsConnectedToShapes": 0,
+          "nudgeOrthogonalTouchingColinearSegments": 3,
+          "nudgeSharedPathsWithCommonEndPoint": 6,
+          "penaliseOrthogonalSharedPathsAtConnEnds": 2,
+          "performUnifyingNudgingPreprocessingStep": 4,
+        },
+        "RoutingParameter": {
+          "anglePenalty": 1,
+          "clusterCrossingPenalty": 3,
+          "crossingPenalty": 2,
+          "fixedSharedPathPenalty": 4,
+          "idealNudgingDistance": 7,
+          "portDirectionPenalty": 5,
+          "reverseDirectionPenalty": 8,
+          "segmentPenalty": 0,
+          "shapeBufferDistance": 6,
+        },
+      }
+    `);
   });
 
-  it("RouterFlag values combine with |", async () => {
-    const Avoid = await loadAvoid(build);
+  it("RouterFlag values combine with |", ({ Avoid, newRouter }) => {
     const { PolyLineRouting, OrthogonalRouting } = Avoid.RouterFlag;
-    const router = new Avoid.Router(PolyLineRouting | OrthogonalRouting);
-    const conn = new Avoid.ConnRef(router, pointEnd(Avoid, 0, 0), pointEnd(Avoid, 100, 50));
+    const router = newRouter(PolyLineRouting | OrthogonalRouting);
+    const conn = router.addConnector({ x: 0, y: 0 }, { x: 100, y: 50 });
     conn.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
     router.processTransaction();
     expect(routeOf(conn).length).toBeGreaterThan(2);
-    router.delete();
   });
 
-  it("routingType() returns a plain number", async () => {
-    const Avoid = await loadAvoid(build);
-    const router = new Avoid.Router(Avoid.RouterFlag.PolyLineRouting);
-    const conn = new Avoid.ConnRef(router, pointEnd(Avoid, 0, 0), pointEnd(Avoid, 1, 1));
+  it("routingType() returns a plain number", ({ Avoid, newRouter }) => {
+    const router = newRouter(Avoid.RouterFlag.PolyLineRouting);
+    const conn = router.addConnector({ x: 0, y: 0 }, { x: 1, y: 1 });
     expect(conn.routingType()).toBe(Avoid.ConnType.ConnType_PolyLine);
     expect(conn.routingType()).toBe(1);
-    router.delete();
   });
 
-  it("setRoutingParameter applies the value to the given parameter", async () => {
+  it("setRoutingParameter applies the value to the given parameter", ({ Avoid, newRouter }) => {
     // routingBox() = shape bounds grown by shapeBufferDistance, so it shows
     // which parameter was set (a wrong conversion to 0 would set segmentPenalty).
-    const Avoid = await loadAvoid(build);
-    const router = new Avoid.Router(Avoid.RouterFlag.OrthogonalRouting);
-    const rect = makeRect(Avoid, 0, 0, 20, 10).poly;
-    const shape = new Avoid.ShapeRef(router, rect);
-    rect.delete();
-    const widthWithBuffer = (buffer) => {
-      router.setRoutingParameter(Avoid.RoutingParameter.shapeBufferDistance, buffer);
-      const box = shape.routingBox();
-      const width = box.width();
-      box.delete();
-      return width;
-    };
-    expect(widthWithBuffer(7)).toBe(34);
+    const router = newRouter(Avoid.RouterFlag.OrthogonalRouting);
+    const shape = router.addShape(makeRect(0, 0, 20, 10).rect);
+    router.setRoutingParameter(Avoid.RoutingParameter.shapeBufferDistance, 7);
+    expect(shape.routingBox().width).toBe(34);
 
     // The literal number is equivalent to the enum key.
     router.setRoutingParameter(6, 3);
-    const box = shape.routingBox();
-    expect(box.width()).toBe(26);
-    box.delete();
-    router.delete();
+    expect(shape.routingBox().width).toBe(26);
   });
 
   describe("invalid enum arguments throw instead of being converted to 0", () => {
-    const withRouter = async (fn) => {
-      const Avoid = await loadAvoid(build);
-      const router = new Avoid.Router(Avoid.RouterFlag.OrthogonalRouting);
-      const conn = new Avoid.ConnRef(router, pointEnd(Avoid, 0, 0), pointEnd(Avoid, 1, 1));
-      try {
-        fn(Avoid, router, conn);
-      } finally {
-        router.delete();
-      }
+    const setUp = ({ Avoid, newRouter }) => {
+      const router = newRouter(Avoid.RouterFlag.OrthogonalRouting);
+      return { router, conn: router.addConnector({ x: 0, y: 0 }, { x: 1, y: 1 }) };
     };
 
-    it.each(NOT_NUMBERS)("TypeError for %s", async (_label, arg) => {
-      await withRouter((Avoid, router, conn) => {
-        expect(() => router.setRoutingParameter(arg, 4)).toThrow(TypeError);
-        expect(() => router.setRoutingOption(arg, true)).toThrow(TypeError);
-        expect(() => conn.setRoutingType(arg)).toThrow(TypeError);
-      });
+    it.for(NOT_NUMBERS)("TypeError for %s", ([, arg], { Avoid, newRouter }) => {
+      const { router, conn } = setUp({ Avoid, newRouter });
+      expect(() => router.setRoutingParameter(arg, 4)).toThrow(TypeError);
+      expect(() => router.setRoutingOption(arg, true)).toThrow(TypeError);
+      expect(() => conn.setRoutingType(arg)).toThrow(TypeError);
     });
 
-    it("the TypeError names the enum", async () => {
-      await withRouter((Avoid, router) => {
-        expect(() => router.setRoutingParameter(Avoid.RoutingParameter.shapeBuferDistance, 4)).toThrow(
-          /RoutingParameter must be a number.*got undefined/,
-        );
-      });
+    it("the TypeError names the enum", ({ Avoid, newRouter }) => {
+      const { router } = setUp({ Avoid, newRouter });
+      expect(() => router.setRoutingParameter(Avoid.RoutingParameter.shapeBuferDistance, 4)).toThrow(
+        /RoutingParameter must be a number.*got undefined/,
+      );
     });
 
-    it.each([
+    it("rejects a non-finite parameter value", ({ Avoid, newRouter }) => {
+      const { router } = setUp({ Avoid, newRouter });
+      const { shapeBufferDistance } = Avoid.RoutingParameter;
+      expect(() => router.setRoutingParameter(shapeBufferDistance, NaN)).toThrow(
+        /Router.setRoutingParameter: value must be a finite number, got NaN/,
+      );
+      expect(() => router.setRoutingParameter(shapeBufferDistance, undefined)).toThrow(TypeError);
+    });
+
+    it.for([
       ["negative", -1],
       ["one past the last value", undefined],
       ["not an integer", 1.5],
       ["NaN", NaN],
       ["Infinity", Infinity],
-    ])("RangeError for a number that is %s", async (label, arg) => {
-      await withRouter((Avoid, router, conn) => {
-        const pastLast = (e) => Math.max(...Object.values(e)) + 1;
-        const value = (e) => (arg === undefined ? pastLast(e) : arg);
-        expect(() => router.setRoutingParameter(value(Avoid.RoutingParameter), 4)).toThrow(RangeError);
-        expect(() => router.setRoutingOption(value(Avoid.RoutingOption), true)).toThrow(RangeError);
-        expect(() => conn.setRoutingType(value(Avoid.ConnType))).toThrow(RangeError);
-      });
+    ])("RangeError for a number that is %s", ([, arg], { Avoid, newRouter }) => {
+      const { router, conn } = setUp({ Avoid, newRouter });
+      const pastLast = (e) => Math.max(...Object.values(e)) + 1;
+      const value = (e) => (arg === undefined ? pastLast(e) : arg);
+      expect(() => router.setRoutingParameter(value(Avoid.RoutingParameter), 4)).toThrow(RangeError);
+      expect(() => router.setRoutingOption(value(Avoid.RoutingOption), true)).toThrow(RangeError);
+      expect(() => conn.setRoutingType(value(Avoid.ConnType))).toThrow(RangeError);
     });
 
-    it("a rejected call changes nothing and the module keeps working", async () => {
-      const Avoid = await loadAvoid(build);
-      const router = new Avoid.Router(Avoid.RouterFlag.OrthogonalRouting);
-      router.setRoutingParameter(Avoid.RoutingParameter.shapeBufferDistance, 5);
-      const rect = makeRect(Avoid, 40, -10, 60, 10).poly;
-      const shape = new Avoid.ShapeRef(router, rect);
-      rect.delete();
-      const conn = new Avoid.ConnRef(router, pointEnd(Avoid, 0, 0), pointEnd(Avoid, 100, 0));
+    it("a rejected call leaves the previous value in place", ({ Avoid, newRouter }) => {
+      // libavoid turns an unknown ConnType into the router's default, which is
+      // ConnType_PolyLine with both flags, so a 3 that reached it would show
+      // in routingType().
+      const router = newRouter(Avoid.RouterFlag.PolyLineRouting | Avoid.RouterFlag.OrthogonalRouting);
+      const { shapeBufferDistance } = Avoid.RoutingParameter;
+      router.setRoutingParameter(shapeBufferDistance, 5);
+      const shape = router.addShape(makeRect(40, -10, 60, 10).rect);
+      const conn = router.addConnector({ x: 0, y: 0 }, { x: 100, y: 0 });
       conn.setRoutingType(Avoid.ConnType.ConnType_Orthogonal);
 
-      expect(() => router.setRoutingParameter(9, 100)).toThrow(RangeError);
-      expect(() => router.setRoutingParameter(undefined, 100)).toThrow(TypeError);
+      expect(() => router.setRoutingParameter(shapeBufferDistance, NaN)).toThrow(TypeError);
       expect(() => conn.setRoutingType(3)).toThrow(RangeError);
 
-      const box = shape.routingBox();
-      expect(box.width()).toBe(30);
-      box.delete();
+      expect(shape.routingBox().width).toBe(30);
       expect(conn.routingType()).toBe(Avoid.ConnType.ConnType_Orthogonal);
-      router.processTransaction();
-      expect(routeOf(conn).length).toBeGreaterThan(2);
-      router.delete();
-
-      // A fresh router still works too.
-      const other = new Avoid.Router(Avoid.RouterFlag.PolyLineRouting);
-      const c = new Avoid.ConnRef(other, pointEnd(Avoid, 0, 0), pointEnd(Avoid, 10, 0));
-      other.processTransaction();
-      expect(routeOf(c)).toEqual([[0, 0], [10, 0]]);
-      other.delete();
     });
   });
 });

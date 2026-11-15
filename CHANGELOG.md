@@ -22,8 +22,8 @@ every old call to the new one.
   - Inputs are any `{x, y}` / `{x, y, width, height}` objects and arrays of
     points. Rectangles are given by their **top-left corner** and size, not
     libavoid's centre.
-  - Outputs are the new `Point` and `Rect` classes, also exported from the
-    package. They have no `.delete()`.
+  - Outputs are the new `Avoid.Point` and `Avoid.Rect` classes. They have no
+    `.delete()`.
   - `Box` is replaced by `Rect`: `x`/`y`/`width`/`height` fields instead of
     `min`/`max` and `width()`/`height()`/`length()`.
 - **Removed:** `Avoid.Polygon`, `Rectangle`, `PolygonInterface`, `ConnEnd`,
@@ -86,3 +86,5 @@ restrictions that aborted the module now throw:
   created. Routing itself is unchanged.
 - TypeScript typings for the whole API, checked by tests against the runtime.
 - API documentation is generated from the typings with TypeDoc.
+- `package.json` declares `"type": "module"`, so Node treats `dist/index.js`
+  as the ES module it is.

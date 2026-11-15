@@ -19,7 +19,7 @@ suggest a feature or ask a question in [GitHub Issues](https://github.com/Aksem/
 
 2. If you want only to rebuild JS package without regenerating bindings, you can use the following command: `npm run build`
 
-3. `npm test` runs the tests in Node and Chromium (run `npm run build` first, the tests also cover `dist`).
+3. `npm test` runs the tests in Node and Chromium. They run against `dist`, so they rebuild it first. How to write tests: [docs/dev/testing.md](docs/dev/testing.md).
 
 4. `npm run leakcheck` checks for memory leaks: it builds an AddressSanitizer variant of the module, runs the scenarios in `tools/leakcheck/scenarios.mjs` through the public API with LeakSanitizer, and checks with forced garbage collection that the JS side releases callbacks and handles. Also runs in CI.
 

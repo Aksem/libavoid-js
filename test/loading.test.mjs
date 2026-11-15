@@ -1,88 +1,61 @@
+// The loader contract of the published bundle: `AvoidLib.load(path?)` and
+// `AvoidLib.getInstance()`. Loading with the default path is covered by every
+// binding test; the classes and enums the module exposes are covered by
+// surface.test.mjs and enums.test.mjs.
 import { describe, expect, it, vi } from "vitest";
-import { createAvoidLibObj } from "../src/common.js";
-import { BUILDS, IS_BROWSER, loadAvoid } from "./helpers.mjs";
+import { IS_BROWSER } from "./helpers.mjs";
 
-// Raw emscripten glue: the web build in the browser, the node-only build in Node.
-const initAvoidSrc = (
-  IS_BROWSER ? await import("../src/generated/libavoid.js") : await import("../src/generated/libavoid.mjs")
-).default;
+// Literal `new URL("...", import.meta.url)`: in the browser, Vite rewrites only
+// literal specifiers to URLs its dev server serves.
+const DIST_ENTRY = IS_BROWSER
+  ? new URL("../dist/index.js", import.meta.url)
+  : new URL("../dist/index-node.mjs", import.meta.url);
 
-const EXPECTED_CLASSES = [
-  "Box",
-  "Checkpoint",
-  "CheckpointVector",
-  "ConnEnd",
-  "ConnRef",
-  "JunctionRef",
-  "Obstacle",
-  "Point",
-  "PointVector",
-  "Polygon",
-  "PolygonInterface",
-  "Rectangle",
-  "Router",
-  "ShapeConnectionPin",
-  "ShapeRef",
-];
+// AvoidLib is a singleton per module instance. A unique query string makes the
+// module loader evaluate the bundle again, so each test gets an unloaded AvoidLib.
+let instanceCount = 0;
+async function freshAvoidLib() {
+  instanceCount += 1;
+  const { AvoidLib } = await import(/* @vite-ignore */ `${DIST_ENTRY.href}?instance=${instanceCount}`);
+  return AvoidLib;
+}
 
-const EXPECTED_ENUMS = ["ConnType", "RouterFlag", "RoutingOption", "RoutingParameter"];
+// Node reads the wasm from a file path, the browser fetches it from a URL.
+async function toLoadPath(url) {
+  return IS_BROWSER ? url.href : (await import("node:url")).fileURLToPath(url);
+}
 
-describe("createAvoidLibObj", () => {
-  it("throws from getInstance() before load()", () => {
-    const lib = createAvoidLibObj(async () => ({}));
-    expect(() => lib.getInstance()).toThrow(/initialized before using/);
+describe("AvoidLib", () => {
+  it("getInstance() throws before load()", async () => {
+    const AvoidLib = await freshAvoidLib();
+    expect(() => AvoidLib.getInstance()).toThrow(/initialized before using/);
   });
 
-  it("initialises only once", async () => {
-    const init = vi.fn(async () => ({ marker: true }));
-    const lib = createAvoidLibObj(init);
+  it("a second load() keeps the first instance", async () => {
+    const AvoidLib = await freshAvoidLib();
     const log = vi.spyOn(console, "log").mockImplementation(() => {});
-    await lib.load();
-    const first = lib.getInstance();
-    await lib.load();
-    expect(init).toHaveBeenCalledTimes(1);
-    expect(lib.getInstance()).toBe(first);
+    await AvoidLib.load();
+    const first = AvoidLib.getInstance();
+    await AvoidLib.load();
+    expect(AvoidLib.getInstance()).toBe(first);
     log.mockRestore();
   });
 
-  it("redirects only the .wasm file to an explicit path", async () => {
-    let locateFile;
-    const lib = createAvoidLibObj(async (moduleArg) => {
-      locateFile = moduleArg.locateFile;
-      return {};
-    });
-    await lib.load("/custom/location/libavoid.wasm");
-    expect(locateFile("libavoid.wasm", "/prefix/")).toBe("/custom/location/libavoid.wasm");
-    expect(locateFile("other.data", "/prefix/")).toBe("/prefix/other.data");
-  });
-
-  it("loads the real wasm from an explicit path", async () => {
-    // Node reads the wasm from a file path, the browser fetches it from a URL.
-    const wasmUrl = new URL("../dist/libavoid.wasm", import.meta.url);
-    const wasmPath = IS_BROWSER ? wasmUrl.href : (await import("node:url")).fileURLToPath(wasmUrl);
-    const lib = createAvoidLibObj(initAvoidSrc);
-    await lib.load(wasmPath);
-    const Avoid = lib.getInstance();
-    const p = new Avoid.Point(1, 2);
-    expect(p.x).toBe(1);
-    p.delete();
-  });
-
-  it("rejects when the wasm file does not exist", async () => {
-    const lib = createAvoidLibObj(initAvoidSrc);
+  it("load(path) loads the wasm from the given path, not the default", async () => {
+    // The default dist/libavoid.wasm exists, so a successful load alone can't
+    // tell which file was used. A missing file at the given path must reject.
+    const missing = await freshAvoidLib();
     const err = vi.spyOn(console, "error").mockImplementation(() => {});
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-    await expect(lib.load("/does/not/exist/libavoid.wasm")).rejects.toThrow();
+    await expect(missing.load(await toLoadPath(new URL("./does-not-exist/libavoid.wasm", import.meta.url)))).rejects.toThrow();
     err.mockRestore();
     warn.mockRestore();
-  });
-});
 
-describe.each(BUILDS)("$name build", (build) => {
-  it("loads and exposes all bound classes and enums", async () => {
-    const Avoid = await loadAvoid(build);
-    for (const name of [...EXPECTED_CLASSES, ...EXPECTED_ENUMS]) {
-      expect(Avoid[name], name).toBeDefined();
-    }
+    const AvoidLib = await freshAvoidLib();
+    await AvoidLib.load(await toLoadPath(new URL("../dist/libavoid.wasm", import.meta.url)));
+    const Avoid = AvoidLib.getInstance();
+    const router = new Avoid.Router(Avoid.RouterFlag.PolyLineRouting);
+    expect(router.addShape({ x: 0, y: 0, width: 2, height: 4 }).position()).toEqual(new Avoid.Point(1, 2));
+    router.delete();
   });
 });

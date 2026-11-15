@@ -118,8 +118,7 @@ export interface RectLike {
  *
  * @remarks libavoid: `Point`, without its internal `id`/`vn` fields.
  */
-export declare class Point {
-  constructor(x: number, y: number);
+export interface Point {
   readonly x: number;
   readonly y: number;
   /**
@@ -131,6 +130,10 @@ export declare class Point {
    */
   equals(other: PointLike, epsilon?: number): boolean;
 }
+export interface PointConstructor {
+  new (x: number, y: number): Point;
+  readonly prototype: Point;
+}
 
 /**
  * An axis-aligned rectangle: top-left corner plus size, like DOMRect.
@@ -139,8 +142,7 @@ export declare class Point {
  * `right`/`bottom` to `Box.max`. `x + width` may differ from `Box.max.x` in
  * the last bit.
  */
-export declare class Rect {
-  constructor(x: number, y: number, width: number, height: number);
+export interface Rect {
   readonly x: number;
   readonly y: number;
   readonly width: number;
@@ -150,6 +152,10 @@ export declare class Rect {
   readonly top: number;
   readonly right: number;
   readonly bottom: number;
+}
+export interface RectConstructor {
+  new (x: number, y: number, width: number, height: number): Rect;
+  readonly prototype: Rect;
 }
 
 // ---------------------------------------------------------------------------
@@ -574,8 +580,8 @@ export interface Avoid {
   JunctionRef: ObstacleConstructor<JunctionRef>;
   ConnRef: HandleConstructor<ConnRef>;
   ShapeConnectionPin: HandleConstructor<ShapeConnectionPin>;
-  Point: typeof Point;
-  Rect: typeof Rect;
+  Point: PointConstructor;
+  Rect: RectConstructor;
   ConnDirFlag: ConnDirFlagEnum;
   ConnType: ConnTypeEnum;
   RouterFlag: RouterFlagEnum;
