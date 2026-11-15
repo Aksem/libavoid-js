@@ -1,3 +1,12 @@
+/**
+ * libavoid-js: object-avoiding connector routing for diagrams.
+ *
+ * @packageDocumentation
+ * @document ../docs/connectors.md
+ * @document ../docs/troubleshooting.md
+ * @document ../docs/migration-0.5.md
+ * @document ../CHANGELOG.md
+ */
 // Public API of libavoid-js. Keep in sync with src/api.js;
 // test/types.test-d.ts type-checks typical usage and test/surface.test.mjs
 // checks that every method listed here exists at runtime.
@@ -94,7 +103,8 @@ export interface PointLike {
  * Bounds, ELK node).
  *
  * @remarks libavoid: its `Rectangle(centre, width, height)` constructor takes
- * the centre; this API always takes the top-left corner.
+ * the centre; this API always takes the top-left corner. To convert a
+ * centre-based rectangle: `{ x: cx - w / 2, y: cy - h / 2, width: w, height: h }`.
  */
 export interface RectLike {
   readonly x: number;
@@ -108,8 +118,7 @@ export interface RectLike {
  *
  * @remarks libavoid: `Point`, without its internal `id`/`vn` fields.
  */
-export declare class Point {
-  constructor(x: number, y: number);
+export interface Point {
   readonly x: number;
   readonly y: number;
   /**
@@ -121,6 +130,10 @@ export declare class Point {
    */
   equals(other: PointLike, epsilon?: number): boolean;
 }
+export interface PointConstructor {
+  new (x: number, y: number): Point;
+  readonly prototype: Point;
+}
 
 /**
  * An axis-aligned rectangle: top-left corner plus size, like DOMRect.
@@ -129,8 +142,7 @@ export declare class Point {
  * `right`/`bottom` to `Box.max`. `x + width` may differ from `Box.max.x` in
  * the last bit.
  */
-export declare class Rect {
-  constructor(x: number, y: number, width: number, height: number);
+export interface Rect {
   readonly x: number;
   readonly y: number;
   readonly width: number;
@@ -141,21 +153,27 @@ export declare class Rect {
   readonly right: number;
   readonly bottom: number;
 }
+export interface RectConstructor {
+  new (x: number, y: number, width: number, height: number): Rect;
+  readonly prototype: Rect;
+}
 
 // ---------------------------------------------------------------------------
 // Handles to objects in the wasm module
 
 /**
  * Methods of every object that lives in the wasm module (router, shapes,
- * junctions, connectors, pins). Their memory is not garbage collected: free
- * it with delete() or a `using` declaration.
+ * junctions, connectors, pins). This memory is not garbage collected, but the
+ * router owns everything added to it: only the router needs delete() (or a
+ * `using` declaration), and it frees all of it.
  */
 export interface Handle {
   /**
-   * Frees the object. Shapes, junctions and connectors are removed through
+   * For the router: frees it and everything added to it. For other objects:
+   * removes the object. Shapes, junctions and connectors are removed through
    * their router, like `router.deleteShape(shape)`, with the same
-   * restrictions. A pin is removed from its shape or junction immediately.
-   * Everything the object owns is freed with it. Using the object afterwards
+   * restrictions; a pin is removed from its shape or junction immediately.
+   * Everything the object owns goes with it. Using the object afterwards
    * throws.
    */
   delete(): void;
@@ -253,9 +271,9 @@ export interface Router extends Handle {
   /** Moves the shape by `dx`, `dy`. Takes effect at the next processTransaction(). */
   moveShape(shape: ShapeRef, dx: number, dy: number): void;
   /**
-   * Removes the shape and its pins at the next processTransaction(). Same as
-   * `shape.delete()`. A shape cannot be removed in the transaction that added
-   * it: call processTransaction() first.
+   * Removes the shape and its pins at the next processTransaction(). A shape
+   * cannot be removed in the transaction that added it: call
+   * processTransaction() first.
    *
    * @throws Error if the shape was added in the current transaction.
    * @remarks libavoid: the restriction comes from libavoid, which asserts
@@ -277,9 +295,8 @@ export interface Router extends Handle {
   /** Moves the junction by `dx`, `dy`. Takes effect at the next processTransaction(). */
   moveJunction(junction: JunctionRef, dx: number, dy: number): void;
   /**
-   * Removes the junction and its pins at the next processTransaction(). Same
-   * as `junction.delete()`. Like a shape, a junction cannot be removed in the
-   * transaction that added it.
+   * Removes the junction and its pins at the next processTransaction(). Like
+   * a shape, a junction cannot be removed in the transaction that added it.
    *
    * @throws Error if the junction was added in the current transaction.
    */
@@ -296,7 +313,7 @@ export interface Router extends Handle {
    * `setSourceEndpoint` and `setDestEndpoint`.
    */
   addConnector(source: ConnEndLike, destination: ConnEndLike, options?: AddOptions): ConnRef;
-  /** Removes the connector. Same as `connector.delete()`. */
+  /** Removes the connector. */
   deleteConnector(connector: ConnRef): void;
 }
 export interface RouterConstructor {
@@ -490,7 +507,8 @@ export interface ConnRef extends Handle {
    */
   setRoutingType(type: ConnTypeValue): void;
   /**
-   * Stores a flag that currently has no effect on routing. To make routes
+   * Stores a flag that currently has no effect on routing(will be fixed in future
+   * versions, now it is just a part of designed public API). To make routes
    * avoid crossings, set the `crossingPenalty` routing parameter.
    *
    * @remarks libavoid: `ConnRef::setHateCrossings` stores the flag, but the
@@ -512,8 +530,8 @@ export interface ConnRef extends Handle {
 
 /**
  * A point on a shape or junction that connectors attach to. Created by
- * `shape.addPin` / `junction.addPin` and owned by that object;
- * `pin.delete()` removes it immediately.
+ * `shape.addPin` / `junction.addPin` and removed with its shape or junction.
+ * To remove a single pin, call its delete(), which takes effect immediately.
  */
 export interface ShapeConnectionPin extends Handle {
   /**
@@ -562,8 +580,8 @@ export interface Avoid {
   JunctionRef: ObstacleConstructor<JunctionRef>;
   ConnRef: HandleConstructor<ConnRef>;
   ShapeConnectionPin: HandleConstructor<ShapeConnectionPin>;
-  Point: typeof Point;
-  Rect: typeof Rect;
+  Point: PointConstructor;
+  Rect: RectConstructor;
   ConnDirFlag: ConnDirFlagEnum;
   ConnType: ConnTypeEnum;
   RouterFlag: RouterFlagEnum;

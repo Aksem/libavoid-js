@@ -3686,7 +3686,5 @@ var createAvoidLibObj = (initAvoid) => {
 // examples/debug-src/index.js
 var AvoidLib = createAvoidLibObj(libavoid_default);
 export {
-  AvoidLib,
-  Point,
-  Rect
+  AvoidLib
 };
