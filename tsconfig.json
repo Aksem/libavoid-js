@@ -1,0 +1,13 @@
+{
+  // Only used to type-check the typings and test/types.test-d.ts.
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": false,
+    "types": []
+  },
+  "include": ["typings/**/*.d.ts", "test/**/*.ts"]
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "name": "libavoid-js",
+  "entryPoints": ["typings/libavoid.d.ts"],
+  "out": "api_docs_build",
+  "readme": "README.md",
+  "excludeInternal": true,
+  "sort": ["source-order"],
+  "navigation": { "includeGroups": true },
+  "groupOrder": ["Guides", "Releases", "*"],
+  "navigationLinks": {
+    "GitHub": "https://github.com/Aksem/libavoid-js",
+    "npm": "https://www.npmjs.com/package/libavoid-js"
+  },
+  "treatWarningsAsErrors": true
+}

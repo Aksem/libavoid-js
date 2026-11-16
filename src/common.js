@@ -1,3 +1,5 @@
+import { installApi } from "./api.js";
+
 export const createAvoidLibObj = (initAvoid) => {
   return {
     avoidLib: undefined,
@@ -7,7 +9,9 @@ export const createAvoidLibObj = (initAvoid) => {
           if (filePath !== undefined && path.endsWith(".wasm")) return filePath
           return prefix + path
         }
-        this.avoidLib = await initAvoid({'locateFile' : locateFile});
+        const avoidLib = await initAvoid({'locateFile' : locateFile});
+        installApi(avoidLib);
+        this.avoidLib = avoidLib;
       } else {
         console.log("Avoid library is already initialized");
       }
