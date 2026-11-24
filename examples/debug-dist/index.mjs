@@ -63,6 +63,18 @@ async function initAvoidModule(moduleArg = {}) {
     }
     if (!(globalThis.window || globalThis.WorkerGlobalScope)) throw new Error("not compiled for this environment (did you build to HTML and try to run it not on the web, or set ENVIRONMENT to something - like node - and run it someplace else - like on the web?)");
     {
+      if (ENVIRONMENT_IS_WORKER) {
+        readBinary = (url) => {
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", url, false);
+          xhr.responseType = "arraybuffer";
+          xhr.send(null);
+          return new Uint8Array(
+            /** @type{!ArrayBuffer} */
+            xhr.response
+          );
+        };
+      }
       readAsync = async (url) => {
         assert(!isFileURI(url), "readAsync does not work with file:// URLs");
         var response = await fetch(url, { credentials: "same-origin" });
@@ -85,7 +97,6 @@ async function initAvoidModule(moduleArg = {}) {
   var JSFILEFS = "JSFILEFS is no longer included by default; build with -ljsfilefs.js";
   var OPFS = "OPFS is no longer included by default; build with -lopfs.js";
   var NODEFS = "NODEFS is no longer included by default; build with -lnodefs.js";
-  assert(!ENVIRONMENT_IS_WORKER, "worker environment detected but not enabled at build time (add `worker` to `-sENVIRONMENT` to enable)");
   assert(!ENVIRONMENT_IS_NODE, "node environment detected but not enabled at build time (add `node` to `-sENVIRONMENT` to enable)");
   assert(!ENVIRONMENT_IS_SHELL, "shell environment detected but not enabled at build time (add `shell` to `-sENVIRONMENT` to enable)");
   var wasmBinary;
