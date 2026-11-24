@@ -13,6 +13,8 @@ export default defineConfig({
         test: {
           name: "node",
           environment: "node",
+          // Tests that need a browser (Web Worker, DOM) go here.
+          exclude: ["test/browser-only/**"],
           typecheck: {
             // Type-checks typings/libavoid.d.ts via test/**/*.test-d.ts.
             enabled: true,

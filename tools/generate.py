@@ -57,7 +57,7 @@ def compiler_sources():
   return compiler_sources
 
 
-def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Literal["web"] | Literal["node"] = "web"):
+def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Literal["web,worker"] | Literal["node"] = "web,worker"):
   try:
     os.mkdir(dist_dir_name)
   except FileExistsError:

@@ -126,7 +126,17 @@ if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
 
   {
 // include: web_or_worker_shell_read.js
-readAsync = async (url) => {
+if (ENVIRONMENT_IS_WORKER) {
+    readBinary = (url) => {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url, false);
+      xhr.responseType = 'arraybuffer';
+      xhr.send(null);
+      return new Uint8Array(/** @type{!ArrayBuffer} */(xhr.response));
+    };
+  }
+
+  readAsync = async (url) => {
     assert(!isFileURI(url), "readAsync does not work with file:// URLs");
     var response = await fetch(url, { credentials: 'same-origin' });
     if (response.ok) {
@@ -156,8 +166,6 @@ var NODEFS = 'NODEFS is no longer included by default; build with -lnodefs.js';
 
 // perform assertions in shell.js after we set up out() and err(), as otherwise
 // if an assertion fails it cannot print the message
-
-assert(!ENVIRONMENT_IS_WORKER, 'worker environment detected but not enabled at build time (add `worker` to `-sENVIRONMENT` to enable)');
 
 assert(!ENVIRONMENT_IS_NODE, 'node environment detected but not enabled at build time (add `node` to `-sENVIRONMENT` to enable)');
 
