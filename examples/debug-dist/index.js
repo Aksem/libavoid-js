@@ -3673,12 +3673,10 @@ var createAvoidLibObj = (initAvoid) => {
     avoidLib: void 0,
     async load(filePath = void 0) {
       if (!this.avoidLib) {
-        let locateFile2 = function(path, prefix) {
-          if (filePath !== void 0 && path.endsWith(".wasm")) return filePath;
-          return prefix + path;
+        const moduleArg = filePath === void 0 ? {} : {
+          locateFile: (path, prefix) => path.endsWith(".wasm") ? filePath : prefix + path
         };
-        var locateFile = locateFile2;
-        const avoidLib = await initAvoid({ "locateFile": locateFile2 });
+        const avoidLib = await initAvoid(moduleArg);
         installApi(avoidLib);
         this.avoidLib = avoidLib;
       } else {

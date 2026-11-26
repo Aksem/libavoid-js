@@ -5,11 +5,17 @@ export const createAvoidLibObj = (initAvoid) => {
     avoidLib: undefined,
     async load(filePath = undefined) {
       if (!this.avoidLib) {
-        function locateFile(path, prefix) {
-          if (filePath !== undefined && path.endsWith(".wasm")) return filePath
-          return prefix + path
-        }
-        const avoidLib = await initAvoid({'locateFile' : locateFile});
+        // Pass `locateFile` only when the caller gives an explicit path.
+        // Without it, the Emscripten loader falls back to the literal
+        // `new URL("libavoid.wasm", import.meta.url)`, which bundlers
+        // recognise: they emit the .wasm as an asset
+        // and rewrite the URL to point at it. If `locateFile` is always set,
+        // that fallback never runs and the URL is built from the module's
+        // script directory instead, which breaks bundled builds
+        const moduleArg = filePath === undefined ? {} : {
+          locateFile: (path, prefix) => path.endsWith(".wasm") ? filePath : prefix + path
+        };
+        const avoidLib = await initAvoid(moduleArg);
         installApi(avoidLib);
         this.avoidLib = avoidLib;
       } else {
