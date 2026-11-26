@@ -5,7 +5,7 @@ group: Releases
 
 # Changelog
 
-## 0.5.0 (unreleased)
+## 0.5.0 (2026-11-26)
 
 0.5 is a rewrite of the bindings: embind instead of WebIDL, emsdk 7.0.0, and a
 JS/TS-native API on top. Code written for 0.4.x or the 0.5 betas needs
