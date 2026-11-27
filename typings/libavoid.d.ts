@@ -611,6 +611,45 @@ export interface Avoid {
   offsetBoundingBox(points: readonly PointLike[], offset: number): Rect;
 }
 
+/**
+ * Options for the Emscripten module, passed on by
+ * {@link AvoidLibType.load | AvoidLib.load()}. Other options of Emscripten's
+ * [`Module` object](https://emscripten.org/docs/api_reference/module.html)
+ * can be given too.
+ */
+export interface ModuleOptions {
+  /**
+   * Instantiates the wasm module in place of the default loader, which
+   * fetches or reads `libavoid.wasm` and compiles it. Use it where compiling
+   * WebAssembly from bytes is not allowed and a precompiled
+   * `WebAssembly.Module` is available, or to get the wasm from elsewhere.
+   * Instantiate it with `imports`, pass the instance to `receiveInstance`
+   * and return `{}`.
+   *
+   * @example
+   * ```js
+   * await AvoidLib.load(undefined, {
+   *   instantiateWasm(imports, receiveInstance) {
+   *     WebAssembly.instantiate(wasmModule, imports)
+   *       .then((instance) => receiveInstance(instance, wasmModule));
+   *     return {};
+   *   },
+   * });
+   * ```
+   */
+  instantiateWasm?(
+    imports: WebAssembly.Imports,
+    receiveInstance: (instance: WebAssembly.Instance, module?: WebAssembly.Module) => void,
+  ): object;
+  /**
+   * Returns the URL or path of a file the module loads (`libavoid.wasm`),
+   * from its name and the directory of the JS bundle. `filePath` of `load()`
+   * replaces it when given.
+   */
+  locateFile?(path: string, prefix: string): string;
+  [option: string]: unknown;
+}
+
 export interface AvoidLibType {
   /** The module once load() has completed, otherwise undefined. */
   avoidLib: Avoid | undefined;
@@ -618,8 +657,10 @@ export interface AvoidLibType {
    * Loads and initialises the wasm module. Call once before getInstance().
    * @param filePath URL or path of libavoid.wasm, if it is not served next to
    *   the JS bundle.
+   * @param moduleOptions Options for the Emscripten module, e.g.
+   *   `instantiateWasm` to instantiate a precompiled `WebAssembly.Module`.
    */
-  load(filePath?: string): Promise<void>;
+  load(filePath?: string, moduleOptions?: ModuleOptions): Promise<void>;
   /**
    * Returns the loaded module.
    *

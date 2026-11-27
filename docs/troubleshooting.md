@@ -23,6 +23,24 @@ HTML error page or a file mangled by a dev server. Check in the Network tab of
 the browser that it is downloaded without errors and that its size is the same
 as that of the [libavoid.wasm file](https://github.com/Aksem/libavoid-js/blob/master/dist/libavoid.wasm).
 
+## WebAssembly may not be compiled at run time
+
+Some runtimes do not allow compiling WebAssembly from bytes, and give you a
+precompiled `WebAssembly.Module` of `libavoid.wasm` instead, for example as
+the import of the `.wasm` file. Pass it to
+{@link AvoidLibType.load | AvoidLib.load()} with the Emscripten option
+{@link ModuleOptions.instantiateWasm | instantiateWasm}:
+
+```js
+await AvoidLib.load(undefined, {
+  instantiateWasm(imports, receiveInstance) {
+    WebAssembly.instantiate(wasmModule, imports)
+      .then((instance) => receiveInstance(instance, wasmModule));
+    return {};
+  },
+});
+```
+
 ## `Avoid library should be initialized before using`
 
 {@link AvoidLibType.getInstance | AvoidLib.getInstance()} was called before

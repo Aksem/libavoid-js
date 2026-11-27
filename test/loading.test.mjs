@@ -58,4 +58,28 @@ describe("AvoidLib", () => {
     expect(router.addShape({ x: 0, y: 0, width: 2, height: 4 }).position()).toEqual(new Avoid.Point(1, 2));
     router.delete();
   });
+
+  it("load(path, { instantiateWasm }) instantiates the given WebAssembly.Module", async () => {
+    const wasmUrl = new URL("../dist/libavoid.wasm", import.meta.url);
+    const bytes = IS_BROWSER
+      ? await (await fetch(wasmUrl)).arrayBuffer()
+      : await (await import("node:fs/promises")).readFile(wasmUrl);
+    const wasmModule = await WebAssembly.compile(bytes);
+    const instantiateWasm = vi.fn((imports, receiveInstance) => {
+      WebAssembly.instantiate(wasmModule, imports).then((instance) => receiveInstance(instance, wasmModule));
+      return {};
+    });
+    const options = { instantiateWasm };
+
+    // The path does not exist: the load succeeds only if nothing is read from it.
+    const AvoidLib = await freshAvoidLib();
+    await AvoidLib.load(await toLoadPath(new URL("./does-not-exist/libavoid.wasm", import.meta.url)), options);
+    expect(instantiateWasm).toHaveBeenCalledOnce();
+    expect(Object.keys(options)).toEqual(["instantiateWasm"]);
+
+    const Avoid = AvoidLib.getInstance();
+    const router = new Avoid.Router(Avoid.RouterFlag.PolyLineRouting);
+    expect(router.addShape({ x: 0, y: 0, width: 2, height: 4 }).position()).toEqual(new Avoid.Point(1, 2));
+    router.delete();
+  });
 });
