@@ -1446,6 +1446,315 @@ Originally allocated`);
       }
     );
   };
+  var InvokerFunctions = {
+    "ftfnn": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, toArg0Wire, toArg1Wire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 12) {
+        throw new Error(humanName + "Expected 12 closure arguments " + arguments.length + " given.");
+      }
+      return function(arg0, arg1) {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var arg0Wired = toArg0Wire(null, arg0);
+        var arg1Wired = toArg1Wire(null, arg1);
+        var rv = invoker(fn, arg0Wired, arg1Wired);
+        var ret = fromRetWire(rv);
+        return ret;
+      };
+    },
+    "ftfn": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, toArg0Wire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 11) {
+        throw new Error(humanName + "Expected 11 closure arguments " + arguments.length + " given.");
+      }
+      return function(arg0) {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var arg0Wired = toArg0Wire(null, arg0);
+        var rv = invoker(fn, arg0Wired);
+        var ret = fromRetWire(rv);
+        return ret;
+      };
+    },
+    // class Router
+    // constructors
+    // methods
+    "ttfn": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 10) {
+        throw new Error(humanName + "Expected 10 closure arguments " + arguments.length + " given.");
+      }
+      return function() {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var thisWired = toClassParamWire(null, this);
+        var rv = invoker(fn, thisWired);
+        var ret = fromRetWire(rv);
+        return ret;
+      };
+    },
+    "tffn": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 10) {
+        throw new Error(humanName + "Expected 10 closure arguments " + arguments.length + " given.");
+      }
+      return function() {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var thisWired = toClassParamWire(null, this);
+        invoker(fn, thisWired);
+      };
+    },
+    "tffnnn": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, toArg0Wire, toArg1Wire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 12) {
+        throw new Error(humanName + "Expected 12 closure arguments " + arguments.length + " given.");
+      }
+      return function(arg0, arg1) {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var thisWired = toClassParamWire(null, this);
+        var arg0Wired = toArg0Wire(null, arg0);
+        var arg1Wired = toArg1Wire(null, arg1);
+        invoker(fn, thisWired, arg0Wired, arg1Wired);
+      };
+    },
+    "tffnu": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, toArg0Wire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 11) {
+        throw new Error(humanName + "Expected 11 closure arguments " + arguments.length + " given.");
+      }
+      return function(arg0) {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var destructors = [];
+        var thisWired = toClassParamWire(destructors, this);
+        var arg0Wired = toArg0Wire(destructors, arg0);
+        invoker(fn, thisWired, arg0Wired);
+        runDestructors2(destructors);
+      };
+    },
+    "ttfnnnnnn": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, toArg0Wire, toArg1Wire, toArg2Wire, toArg3Wire, toArg4Wire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 15) {
+        throw new Error(humanName + "Expected 15 closure arguments " + arguments.length + " given.");
+      }
+      return function(arg0, arg1, arg2, arg3, arg4) {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var thisWired = toClassParamWire(null, this);
+        var arg0Wired = toArg0Wire(null, arg0);
+        var arg1Wired = toArg1Wire(null, arg1);
+        var arg2Wired = toArg2Wire(null, arg2);
+        var arg3Wired = toArg3Wire(null, arg3);
+        var arg4Wired = toArg4Wire(null, arg4);
+        var rv = invoker(fn, thisWired, arg0Wired, arg1Wired, arg2Wired, arg3Wired, arg4Wired);
+        var ret = fromRetWire(rv);
+        return ret;
+      };
+    },
+    "ttfnnn": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, toArg0Wire, toArg1Wire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 12) {
+        throw new Error(humanName + "Expected 12 closure arguments " + arguments.length + " given.");
+      }
+      return function(arg0, arg1) {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var thisWired = toClassParamWire(null, this);
+        var arg0Wired = toArg0Wire(null, arg0);
+        var arg1Wired = toArg1Wire(null, arg1);
+        var rv = invoker(fn, thisWired, arg0Wired, arg1Wired);
+        var ret = fromRetWire(rv);
+        return ret;
+      };
+    },
+    "tffnunnnn": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, toArg0Wire, toArg1Wire, toArg2Wire, toArg3Wire, toArg4Wire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 15) {
+        throw new Error(humanName + "Expected 15 closure arguments " + arguments.length + " given.");
+      }
+      return function(arg0, arg1, arg2, arg3, arg4) {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var destructors = [];
+        var thisWired = toClassParamWire(destructors, this);
+        var arg0Wired = toArg0Wire(destructors, arg0);
+        var arg1Wired = toArg1Wire(destructors, arg1);
+        var arg2Wired = toArg2Wire(destructors, arg2);
+        var arg3Wired = toArg3Wire(destructors, arg3);
+        var arg4Wired = toArg4Wire(destructors, arg4);
+        invoker(fn, thisWired, arg0Wired, arg1Wired, arg2Wired, arg3Wired, arg4Wired);
+        runDestructors2(destructors);
+      };
+    },
+    "tffnun": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, toArg0Wire, toArg1Wire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 12) {
+        throw new Error(humanName + "Expected 12 closure arguments " + arguments.length + " given.");
+      }
+      return function(arg0, arg1) {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var destructors = [];
+        var thisWired = toClassParamWire(destructors, this);
+        var arg0Wired = toArg0Wire(destructors, arg0);
+        var arg1Wired = toArg1Wire(destructors, arg1);
+        invoker(fn, thisWired, arg0Wired, arg1Wired);
+        runDestructors2(destructors);
+      };
+    },
+    "tffnunn": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, toArg0Wire, toArg1Wire, toArg2Wire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 13) {
+        throw new Error(humanName + "Expected 13 closure arguments " + arguments.length + " given.");
+      }
+      return function(arg0, arg1, arg2) {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var destructors = [];
+        var thisWired = toClassParamWire(destructors, this);
+        var arg0Wired = toArg0Wire(destructors, arg0);
+        var arg1Wired = toArg1Wire(destructors, arg1);
+        var arg2Wired = toArg2Wire(destructors, arg2);
+        invoker(fn, thisWired, arg0Wired, arg1Wired, arg2Wired);
+        runDestructors2(destructors);
+      };
+    },
+    "ttfnnnn": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, toArg0Wire, toArg1Wire, toArg2Wire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 13) {
+        throw new Error(humanName + "Expected 13 closure arguments " + arguments.length + " given.");
+      }
+      return function(arg0, arg1, arg2) {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var thisWired = toClassParamWire(null, this);
+        var arg0Wired = toArg0Wire(null, arg0);
+        var arg1Wired = toArg1Wire(null, arg1);
+        var arg2Wired = toArg2Wire(null, arg2);
+        var rv = invoker(fn, thisWired, arg0Wired, arg1Wired, arg2Wired);
+        var ret = fromRetWire(rv);
+        return ret;
+      };
+    },
+    "tffnn": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, toArg0Wire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 11) {
+        throw new Error(humanName + "Expected 11 closure arguments " + arguments.length + " given.");
+      }
+      return function(arg0) {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var thisWired = toClassParamWire(null, this);
+        var arg0Wired = toArg0Wire(null, arg0);
+        invoker(fn, thisWired, arg0Wired);
+      };
+    },
+    "ttfnn": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, toArg0Wire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 11) {
+        throw new Error(humanName + "Expected 11 closure arguments " + arguments.length + " given.");
+      }
+      return function(arg0) {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var thisWired = toClassParamWire(null, this);
+        var arg0Wired = toArg0Wire(null, arg0);
+        var rv = invoker(fn, thisWired, arg0Wired);
+        var ret = fromRetWire(rv);
+        return ret;
+      };
+    },
+    // class Obstacle
+    // methods
+    // class ShapeRef
+    // methods
+    "ttfunnnnnn": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, toArg0Wire, toArg1Wire, toArg2Wire, toArg3Wire, toArg4Wire, toArg5Wire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 16) {
+        throw new Error(humanName + "Expected 16 closure arguments " + arguments.length + " given.");
+      }
+      return function(arg0, arg1, arg2, arg3, arg4, arg5) {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var destructors = [];
+        var thisWired = toClassParamWire(destructors, this);
+        var arg0Wired = toArg0Wire(destructors, arg0);
+        var arg1Wired = toArg1Wire(destructors, arg1);
+        var arg2Wired = toArg2Wire(destructors, arg2);
+        var arg3Wired = toArg3Wire(destructors, arg3);
+        var arg4Wired = toArg4Wire(destructors, arg4);
+        var arg5Wired = toArg5Wire(destructors, arg5);
+        var rv = invoker(fn, thisWired, arg0Wired, arg1Wired, arg2Wired, arg3Wired, arg4Wired, arg5Wired);
+        runDestructors2(destructors);
+        var ret = fromRetWire(rv);
+        return ret;
+      };
+    },
+    // class JunctionRef
+    // methods
+    "tffun": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, toArg0Wire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 11) {
+        throw new Error(humanName + "Expected 11 closure arguments " + arguments.length + " given.");
+      }
+      return function(arg0) {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var destructors = [];
+        var thisWired = toClassParamWire(destructors, this);
+        var arg0Wired = toArg0Wire(destructors, arg0);
+        invoker(fn, thisWired, arg0Wired);
+        runDestructors2(destructors);
+      };
+    },
+    "ttfu": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 10) {
+        throw new Error(humanName + "Expected 10 closure arguments " + arguments.length + " given.");
+      }
+      return function() {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var destructors = [];
+        var thisWired = toClassParamWire(destructors, this);
+        var rv = invoker(fn, thisWired);
+        runDestructors2(destructors);
+        var ret = fromRetWire(rv);
+        return ret;
+      };
+    },
+    "ttfunn": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, toArg0Wire, toArg1Wire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 12) {
+        throw new Error(humanName + "Expected 12 closure arguments " + arguments.length + " given.");
+      }
+      return function(arg0, arg1) {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var destructors = [];
+        var thisWired = toClassParamWire(destructors, this);
+        var arg0Wired = toArg0Wire(destructors, arg0);
+        var arg1Wired = toArg1Wire(destructors, arg1);
+        var rv = invoker(fn, thisWired, arg0Wired, arg1Wired);
+        runDestructors2(destructors);
+        var ret = fromRetWire(rv);
+        return ret;
+      };
+    },
+    // class ShapeConnectionPin
+    // methods
+    // class ConnRef
+    // methods
+    "tffnnnnn": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, toArg0Wire, toArg1Wire, toArg2Wire, toArg3Wire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 14) {
+        throw new Error(humanName + "Expected 14 closure arguments " + arguments.length + " given.");
+      }
+      return function(arg0, arg1, arg2, arg3) {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var thisWired = toClassParamWire(null, this);
+        var arg0Wired = toArg0Wire(null, arg0);
+        var arg1Wired = toArg1Wire(null, arg1);
+        var arg2Wired = toArg2Wire(null, arg2);
+        var arg3Wired = toArg3Wire(null, arg3);
+        invoker(fn, thisWired, arg0Wired, arg1Wired, arg2Wired, arg3Wired);
+      };
+    },
+    "tffnnun": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, toArg0Wire, toArg1Wire, toArg2Wire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 13) {
+        throw new Error(humanName + "Expected 13 closure arguments " + arguments.length + " given.");
+      }
+      return function(arg0, arg1, arg2) {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var destructors = [];
+        var thisWired = toClassParamWire(destructors, this);
+        var arg0Wired = toArg0Wire(destructors, arg0);
+        var arg1Wired = toArg1Wire(destructors, arg1);
+        var arg2Wired = toArg2Wire(destructors, arg2);
+        invoker(fn, thisWired, arg0Wired, arg1Wired, arg2Wired);
+        runDestructors2(destructors);
+      };
+    },
+    "tffnnu": function anonymous(humanName, throwBindingError2, invoker, fn, runDestructors2, fromRetWire, toClassParamWire, toArg0Wire, toArg1Wire, checkArgCount2, minArgs, maxArgs) {
+      if (arguments.length !== 12) {
+        throw new Error(humanName + "Expected 12 closure arguments " + arguments.length + " given.");
+      }
+      return function(arg0, arg1) {
+        checkArgCount2(arguments.length, minArgs, maxArgs, humanName, throwBindingError2);
+        var destructors = [];
+        var thisWired = toClassParamWire(destructors, this);
+        var arg0Wired = toArg0Wire(destructors, arg0);
+        var arg1Wired = toArg1Wire(destructors, arg1);
+        invoker(fn, thisWired, arg0Wired, arg1Wired);
+        runDestructors2(destructors);
+      };
+    }
+  };
   function argsUseStackAlloc(argTypes) {
     for (var i = 1; i < argTypes.length; ++i) {
       if (argTypes[i] !== null && argTypes[i].argStackAlloc) {
@@ -1460,84 +1769,27 @@ Originally allocated`);
       throwBindingError2(`function ${humanName} called with ${numArgs} arguments, expected ${argCountMessage}`);
     }
   }
-  function usesDestructorStack(argTypes) {
-    for (var i = 1; i < argTypes.length; ++i) {
-      if (argTypes[i] !== null && argTypes[i].destructorFunction === void 0) {
-        return true;
+  function createJsInvokerSignature(argTypes, isClassMethodFunc, returns, isAsync) {
+    const signature = [
+      isClassMethodFunc ? "t" : "f",
+      returns ? "t" : "f",
+      isAsync ? "t" : "f"
+    ];
+    for (let i = isClassMethodFunc ? 1 : 2; i < argTypes.length; ++i) {
+      const arg = argTypes[i];
+      let destructorSig = "";
+      if (arg.argStackAlloc) {
+        destructorSig = "s";
+      } else if (arg.destructorFunction === void 0) {
+        destructorSig = "u";
+      } else if (arg.destructorFunction === null) {
+        destructorSig = "n";
+      } else {
+        destructorSig = "t";
       }
+      signature.push(destructorSig);
     }
-    return false;
-  }
-  function createJsInvoker(argTypes, isClassMethodFunc, returns, isAsync) {
-    var needsDestructorStack = usesDestructorStack(argTypes);
-    var argsNeedStack = argsUseStackAlloc(argTypes);
-    var useStackFrame = argsNeedStack && !isAsync && !needsDestructorStack;
-    if (argsNeedStack && !useStackFrame) {
-      needsDestructorStack = true;
-    }
-    var argCount = argTypes.length - 2;
-    var argsList = [];
-    var argsListWired = ["fn"];
-    if (isClassMethodFunc) {
-      argsListWired.push("thisWired");
-    }
-    for (var i = 0; i < argCount; ++i) {
-      argsList.push(`arg${i}`);
-      argsListWired.push(`arg${i}Wired`);
-    }
-    argsList = argsList.join();
-    argsListWired = argsListWired.join();
-    var invokerFnBody = `return function (${argsList}) {
-`;
-    invokerFnBody += "checkArgCount(arguments.length, minArgs, maxArgs, humanName, throwBindingError);\n";
-    if (needsDestructorStack) {
-      invokerFnBody += "var destructors = [];\n";
-    }
-    if (useStackFrame) {
-      invokerFnBody += "var sp = stackSave();\n";
-    }
-    var dtorStack = needsDestructorStack ? "destructors" : "null";
-    var args1 = ["humanName", "throwBindingError", "invoker", "fn", "runDestructors", "fromRetWire", "toClassParamWire"];
-    if (useStackFrame) {
-      args1.push("stackSave", "stackRestore");
-    }
-    if (isClassMethodFunc) {
-      invokerFnBody += `var thisWired = toClassParamWire(${dtorStack}, this);
-`;
-    }
-    for (var i = 0; i < argCount; ++i) {
-      var argName = `toArg${i}Wire`;
-      invokerFnBody += `var arg${i}Wired = ${argName}(${dtorStack}, arg${i});
-`;
-      args1.push(argName);
-    }
-    invokerFnBody += (returns || isAsync ? "var rv = " : "") + `invoker(${argsListWired});
-`;
-    if (useStackFrame) {
-      invokerFnBody += "stackRestore(sp);\n";
-    }
-    var returnVal = returns ? "rv" : "";
-    if (needsDestructorStack) {
-      invokerFnBody += "runDestructors(destructors);\n";
-    } else {
-      for (var i = isClassMethodFunc ? 1 : 2; i < argTypes.length; ++i) {
-        var paramName = i === 1 ? "thisWired" : `arg${i - 2}Wired`;
-        if (argTypes[i].destructorFunction !== null) {
-          invokerFnBody += `${paramName}_dtor(${paramName});
-`;
-          args1.push(`${paramName}_dtor`);
-        }
-      }
-    }
-    if (returns) {
-      invokerFnBody += "var ret = fromRetWire(rv);\nreturn ret;\n";
-    } else {
-    }
-    invokerFnBody += "}\n";
-    args1.push("checkArgCount", "minArgs", "maxArgs");
-    invokerFnBody = `if (arguments.length !== ${args1.length}){ throw new Error(humanName + "Expected ${args1.length} closure arguments " + arguments.length + " given."); }
-${invokerFnBody}`;
-    return new Function(args1, invokerFnBody);
+    return signature.join("");
   }
   function getRequiredArgCount(argTypes) {
     var requiredArgCount = argTypes.length - 2;
@@ -1548,6 +1800,14 @@ ${invokerFnBody}`;
       requiredArgCount--;
     }
     return requiredArgCount;
+  }
+  function usesDestructorStack(argTypes) {
+    for (var i = 1; i < argTypes.length; ++i) {
+      if (argTypes[i] !== null && argTypes[i].destructorFunction === void 0) {
+        return true;
+      }
+    }
+    return false;
   }
   function craftInvokerFunction(humanName, argTypes, classType, cppInvokerFunc, cppTargetFunc, isAsync) {
     var argCount = argTypes.length;
@@ -1583,8 +1843,8 @@ ${invokerFnBody}`;
       }
     }
     closureArgs.push(checkArgCount, minArgs, expectedArgCount);
-    let invokerFactory = createJsInvoker(argTypes, isClassMethodFunc, returns, isAsync);
-    var invokerFn = invokerFactory(...closureArgs);
+    var signature = createJsInvokerSignature(argTypes, isClassMethodFunc, returns, isAsync);
+    var invokerFn = InvokerFunctions[signature](...closureArgs);
     return createNamedFunction(humanName, invokerFn);
   }
   var heap32VectorToArray = (count, firstElement) => {
@@ -2232,38 +2492,30 @@ ${invokerFnBody}`;
     var toReturnWire = retType.toWireType.bind(retType);
     var argFromPtr = argTypes.map((type) => type.readValueFromPointer.bind(type));
     argCount--;
-    var captures = { "toValue": Emval.toValue };
-    var args = argFromPtr.map((argFromPtr2, i) => {
-      var captureName = `argFromPtr${i}`;
-      captures[captureName] = argFromPtr2;
-      return `${captureName}(args${i ? "+" + i * GenericWireTypeSize : ""})`;
-    });
-    var functionBody;
-    switch (kind) {
-      case 0:
-        functionBody = "toValue(handle)";
-        break;
-      case 2:
-        functionBody = "new (toValue(handle))";
-        break;
-      case 3:
-        functionBody = "";
-        break;
-      case 1:
-        captures["getStringOrSymbol"] = getStringOrSymbol;
-        functionBody = "toValue(handle)[getStringOrSymbol(methodName)]";
-        break;
-    }
-    functionBody += `(${args})`;
-    if (!retType.isVoid) {
-      captures["toReturnWire"] = toReturnWire;
-      captures["emval_returnValue"] = emval_returnValue;
-      functionBody = `return emval_returnValue(toReturnWire, destructorsRef, ${functionBody})`;
-    }
-    functionBody = `return function (handle, methodName, destructorsRef, args) {
-${functionBody}
-}`;
-    var invokerFunction = new Function(Object.keys(captures), functionBody)(...Object.values(captures));
+    var argN = new Array(argCount);
+    var invokerFunction = (handle, methodName, destructorsRef, args) => {
+      var offset = 0;
+      for (var i = 0; i < argCount; ++i) {
+        argN[i] = argFromPtr[i](args + offset);
+        offset += GenericWireTypeSize;
+      }
+      var rv;
+      switch (kind) {
+        case 0:
+          rv = Emval.toValue(handle)(...argN);
+          break;
+        case 2:
+          rv = Reflect.construct(Emval.toValue(handle), argN);
+          break;
+        case 3:
+          rv = argN[0];
+          break;
+        case 1:
+          rv = Emval.toValue(handle)[getStringOrSymbol(methodName)](...argN);
+          break;
+      }
+      return emval_returnValue(toReturnWire, destructorsRef, rv);
+    };
     var functionName = `methodCaller<(${argTypes.map((t) => t.name)}) => ${retType.name}>`;
     return emval_addMethodCaller(createNamedFunction(functionName, invokerFunction));
   };
@@ -2675,7 +2927,7 @@ ${functionBody}
     "getInheritedInstanceCount",
     "getLiveInheritedInstances",
     "getFunctionArgsName",
-    "createJsInvokerSignature",
+    "createJsInvoker",
     "PureVirtualError",
     "registerInheritedInstance",
     "unregisterInheritedInstance",
@@ -2810,11 +3062,12 @@ ${functionBody}
     "requireRegisteredType",
     "usesDestructorStack",
     "argsUseStackAlloc",
+    "createJsInvokerSignature",
     "checkArgCount",
     "getEnumValueType",
     "getRequiredArgCount",
-    "createJsInvoker",
     "UnboundTypeError",
+    "InvokerFunctions",
     "EmValType",
     "EmValOptionalType",
     "throwUnboundTypeError",
