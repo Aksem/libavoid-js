@@ -26,6 +26,13 @@ describe("libavoid typings", () => {
     expectTypeOf(AvoidLib.load).returns.toEqualTypeOf<Promise<void>>();
     expectTypeOf(AvoidLib.load).toBeCallableWith();
     expectTypeOf(AvoidLib.load).toBeCallableWith("/assets/libavoid.wasm");
+    expectTypeOf(AvoidLib.load).toBeCallableWith(undefined, {
+      instantiateWasm(imports, receiveInstance) {
+        expectTypeOf(imports).toEqualTypeOf<WebAssembly.Imports>();
+        expectTypeOf(receiveInstance).parameter(0).toEqualTypeOf<WebAssembly.Instance>();
+        return {};
+      },
+    });
     expectTypeOf(AvoidLib.getInstance()).toEqualTypeOf<Avoid>();
     expectTypeOf(AvoidLib.avoidLib).toEqualTypeOf<Avoid | undefined>();
   });
