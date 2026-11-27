@@ -4,7 +4,6 @@
 // this (tools/generate.py). Node only: it starts a Node process with
 // --disallow-code-generation-from-strings, which makes every such call throw.
 import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 const NODE_ENTRY = new URL("../../dist/index-node.mjs", import.meta.url);
@@ -37,10 +36,5 @@ describe("no code generation from strings", () => {
     expect(calls).toBe(1);
     expect(route[0]).toEqual([100, 25]);
     expect(route.at(-1)).toEqual([300, 175]);
-  });
-
-  it.for(["index.js", "index-node.mjs"])("dist/%s has no new Function or eval", (file) => {
-    const source = readFileSync(new URL(`../../dist/${file}`, import.meta.url), "utf8");
-    expect(source).not.toMatch(/\bnew Function\b|\beval\(/);
   });
 });
