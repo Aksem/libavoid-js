@@ -74,6 +74,9 @@ def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Lite
   libavoid_js_dir_path = Path(__file__).parent.parent.resolve()
   # list of parameters: https://emsettings.surma.technology/
   # ALLOW_TABLE_GROWTH and ALLOW_TABLE_GROWTH are needed for support of larger diagrams. Without them runtime is out of memory with ~10 shapes and 2 connections between all of them
+  # DYNAMIC_EXECUTION=0 keeps embind from generating its invokers with `new Function`, so the module runs where eval is
+  # forbidden (e.g. a Content-Security-Policy without 'unsafe-eval'). EMBIND_AOT generates them at build time instead,
+  # so calls stay as fast as with the generated ones.
   execute_command(f"""
   docker run \
   --rm \
@@ -94,6 +97,8 @@ def compile(generated_sources_dir, dist_dir_name, debug=False, environment: Lite
     -s ALLOW_MEMORY_GROWTH=1 \
     -s ALLOW_TABLE_GROWTH=1 \
     -s EXCEPTION_STACK_TRACES \
+    -s DYNAMIC_EXECUTION=0 \
+    -s EMBIND_AOT \
     -Ibuild/adaptagrams/cola/ \
     /src/embind/bindings.cpp \
     {compiler_sources()} \
